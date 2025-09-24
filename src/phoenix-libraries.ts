@@ -1,290 +1,29 @@
+// Phoenix Libraries API Module
+// ============================================
+
 import { PhoenixBase } from "./phoenix-base";
 import {
 	ResponseEntity,
 	StockEntity,
-	PlateEntity,
+	GradeEntity,
+	CoatingEntity,
+	SubstrateEntity,
 	PressEntity,
-	ProcessTypeEntity,
+	ProcessEntity,
 	ModeEntity,
 	MarkEntity,
 	ScriptAsset,
 	TilingEntity,
 	DieDesignEntity,
 	TemplateEntity,
-	ImportDieDesignResource,
-	ImportTemplateResource,
-	Stock,
-	Grade,
-	Sheet,
-	Roll,
-	StockType,
-	ThingEntity,
-	FoldingPatternEntity,
-	MarkSetEntity,
+	ImportStockCsvResource,
 } from "./types";
 
 export class PhoenixLibrariesAPI extends PhoenixBase {
-	// Things Management
-	async getThings(): Promise<ThingEntity[]> {
-		return this.makeRequest<ThingEntity[]>({
-			method: "GET",
-			path: "/libraries/things",
-		});
-	}
+	// ===========================================
+	// STOCKS
+	// ===========================================
 
-	async addThing(thing: ThingEntity): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/libraries/things",
-			body: thing,
-		});
-	}
-
-	async getThing(thingId: string): Promise<ThingEntity> {
-		return this.makeRequest<ThingEntity>({
-			method: "GET",
-			path: `/libraries/things/${thingId}`,
-		});
-	}
-
-	async editThing(thingId: string, thing: ThingEntity): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PUT",
-			path: `/libraries/things/${thingId}`,
-			body: thing,
-		});
-	}
-
-	async deleteThing(thingId: string): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "DELETE",
-			path: `/libraries/things/${thingId}`,
-		});
-	}
-
-	// Folding Patterns Management
-	async getFoldingPatterns(): Promise<FoldingPatternEntity[]> {
-		return this.makeRequest<FoldingPatternEntity[]>({
-			method: "GET",
-			path: "/libraries/folding",
-		});
-	}
-
-	async addFoldingPattern(pattern: FoldingPatternEntity): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/libraries/folding",
-			body: pattern,
-		});
-	}
-
-	// Mark Sets Management
-	async getMarkSets(): Promise<MarkSetEntity[]> {
-		return this.makeRequest<MarkSetEntity[]>({
-			method: "GET",
-			path: "/libraries/marksets",
-		});
-	}
-
-	async addMarkSet(markSet: MarkSetEntity): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/libraries/marksets",
-			body: markSet,
-		});
-	}
-
-	// V2 Stock Management (COMPLETE)
-	async getStocksV2(): Promise<Stock[]> {
-		return this.makeRequest<Stock[]>({
-			method: "GET",
-			path: "/libraries/v2/stocks",
-		});
-	}
-
-	async addStockV2(stock: Stock): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/libraries/v2/stocks",
-			body: stock,
-		});
-	}
-
-	async getStockV2(stockId: string): Promise<Stock> {
-		return this.makeRequest<Stock>({
-			method: "GET",
-			path: `/libraries/v2/stocks/${stockId}`,
-		});
-	}
-
-	async editStockV2(stockId: string, stock: Stock): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PUT",
-			path: `/libraries/v2/stocks/${stockId}`,
-			body: stock,
-		});
-	}
-
-	async deleteStockV2(stockId: string): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "DELETE",
-			path: `/libraries/v2/stocks/${stockId}`,
-		});
-	}
-
-	// V2 Stock Grades
-	async getStockGradesV2(stockId: string): Promise<Grade[]> {
-		return this.makeRequest<Grade[]>({
-			method: "GET",
-			path: `/libraries/v2/stocks/${stockId}/grades`,
-		});
-	}
-
-	async addStockGradeV2(stockId: string, grade: Grade): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/libraries/v2/stocks/${stockId}/grades`,
-			body: grade,
-		});
-	}
-
-	async getStockGradeV2(stockId: string, gradeId: string): Promise<Grade> {
-		return this.makeRequest<Grade>({
-			method: "GET",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}`,
-		});
-	}
-
-	async editStockGradeV2(stockId: string, gradeId: string, grade: Grade): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PUT",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}`,
-			body: grade,
-		});
-	}
-
-	async deleteStockGradeV2(stockId: string, gradeId: string): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "DELETE",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}`,
-		});
-	}
-
-	// V2 Stock Sheets
-	async getStockSheetsV2(stockId: string, gradeId: string): Promise<Sheet[]> {
-		return this.makeRequest<Sheet[]>({
-			method: "GET",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/sheets`,
-		});
-	}
-
-	async addStockSheetV2(stockId: string, gradeId: string, sheet: Sheet): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/sheets`,
-			body: sheet,
-		});
-	}
-
-	async getStockSheetV2(stockId: string, gradeId: string, sheetId: string): Promise<Sheet> {
-		return this.makeRequest<Sheet>({
-			method: "GET",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/sheets/${sheetId}`,
-		});
-	}
-
-	async editStockSheetV2(stockId: string, gradeId: string, sheetId: string, sheet: Sheet): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PUT",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/sheets/${sheetId}`,
-			body: sheet,
-		});
-	}
-
-	async deleteStockSheetV2(stockId: string, gradeId: string, sheetId: string): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "DELETE",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/sheets/${sheetId}`,
-		});
-	}
-
-	// V2 Stock Rolls
-	async getStockRollsV2(stockId: string, gradeId: string): Promise<Roll[]> {
-		return this.makeRequest<Roll[]>({
-			method: "GET",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/rolls`,
-		});
-	}
-
-	async addStockRollV2(stockId: string, gradeId: string, roll: Roll): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/rolls`,
-			body: roll,
-		});
-	}
-
-	async getStockRollV2(stockId: string, gradeId: string, rollId: string): Promise<Roll> {
-		return this.makeRequest<Roll>({
-			method: "GET",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/rolls/${rollId}`,
-		});
-	}
-
-	async editStockRollV2(stockId: string, gradeId: string, rollId: string, roll: Roll): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PUT",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/rolls/${rollId}`,
-			body: roll,
-		});
-	}
-
-	async deleteStockRollV2(stockId: string, gradeId: string, rollId: string): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "DELETE",
-			path: `/libraries/v2/stocks/${stockId}/grades/${gradeId}/rolls/${rollId}`,
-		});
-	}
-
-	// Stock Types Management
-	async getStockTypes(): Promise<StockType[]> {
-		return this.makeRequest<StockType[]>({
-			method: "GET",
-			path: "/libraries/stocktypes",
-		});
-	}
-
-	async addStockType(stockType: StockType): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/libraries/stocktypes",
-			body: stockType,
-		});
-	}
-
-	async getStockType(stockTypeId: string): Promise<StockType> {
-		return this.makeRequest<StockType>({
-			method: "GET",
-			path: `/libraries/stocktypes/${stockTypeId}`,
-		});
-	}
-
-	async editStockType(stockTypeId: string, stockType: StockType): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PUT",
-			path: `/libraries/stocktypes/${stockTypeId}`,
-			body: stockType,
-		});
-	}
-
-	async deleteStockType(stockTypeId: string): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "DELETE",
-			path: `/libraries/stocktypes/${stockTypeId}`,
-		});
-	}
-
-	// Legacy Stock Management (V1 - for backward compatibility)
 	async getStocks(): Promise<StockEntity[]> {
 		return this.makeRequest<StockEntity[]>({
 			method: "GET",
@@ -292,7 +31,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async addStock(stock: StockEntity): Promise<ResponseEntity> {
+	async createStock(stock: StockEntity): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: "/libraries/stocks",
@@ -307,7 +46,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async editStock(stockId: string, stock: StockEntity): Promise<ResponseEntity> {
+	async updateStock(stockId: string, stock: Partial<StockEntity>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "PUT",
 			path: `/libraries/stocks/${stockId}`,
@@ -322,45 +61,141 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	// Plates Management
-	async getPlates(): Promise<PlateEntity[]> {
-		return this.makeRequest<PlateEntity[]>({
-			method: "GET",
-			path: "/libraries/plates",
-		});
-	}
-
-	async addPlate(plate: PlateEntity): Promise<ResponseEntity> {
+	async importStockCsv(importCsv: ImportStockCsvResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: "/libraries/plates",
-			body: plate,
+			path: "/libraries/stocks/import/csv",
+			body: importCsv,
 		});
 	}
 
-	async getPlate(plateId: string): Promise<PlateEntity> {
-		return this.makeRequest<PlateEntity>({
+	// ===========================================
+	// GRADES
+	// ===========================================
+
+	async getGrades(): Promise<GradeEntity[]> {
+		return this.makeRequest<GradeEntity[]>({
 			method: "GET",
-			path: `/libraries/plates/${plateId}`,
+			path: "/libraries/grades",
 		});
 	}
 
-	async editPlate(plateId: string, plate: PlateEntity): Promise<ResponseEntity> {
+	async createGrade(grade: GradeEntity): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/libraries/grades",
+			body: grade,
+		});
+	}
+
+	async getGrade(gradeId: string): Promise<GradeEntity> {
+		return this.makeRequest<GradeEntity>({
+			method: "GET",
+			path: `/libraries/grades/${gradeId}`,
+		});
+	}
+
+	async updateGrade(gradeId: string, grade: Partial<GradeEntity>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "PUT",
-			path: `/libraries/plates/${plateId}`,
-			body: plate,
+			path: `/libraries/grades/${gradeId}`,
+			body: grade,
 		});
 	}
 
-	async deletePlate(plateId: string): Promise<ResponseEntity> {
+	async deleteGrade(gradeId: string): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "DELETE",
-			path: `/libraries/plates/${plateId}`,
+			path: `/libraries/grades/${gradeId}`,
 		});
 	}
 
-	// Presses Management
+	// ===========================================
+	// COATINGS
+	// ===========================================
+
+	async getCoatings(): Promise<CoatingEntity[]> {
+		return this.makeRequest<CoatingEntity[]>({
+			method: "GET",
+			path: "/libraries/coatings",
+		});
+	}
+
+	async createCoating(coating: CoatingEntity): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/libraries/coatings",
+			body: coating,
+		});
+	}
+
+	async getCoating(coatingId: string): Promise<CoatingEntity> {
+		return this.makeRequest<CoatingEntity>({
+			method: "GET",
+			path: `/libraries/coatings/${coatingId}`,
+		});
+	}
+
+	async updateCoating(coatingId: string, coating: Partial<CoatingEntity>): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/libraries/coatings/${coatingId}`,
+			body: coating,
+		});
+	}
+
+	async deleteCoating(coatingId: string): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "DELETE",
+			path: `/libraries/coatings/${coatingId}`,
+		});
+	}
+
+	// ===========================================
+	// SUBSTRATES
+	// ===========================================
+
+	async getSubstrates(): Promise<SubstrateEntity[]> {
+		return this.makeRequest<SubstrateEntity[]>({
+			method: "GET",
+			path: "/libraries/substrates",
+		});
+	}
+
+	async createSubstrate(substrate: SubstrateEntity): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/libraries/substrates",
+			body: substrate,
+		});
+	}
+
+	async getSubstrate(substrateId: string): Promise<SubstrateEntity> {
+		return this.makeRequest<SubstrateEntity>({
+			method: "GET",
+			path: `/libraries/substrates/${substrateId}`,
+		});
+	}
+
+	async updateSubstrate(substrateId: string, substrate: Partial<SubstrateEntity>): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/libraries/substrates/${substrateId}`,
+			body: substrate,
+		});
+	}
+
+	async deleteSubstrate(substrateId: string): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "DELETE",
+			path: `/libraries/substrates/${substrateId}`,
+		});
+	}
+
+	// ===========================================
+	// PRESSES
+	// ===========================================
+
 	async getPresses(): Promise<PressEntity[]> {
 		return this.makeRequest<PressEntity[]>({
 			method: "GET",
@@ -368,7 +203,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async addPress(press: PressEntity): Promise<ResponseEntity> {
+	async createPress(press: PressEntity): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: "/libraries/presses",
@@ -383,7 +218,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async editPress(pressId: string, press: PressEntity): Promise<ResponseEntity> {
+	async updatePress(pressId: string, press: Partial<PressEntity>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "PUT",
 			path: `/libraries/presses/${pressId}`,
@@ -398,45 +233,51 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	// Process Types Management
-	async getProcessTypes(): Promise<ProcessTypeEntity[]> {
-		return this.makeRequest<ProcessTypeEntity[]>({
+	// ===========================================
+	// PROCESSES
+	// ===========================================
+
+	async getProcesses(): Promise<ProcessEntity[]> {
+		return this.makeRequest<ProcessEntity[]>({
 			method: "GET",
-			path: "/libraries/processtypes",
+			path: "/libraries/processes",
 		});
 	}
 
-	async addProcessType(processType: ProcessTypeEntity): Promise<ResponseEntity> {
+	async createProcess(process: ProcessEntity): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: "/libraries/processtypes",
-			body: processType,
+			path: "/libraries/processes",
+			body: process,
 		});
 	}
 
-	async getProcessType(processTypeId: string): Promise<ProcessTypeEntity> {
-		return this.makeRequest<ProcessTypeEntity>({
+	async getProcess(processId: string): Promise<ProcessEntity> {
+		return this.makeRequest<ProcessEntity>({
 			method: "GET",
-			path: `/libraries/processtypes/${processTypeId}`,
+			path: `/libraries/processes/${processId}`,
 		});
 	}
 
-	async editProcessType(processTypeId: string, processType: ProcessTypeEntity): Promise<ResponseEntity> {
+	async updateProcess(processId: string, process: Partial<ProcessEntity>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "PUT",
-			path: `/libraries/processtypes/${processTypeId}`,
-			body: processType,
+			path: `/libraries/processes/${processId}`,
+			body: process,
 		});
 	}
 
-	async deleteProcessType(processTypeId: string): Promise<ResponseEntity> {
+	async deleteProcess(processId: string): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "DELETE",
-			path: `/libraries/processtypes/${processTypeId}`,
+			path: `/libraries/processes/${processId}`,
 		});
 	}
 
-	// Modes Management
+	// ===========================================
+	// MODES
+	// ===========================================
+
 	async getModes(): Promise<ModeEntity[]> {
 		return this.makeRequest<ModeEntity[]>({
 			method: "GET",
@@ -444,7 +285,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async addMode(mode: ModeEntity): Promise<ResponseEntity> {
+	async createMode(mode: ModeEntity): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: "/libraries/modes",
@@ -459,7 +300,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async editMode(modeId: string, mode: ModeEntity): Promise<ResponseEntity> {
+	async updateMode(modeId: string, mode: Partial<ModeEntity>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "PUT",
 			path: `/libraries/modes/${modeId}`,
@@ -474,7 +315,10 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	// Marks Management
+	// ===========================================
+	// MARKS
+	// ===========================================
+
 	async getMarks(): Promise<MarkEntity[]> {
 		return this.makeRequest<MarkEntity[]>({
 			method: "GET",
@@ -482,7 +326,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async addMark(mark: MarkEntity): Promise<ResponseEntity> {
+	async createMark(mark: MarkEntity): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: "/libraries/marks",
@@ -497,7 +341,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async editMark(markId: string, mark: MarkEntity): Promise<ResponseEntity> {
+	async updateMark(markId: string, mark: Partial<MarkEntity>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "PUT",
 			path: `/libraries/marks/${markId}`,
@@ -512,7 +356,10 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	// Scripts Management
+	// ===========================================
+	// SCRIPTS
+	// ===========================================
+
 	async getScripts(): Promise<ScriptAsset[]> {
 		return this.makeRequest<ScriptAsset[]>({
 			method: "GET",
@@ -520,7 +367,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async addScript(script: ScriptAsset): Promise<ResponseEntity> {
+	async createScript(script: ScriptAsset): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: "/libraries/scripts",
@@ -535,7 +382,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async editScript(scriptId: string, script: ScriptAsset): Promise<ResponseEntity> {
+	async updateScript(scriptId: string, script: Partial<ScriptAsset>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "PUT",
 			path: `/libraries/scripts/${scriptId}`,
@@ -550,7 +397,10 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	// Tilings Management
+	// ===========================================
+	// TILINGS
+	// ===========================================
+
 	async getTilings(): Promise<TilingEntity[]> {
 		return this.makeRequest<TilingEntity[]>({
 			method: "GET",
@@ -558,7 +408,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async addTiling(tiling: TilingEntity): Promise<ResponseEntity> {
+	async createTiling(tiling: TilingEntity): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: "/libraries/tilings",
@@ -573,7 +423,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async editTiling(tilingId: string, tiling: TilingEntity): Promise<ResponseEntity> {
+	async updateTiling(tilingId: string, tiling: Partial<TilingEntity>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "PUT",
 			path: `/libraries/tilings/${tilingId}`,
@@ -588,37 +438,51 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	// Die Designs Management
+	// ===========================================
+	// DIE DESIGNS
+	// ===========================================
+
 	async getDieDesigns(): Promise<DieDesignEntity[]> {
 		return this.makeRequest<DieDesignEntity[]>({
 			method: "GET",
-			path: "/libraries/diedesigns",
+			path: "/libraries/dies",
 		});
 	}
 
-	async importDieDesign(importResource: ImportDieDesignResource): Promise<ResponseEntity> {
+	async createDieDesign(die: DieDesignEntity): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: "/libraries/diedesigns/import",
-			body: importResource,
+			path: "/libraries/dies",
+			body: die,
 		});
 	}
 
-	async getDieDesign(dieDesignId: string): Promise<DieDesignEntity> {
+	async getDieDesign(dieId: string): Promise<DieDesignEntity> {
 		return this.makeRequest<DieDesignEntity>({
 			method: "GET",
-			path: `/libraries/diedesigns/${dieDesignId}`,
+			path: `/libraries/dies/${dieId}`,
 		});
 	}
 
-	async deleteDieDesign(dieDesignId: string): Promise<ResponseEntity> {
+	async updateDieDesign(dieId: string, die: Partial<DieDesignEntity>): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/libraries/dies/${dieId}`,
+			body: die,
+		});
+	}
+
+	async deleteDieDesign(dieId: string): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "DELETE",
-			path: `/libraries/diedesigns/${dieDesignId}`,
+			path: `/libraries/dies/${dieId}`,
 		});
 	}
 
-	// Templates Management
+	// ===========================================
+	// TEMPLATES
+	// ===========================================
+
 	async getTemplates(): Promise<TemplateEntity[]> {
 		return this.makeRequest<TemplateEntity[]>({
 			method: "GET",
@@ -626,11 +490,11 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	async importTemplate(importResource: ImportTemplateResource): Promise<ResponseEntity> {
+	async createTemplate(template: TemplateEntity): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: "/libraries/templates/import",
-			body: importResource,
+			path: "/libraries/templates",
+			body: template,
 		});
 	}
 
@@ -638,6 +502,14 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		return this.makeRequest<TemplateEntity>({
 			method: "GET",
 			path: `/libraries/templates/${templateId}`,
+		});
+	}
+
+	async updateTemplate(templateId: string, template: Partial<TemplateEntity>): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/libraries/templates/${templateId}`,
+			body: template,
 		});
 	}
 

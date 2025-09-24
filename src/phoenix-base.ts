@@ -1,53 +1,46 @@
+// Phoenix API Base Class
+// ============================================
+
 import * as http from "http";
 import * as https from "https";
-import { URL } from "url";
-import { PhoenixConfig } from "./types";
+import { PhoenixConfig, RequestOptions } from "./types";
 
-interface RequestOptions {
-	method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-	path: string;
-	body?: any;
-	contentType?: string;
-}
-
-export abstract class PhoenixBase {
+export class PhoenixBase {
 	protected config: PhoenixConfig;
-	protected httpModule: typeof http | typeof https;
 
 	constructor(config: PhoenixConfig) {
 		this.config = {
-			basePath: "/phoenix",
-			timeout: 30000,
+			host: config.host,
+			port: config.port || 9090,
+			basePath: config.basePath || "/api/v1",
+			timeout: config.timeout || 30000,
 			headers: {
 				"Content-Type": "application/json",
 				Accept: "application/json",
+				...config.headers,
 			},
-			...config,
 		};
-
-		// Choose HTTP or HTTPS based on port and protocol
-		const isHttps = config.port === 443 || config.host.startsWith("https://");
-		this.httpModule = isHttps ? https : http;
 	}
 
 	protected async makeRequest<T>(options: RequestOptions): Promise<T> {
 		return new Promise((resolve, reject) => {
-			const url = new URL(`${this.config.host.startsWith("http") ? this.config.host : `http://${this.config.host}`}:${this.config.port}`);
-			const fullPath = `${this.config.basePath}${options.path}`;
+			const isHttps = this.config.host.startsWith("https://");
+			const protocol = isHttps ? https : http;
+			const host = this.config.host.replace(/^https?:\/\//, "");
 
-			const requestOptions = {
-				hostname: url.hostname,
+			const requestOptions: http.RequestOptions = {
+				hostname: host,
 				port: this.config.port,
-				path: fullPath,
+				path: `${this.config.basePath}${options.path}`,
 				method: options.method,
 				headers: {
 					...this.config.headers,
-					...(options.contentType && { "Content-Type": options.contentType }),
+					...options.headers,
 				},
-				timeout: this.config.timeout,
+				timeout: options.timeout || this.config.timeout,
 			};
 
-			const req = this.httpModule.request(requestOptions, (res) => {
+			const req = protocol.request(requestOptions, (res) => {
 				let data = "";
 
 				res.on("data", (chunk) => {
@@ -56,29 +49,70 @@ export abstract class PhoenixBase {
 
 				res.on("end", () => {
 					try {
-						const response = JSON.parse(data);
-						resolve(response);
-					} catch (error) {
-						reject(new Error(`Failed to parse response: ${error}`));
+						if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
+							const result = data ? JSON.parse(data) : {};
+							resolve(result);
+						} else {
+							const error = data ? JSON.parse(data) : { message: "Request failed" };
+							reject({
+								status: res.statusCode,
+								message: error.message || `HTTP ${res.statusCode}`,
+								response: error,
+							});
+						}
+					} catch (e) {
+						// Handle non-JSON responses
+						if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
+							resolve(data as any);
+						} else {
+							reject({
+								status: res.statusCode,
+								message: `HTTP ${res.statusCode}`,
+								response: data,
+							});
+						}
 					}
 				});
 			});
 
 			req.on("error", (error) => {
-				reject(error);
+				reject({
+					status: 0,
+					message: error.message,
+					error,
+				});
 			});
 
 			req.on("timeout", () => {
 				req.destroy();
-				reject(new Error("Request timeout"));
+				reject({
+					status: 0,
+					message: "Request timeout",
+				});
 			});
 
+			// Send body data if present
 			if (options.body) {
 				const bodyString = typeof options.body === "string" ? options.body : JSON.stringify(options.body);
 				req.write(bodyString);
 			}
 
 			req.end();
+		});
+	}
+
+	protected async uploadFile(path: string, file: Buffer, filename: string): Promise<any> {
+		const boundary = `----PhoenixFormBoundary${Date.now()}`;
+		const formData = this.createMultipartFormData(file, filename, boundary);
+
+		return this.makeRequest({
+			method: "POST",
+			path,
+			body: formData,
+			headers: {
+				"Content-Type": `multipart/form-data; boundary=${boundary}`,
+				"Content-Length": Buffer.byteLength(formData).toString(),
+			},
 		});
 	}
 
@@ -96,18 +130,6 @@ export abstract class PhoenixBase {
 	}
 
 	// Utility methods
-	async healthCheck(): Promise<boolean> {
-		try {
-			await this.makeRequest<any>({
-				method: "GET",
-				path: "/projects",
-			});
-			return true;
-		} catch (error) {
-			return false;
-		}
-	}
-
 	setHeaders(headers: Record<string, string>): void {
 		this.config.headers = { ...this.config.headers, ...headers };
 	}
@@ -121,9 +143,9 @@ export abstract class PhoenixBase {
 	}
 
 	protected handleApiError(error: any): never {
-		if (error.response?.data) {
-			throw new Error(`Phoenix API Error: ${error.response.data.message || error.message}`);
+		if (error.response?.message) {
+			throw new Error(`Phoenix API Error: ${error.response.message}`);
 		}
-		throw new Error(`Phoenix API Error: ${error.message}`);
+		throw new Error(`Phoenix API Error: ${error.message || "Unknown error"}`);
 	}
 }

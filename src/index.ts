@@ -1,17 +1,30 @@
-// Main Phoenix API Client
-export { Phoenix } from "./phoenix";
+// Phoenix API - Main Entry Point
+// ============================================
 
-// Individual API modules
-export { PhoenixJobsAPI } from "./phoenix-jobs";
-export { PhoenixProjectsAPI } from "./phoenix-projects"; 
+// Main Phoenix Client
+export { Phoenix } from "./phoenix";
+export { Phoenix as default } from "./phoenix";
+
+// Individual API Modules
+export { PhoenixProjectsAPI } from "./phoenix-projects";
 export { PhoenixLibrariesAPI } from "./phoenix-libraries";
 export { PhoenixPresetsAPI } from "./phoenix-presets";
 
-// Base class
+// Base Class
 export { PhoenixBase } from "./phoenix-base";
 
-// All types
+// All Types
 export * from "./types";
 
-// Default export
-export { Phoenix as default } from "./phoenix";
+// Convenience factory function
+import { Phoenix } from "./phoenix";
+import { PhoenixConfig } from "./types";
+
+/**
+ * Create a new Phoenix API client
+ * @param config Phoenix API configuration
+ * @returns Phoenix API client instance
+ */
+export function createPhoenixClient(config: PhoenixConfig): Phoenix {
+	return new Phoenix(config);
+}

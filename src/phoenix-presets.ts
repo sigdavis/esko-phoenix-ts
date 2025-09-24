@@ -1,213 +1,106 @@
+// Phoenix Presets API Module
+// ============================================
+
 import { PhoenixBase } from "./phoenix-base";
-import { ResponseEntity, PresetEntity, ImpositionAiProfileEntity } from "./types";
+import { PresetEntity } from "./types";
 
 export class PhoenixPresetsAPI extends PhoenixBase {
-	// Imposition AI Profiles
-	async getImpositionAiProfiles(): Promise<ImpositionAiProfileEntity[]> {
-		return this.makeRequest<ImpositionAiProfileEntity[]>({
-			method: "GET",
-			path: "/presets/imposition-ai",
-		});
-	}
+	// ===========================================
+	// EXPORT PRESETS
+	// ===========================================
 
-	async addImpositionAiProfile(profile: ImpositionAiProfileEntity): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/presets/imposition-ai",
-			body: profile,
-		});
-	}
-
-	async getImpositionAiProfile(profileId: string): Promise<ImpositionAiProfileEntity> {
-		return this.makeRequest<ImpositionAiProfileEntity>({
-			method: "GET",
-			path: `/presets/imposition-ai/${profileId}`,
-		});
-	}
-
-	async editImpositionAiProfile(profileId: string, profile: ImpositionAiProfileEntity): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PUT",
-			path: `/presets/imposition-ai/${profileId}`,
-			body: profile,
-		});
-	}
-
-	async deleteImpositionAiProfile(profileId: string): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "DELETE",
-			path: `/presets/imposition-ai/${profileId}`,
-		});
-	}
-
-	// Import Presets
-	async getProductCsvImportPresets(): Promise<PresetEntity[]> {
+	async getExportPdfPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/import/product/csv",
+			path: "/presets/export/pdf",
 		});
 	}
 
-	async getStockCsvPresets(): Promise<PresetEntity[]> {
+	async getExportDxfPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/import/stock-csv",
+			path: "/presets/export/dxf",
 		});
 	}
 
-	async getDdes2DieLayoutImportPresets(): Promise<PresetEntity[]> {
+	async getExportXmlPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/import/die/ddes2",
+			path: "/presets/export/xml",
 		});
 	}
 
-	async getDdes3DieLayoutImportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/import/die/ddes3",
-		});
-	}
-
-	async getArdDieLayoutImportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/import/die/ard",
-		});
-	}
-
-	async getCff2DieLayoutImportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/import/die/cff2",
-		});
-	}
-
-	async getDxfDieLayoutImportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/import/die/dxf",
-		});
-	}
-
-	async getMfgDieImportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/import/die/mfg",
-		});
-	}
-
-	async getPdfDieLayoutImportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/import/die/pdf",
-		});
-	}
-
-	// Export Presets - JDF
-	async getHpJdfExportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/export/hp-jdf",
-		});
-	}
-
-	async getJdfExportPresets(): Promise<PresetEntity[]> {
+	async getExportJdfPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
 			path: "/presets/export/jdf",
 		});
 	}
 
-	async getCuttingJdfExportPresets(): Promise<PresetEntity[]> {
+	async getExportZundPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/export/jdf-cutting",
+			path: "/presets/export/zund",
 		});
 	}
 
-	// Export Presets - Reports
-	async getJsonReportPresets(): Promise<PresetEntity[]> {
+	async getExportCff2Presets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/export/report/json",
+			path: "/presets/export/cff2",
 		});
 	}
 
-	async getCsvReportPresets(): Promise<PresetEntity[]> {
+	// ===========================================
+	// IMPORT PRESETS
+	// ===========================================
+
+	async getImportProductCsvPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/export/report/csv",
+			path: "/presets/import/product/csv",
 		});
 	}
 
-	async getXmlReportPresets(): Promise<PresetEntity[]> {
+	async getImportStockCsvPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/export/report/xml",
+			path: "/presets/import/stock-csv",
 		});
 	}
 
-	async getTilingReportPresets(): Promise<PresetEntity[]> {
+	async getImportDieArdPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/export/tiling-report",
+			path: "/presets/import/die/ard",
 		});
 	}
 
-	// Export Presets - Layouts
-	async getPdfLayoutExportPresets(): Promise<PresetEntity[]> {
+	async getImportDieCff2Presets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/export/layout/pdf",
+			path: "/presets/import/die/cff2",
 		});
 	}
 
-	async getDxfLayoutExportPresets(): Promise<PresetEntity[]> {
+	async getImportDieDxfPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/export/layout/dxf",
+			path: "/presets/import/die/dxf",
 		});
 	}
 
-	async getMfgLayoutExportPresets(): Promise<PresetEntity[]> {
+	async getImportDiePdfPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/export/layout/mfg",
+			path: "/presets/import/die/pdf",
 		});
 	}
 
-	async getZccLayoutExportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/export/layout/zcc",
-		});
-	}
+	// ===========================================
+	// TOOL PRESETS
+	// ===========================================
 
-	async getCff2LayoutExportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/export/layout/cff2",
-		});
-	}
-
-	// Export Presets - Other
-	async getPdfVectorExportPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/export/pdf-vector",
-		});
-	}
-
-	// Cover Sheet
-	async getCoverSheetPresets(): Promise<PresetEntity[]> {
-		return this.makeRequest<PresetEntity[]>({
-			method: "GET",
-			path: "/presets/export/coversheet",
-		});
-	}
-
-	// Tool Presets
 	async getStepAndRepeatPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
@@ -215,39 +108,110 @@ export class PhoenixPresetsAPI extends PhoenixBase {
 		});
 	}
 
-	// Action Presets
-	async getImposePresets(): Promise<PresetEntity[]> {
+	async getOptimizationPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/actions/impose",
+			path: "/presets/tools/optimization",
 		});
 	}
 
-	async getPopulatePresets(): Promise<PresetEntity[]> {
+	async getPlanningPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/actions/populate",
+			path: "/presets/tools/planning",
 		});
 	}
 
-	async getStepRepeatPresets(): Promise<PresetEntity[]> {
+	async getImpositionPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/actions/steprepeat",
+			path: "/presets/tools/imposition",
 		});
 	}
 
-	async getPlanPresets(): Promise<PresetEntity[]> {
+	async getAutosnapPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/actions/plan",
+			path: "/presets/tools/autosnap",
 		});
 	}
 
-	async getOptimizePresets(): Promise<PresetEntity[]> {
+	// ===========================================
+	// PROFILE PRESETS
+	// ===========================================
+
+	async getImpositionAiProfiles(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/actions/optimize",
+			path: "/presets/imposition/profiles",
+		});
+	}
+
+	async getPlanningProfiles(): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: "/presets/planning/profiles",
+		});
+	}
+
+	async getOptimizationProfiles(): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: "/presets/optimization/profiles",
+		});
+	}
+
+	// ===========================================
+	// LAYOUT PRESETS
+	// ===========================================
+
+	async getLayoutTemplates(): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: "/presets/layout/templates",
+		});
+	}
+
+	async getLayoutStyles(): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: "/presets/layout/styles",
+		});
+	}
+
+	// ===========================================
+	// CUSTOM PRESETS
+	// ===========================================
+
+	async getCustomPresets(category: string): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: `/presets/custom/${category}`,
+		});
+	}
+
+	async getPresetById(presetId: string): Promise<PresetEntity> {
+		return this.makeRequest<PresetEntity>({
+			method: "GET",
+			path: `/presets/${presetId}`,
+		});
+	}
+
+	// ===========================================
+	// ALL PRESETS
+	// ===========================================
+
+	async getAllPresets(): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: "/presets",
+		});
+	}
+
+	async getPresetsByType(presetType: string): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: `/presets?type=${presetType}`,
 		});
 	}
 }

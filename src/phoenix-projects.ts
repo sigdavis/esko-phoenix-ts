@@ -1,63 +1,46 @@
+// Phoenix Projects API Module
+// ============================================
+
 import { PhoenixBase } from "./phoenix-base";
 import {
-	ResponseEntity,
 	PhoenixProject,
-	PhoenixProductEntity,
-	CreateJobResource,
-	EditProjectResource,
-	LayoutResultEntity,
-	ImposeResource,
-	PopulateResource,
-	PlaceComponentResource,
+	ResponseEntity,
+	ProductEntity,
+	LayoutEntity,
+	SurfaceEntity,
+	ComponentEntity,
 	JobFilesEntity,
-	ExportCoverSheetResource,
-	ExportPdfLayoutResource,
-	ExportDxfLayoutResource,
-	ExportMfgLayoutResource,
-	ExportZccLayoutResource,
-	ExportCff2LayoutResource,
-	ExportHpJdfResource,
-	ExportJdfResource,
-	ExportXmlReportResource,
-	ExportJsonReportResource,
-	ExportCsvReportResource,
-	ExportTilingReportResource,
-	ImportProductCsvResource,
-	ImportDieTemplateResource,
-	ImportDieDesignResource,
-	AutosnapResource,
-	MoveComponentResource,
-	RotateComponentResource,
-	OptimizeResource,
-	CopyJobResource,
-	RenameJobResource,
-	StepRepeatResource,
-	PlanResource,
-	PlanResultEntity,
-	RunScriptResource,
-	SetSheetResource,
-	SetPlateResource,
-	SetPressResource,
-	ResizeSheetResource,
 	SheetEntity,
-	PlateEntity,
-	PressEntity,
+	LayoutResultEntity,
+	PlanResultEntity,
 	CreateFlatProductResource,
 	CreateBoundProductResource,
 	CreateFoldedProductResource,
 	CreateTiledProductResource,
-	LayoutEntity,
-	RestScriptContext,
-	AutosnapArtworkEntity,
-	SaveJobTemplateResource,
-	EditLayoutResource,
-	ApplyImposeResultResource,
-	ApplyPopulateResultResource,
-	ApplyPlanResultResource,
+	CreatePartProductResource,
+	ImposeResource,
+	PopulateResource,
+	PlaceComponentResource,
+	MoveComponentResource,
+	RotateComponentResource,
+	OptimizeResource,
+	AutosnapResource,
+	StepRepeatResource,
+	PlanResource,
+	RunScriptResource,
+	ExportPdfResource,
+	ExportDxfResource,
+	ExportReportResource,
+	ExportJdfResource,
+	CopyProjectResource,
+	ImportProductCsvResource,
 } from "./types";
 
 export class PhoenixProjectsAPI extends PhoenixBase {
-	// Core Project Management
+	// ===========================================
+	// PROJECT MANAGEMENT
+	// ===========================================
+
 	async getProjects(): Promise<PhoenixProject[]> {
 		return this.makeRequest<PhoenixProject[]>({
 			method: "GET",
@@ -65,32 +48,30 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async createProject(projectResource: CreateJobResource): Promise<ResponseEntity> {
+	async createProject(project: Partial<PhoenixProject>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: "/projects",
-			body: projectResource,
+			body: project,
 		});
 	}
 
 	async openProject(file: Buffer, filename: string): Promise<ResponseEntity> {
-		const boundary = `----formdata-boundary-${Date.now()}`;
-		const formData = this.createMultipartFormData(file, filename, boundary);
+		return this.uploadFile("/projects", file, filename);
+	}
 
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/projects/open",
-			body: formData,
-			headers: {
-				"Content-Type": `multipart/form-data; boundary=${boundary}`,
-			},
+	async getProject(projectId: string): Promise<PhoenixProject> {
+		return this.makeRequest<PhoenixProject>({
+			method: "GET",
+			path: `/projects/${projectId}`,
 		});
 	}
 
-	async getProject(projectId: string, productVersion: "V1" | "V2" = "V1"): Promise<PhoenixProject> {
-		return this.makeRequest<PhoenixProject>({
-			method: "GET",
-			path: `/projects/${projectId}?product-version=${productVersion}`,
+	async updateProject(projectId: string, project: Partial<PhoenixProject>): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/projects/${projectId}`,
+			body: project,
 		});
 	}
 
@@ -101,109 +82,7 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async editProject(projectId: string, editResource: EditProjectResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PATCH",
-			path: `/projects/${projectId}`,
-			body: editResource,
-		});
-	}
-
-	// Project Products
-	async getProjectProducts(
-		projectId: string,
-		thumb?: boolean,
-		thumbWidth?: number,
-		thumbHeight?: number,
-		renderMode?: "Artwork" | "Colors" | "Dielines"
-	): Promise<PhoenixProductEntity[]> {
-		const params = new URLSearchParams();
-		if (thumb !== undefined) params.append("thumb", thumb.toString());
-		if (thumbWidth !== undefined) params.append("thumb-width", thumbWidth.toString());
-		if (thumbHeight !== undefined) params.append("thumb-height", thumbHeight.toString());
-		if (renderMode !== undefined) params.append("render-mode", renderMode);
-
-		const queryString = params.toString();
-		return this.makeRequest<PhoenixProductEntity[]>({
-			method: "GET",
-			path: `/projects/${projectId}/products${queryString ? "?" + queryString : ""}`,
-		});
-	}
-
-	// Project Actions
-	async snapProject(projectId: string, autosnapResource: AutosnapArtworkEntity): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/snap`,
-			body: autosnapResource,
-		});
-	}
-
-	async runProjectScript(projectId: string, scriptResource: RestScriptContext): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/script`,
-			body: scriptResource,
-		});
-	}
-
-	async imposeProject(projectId: string, imposeResource: ImposeResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/impose`,
-			body: imposeResource,
-		});
-	}
-
-	async populateProject(projectId: string, populateResource: PopulateResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/populate`,
-			body: populateResource,
-		});
-	}
-
-	async placeProjectComponent(projectId: string, placeResource: PlaceComponentResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/place`,
-			body: placeResource,
-		});
-	}
-
-	async autosnapProject(projectId: string, autosnapResource: AutosnapResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/autosnap`,
-			body: autosnapResource,
-		});
-	}
-
-	async stepRepeatProject(projectId: string, stepRepeatResource: StepRepeatResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/steprepeat`,
-			body: stepRepeatResource,
-		});
-	}
-
-	async planProject(projectId: string, planResource: PlanResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/plan`,
-			body: planResource,
-		});
-	}
-
-	async optimizeProject(projectId: string, optimizeResource: OptimizeResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/optimize`,
-			body: optimizeResource,
-		});
-	}
-
-	async copyProject(projectId: string, copyResource: CopyJobResource): Promise<ResponseEntity> {
+	async copyProject(projectId: string, copyResource: CopyProjectResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: `/projects/${projectId}/copy`,
@@ -211,36 +90,115 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async renameProject(projectId: string, renameResource: RenameJobResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/rename`,
-			body: renameResource,
+	// ===========================================
+	// PRODUCTS
+	// ===========================================
+
+	async getProjectProducts(
+		projectId: string,
+		thumb?: boolean,
+		thumbWidth?: number,
+		thumbHeight?: number,
+		renderMode?: string
+	): Promise<ProductEntity[]> {
+		const params = new URLSearchParams();
+		if (thumb !== undefined) params.append("thumb", thumb.toString());
+		if (thumbWidth) params.append("thumb-width", thumbWidth.toString());
+		if (thumbHeight) params.append("thumb-height", thumbHeight.toString());
+		if (renderMode) params.append("render-mode", renderMode);
+
+		const query = params.toString();
+		return this.makeRequest<ProductEntity[]>({
+			method: "GET",
+			path: `/projects/${projectId}/products${query ? `?${query}` : ""}`,
 		});
 	}
 
-	async saveProjectTemplate(projectId: string, saveTemplateResource: SaveJobTemplateResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/save-template`,
-			body: saveTemplateResource,
+	async getProjectProduct(projectId: string, productIndex: number): Promise<ProductEntity> {
+		return this.makeRequest<ProductEntity>({
+			method: "GET",
+			path: `/projects/${projectId}/products/${productIndex}`,
 		});
 	}
 
-	// Script operations that are not deprecated
-	async runScript(scriptResource: RestScriptContext): Promise<ResponseEntity> {
+	async updateProjectProduct(projectId: string, productIndex: number, product: Partial<ProductEntity>): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/projects/script",
-			body: scriptResource,
+			method: "PUT",
+			path: `/projects/${projectId}/products/${productIndex}`,
+			body: product,
 		});
 	}
 
-	// Project Layouts
+	async deleteProjectProduct(projectId: string, productIndex: number): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "DELETE",
+			path: `/projects/${projectId}/products/${productIndex}`,
+		});
+	}
+
+	async createProjectFlatProduct(projectId: string, product: CreateFlatProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/products/flat`,
+			body: product,
+		});
+	}
+
+	async createProjectBoundProduct(projectId: string, product: CreateBoundProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/products/bound`,
+			body: product,
+		});
+	}
+
+	async createProjectFoldedProduct(projectId: string, product: CreateFoldedProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/products/folded`,
+			body: product,
+		});
+	}
+
+	async createProjectTiledProduct(projectId: string, product: CreateTiledProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/products/tiled`,
+			body: product,
+		});
+	}
+
+	async createProjectPartProduct(projectId: string, product: CreatePartProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/products/part`,
+			body: product,
+		});
+	}
+
+	// ===========================================
+	// LAYOUTS
+	// ===========================================
+
 	async getProjectLayouts(projectId: string): Promise<LayoutEntity[]> {
 		return this.makeRequest<LayoutEntity[]>({
 			method: "GET",
 			path: `/projects/${projectId}/layouts`,
+		});
+	}
+
+	async createProjectLayout(projectId: string, layout: Partial<LayoutEntity>): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/layouts`,
+			body: layout,
+		});
+	}
+
+	async getProjectLayout(projectId: string, layoutIndex: number): Promise<LayoutEntity> {
+		return this.makeRequest<LayoutEntity>({
+			method: "GET",
+			path: `/projects/${projectId}/layouts/${layoutIndex}`,
 		});
 	}
 
@@ -251,163 +209,216 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async editProjectLayout(projectId: string, layoutIndex: number, editResource: EditLayoutResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PATCH",
-			path: `/projects/${projectId}/layouts/${layoutIndex}`,
-			body: editResource,
+	async getProjectLayoutFront(
+		projectId: string,
+		layoutIndex: number,
+		thumb?: boolean,
+		thumbWidth?: number,
+		thumbHeight?: number
+	): Promise<SurfaceEntity> {
+		const params = new URLSearchParams();
+		if (thumb !== undefined) params.append("thumb", thumb.toString());
+		if (thumbWidth) params.append("thumb-width", thumbWidth.toString());
+		if (thumbHeight) params.append("thumb-height", thumbHeight.toString());
+
+		const query = params.toString();
+		return this.makeRequest<SurfaceEntity>({
+			method: "GET",
+			path: `/projects/${projectId}/layouts/${layoutIndex}/front${query ? `?${query}` : ""}`,
 		});
 	}
 
-	async resizeProjectLayoutSheet(projectId: string, layoutIndex: number, resizeResource: ResizeSheetResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/sheet/resize`,
-			body: resizeResource,
+	async getProjectLayoutBack(
+		projectId: string,
+		layoutIndex: number,
+		thumb?: boolean,
+		thumbWidth?: number,
+		thumbHeight?: number
+	): Promise<SurfaceEntity> {
+		const params = new URLSearchParams();
+		if (thumb !== undefined) params.append("thumb", thumb.toString());
+		if (thumbWidth) params.append("thumb-width", thumbWidth.toString());
+		if (thumbHeight) params.append("thumb-height", thumbHeight.toString());
+
+		const query = params.toString();
+		return this.makeRequest<SurfaceEntity>({
+			method: "GET",
+			path: `/projects/${projectId}/layouts/${layoutIndex}/back${query ? `?${query}` : ""}`,
 		});
 	}
 
-	async setProjectLayoutSheet(projectId: string, layoutIndex: number, setSheetResource: SetSheetResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
+	async getProjectLayoutSheet(projectId: string, layoutIndex: number): Promise<SheetEntity> {
+		return this.makeRequest<SheetEntity>({
+			method: "GET",
 			path: `/projects/${projectId}/layouts/${layoutIndex}/sheet`,
-			body: setSheetResource,
 		});
 	}
 
-	async setProjectLayoutPlate(projectId: string, layoutIndex: number, setPlateResource: SetPlateResource): Promise<ResponseEntity> {
+	async resizeProjectLayoutSheet(projectId: string, layoutIndex: number, sheet: Partial<SheetEntity>): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/projects/${projectId}/layouts/${layoutIndex}/sheet`,
+			body: sheet,
+		});
+	}
+
+	// ===========================================
+	// COMPONENTS
+	// ===========================================
+
+	async getProjectLayoutComponents(projectId: string, layoutIndex: number): Promise<ComponentEntity[]> {
+		return this.makeRequest<ComponentEntity[]>({
+			method: "GET",
+			path: `/projects/${projectId}/layouts/${layoutIndex}/components`,
+		});
+	}
+
+	async placeProjectComponent(projectId: string, layoutIndex: number, component: PlaceComponentResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/plate`,
-			body: setPlateResource,
+			path: `/projects/${projectId}/layouts/${layoutIndex}/components`,
+			body: component,
 		});
 	}
 
-	async setProjectLayoutPress(projectId: string, layoutIndex: number, setPressResource: SetPressResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/press`,
-			body: setPressResource,
+	async getProjectComponent(projectId: string, layoutIndex: number, componentIndex: number): Promise<ComponentEntity> {
+		return this.makeRequest<ComponentEntity>({
+			method: "GET",
+			path: `/projects/${projectId}/layouts/${layoutIndex}/components/${componentIndex}`,
 		});
 	}
 
-	// Project Layout Components
-	async moveProjectLayoutComponent(
-		projectId: string,
-		layoutIndex: number,
-		componentIndex: number,
-		moveResource: MoveComponentResource
-	): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PATCH",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/components/${componentIndex}/move`,
-			body: moveResource,
-		});
-	}
-
-	async rotateProjectLayoutComponent(
-		projectId: string,
-		layoutIndex: number,
-		componentIndex: number,
-		rotateResource: RotateComponentResource
-	): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PATCH",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/components/${componentIndex}/rotate`,
-			body: rotateResource,
-		});
-	}
-
-	async deleteProjectLayoutComponent(projectId: string, layoutIndex: number, componentIndex: number): Promise<ResponseEntity> {
+	async deleteProjectComponent(projectId: string, layoutIndex: number, componentIndex: number): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "DELETE",
 			path: `/projects/${projectId}/layouts/${layoutIndex}/components/${componentIndex}`,
 		});
 	}
 
-	// Project Layout Results
-	async getProjectLayoutResult(projectId: string, layoutIndex: number): Promise<LayoutResultEntity> {
-		return this.makeRequest<LayoutResultEntity>({
-			method: "GET",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/result`,
+	async moveProjectComponent(projectId: string, layoutIndex: number, componentIndex: number, move: MoveComponentResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/projects/${projectId}/layouts/${layoutIndex}/components/${componentIndex}/move`,
+			body: move,
 		});
 	}
+
+	async rotateProjectComponent(
+		projectId: string,
+		layoutIndex: number,
+		componentIndex: number,
+		rotate: RotateComponentResource
+	): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/projects/${projectId}/layouts/${layoutIndex}/components/${componentIndex}/rotate`,
+			body: rotate,
+		});
+	}
+
+	// ===========================================
+	// ACTIONS
+	// ===========================================
+
+	async imposeProject(projectId: string, impose: ImposeResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/impose`,
+			body: impose,
+		});
+	}
+
+	async populateProject(projectId: string, populate: PopulateResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/populate`,
+			body: populate,
+		});
+	}
+
+	async optimizeProject(projectId: string, optimize: OptimizeResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/optimize`,
+			body: optimize,
+		});
+	}
+
+	async autosnapProject(projectId: string, autosnap: AutosnapResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/autosnap`,
+			body: autosnap,
+		});
+	}
+
+	async stepRepeatProject(projectId: string, stepRepeat: StepRepeatResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/step-repeat`,
+			body: stepRepeat,
+		});
+	}
+
+	async planProject(projectId: string, plan: PlanResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/plan`,
+			body: plan,
+		});
+	}
+
+	async runProjectScript(projectId: string, script: RunScriptResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/run-script`,
+			body: script,
+		});
+	}
+
+	// ===========================================
+	// RESULTS
+	// ===========================================
 
 	async getProjectOptimizeResults(
 		projectId: string,
 		layoutIndex: number,
 		thumb?: boolean,
 		thumbWidth?: number,
-		thumbHeight?: number,
-		renderMode?: string
+		thumbHeight?: number
 	): Promise<LayoutResultEntity[]> {
 		const params = new URLSearchParams();
 		if (thumb !== undefined) params.append("thumb", thumb.toString());
-		if (thumbWidth !== undefined) params.append("thumb-width", thumbWidth.toString());
-		if (thumbHeight !== undefined) params.append("thumb-height", thumbHeight.toString());
-		if (renderMode !== undefined) params.append("render-mode", renderMode);
+		if (thumbWidth) params.append("thumb-width", thumbWidth.toString());
+		if (thumbHeight) params.append("thumb-height", thumbHeight.toString());
 
-		const queryString = params.toString();
+		const query = params.toString();
 		return this.makeRequest<LayoutResultEntity[]>({
 			method: "GET",
-			path: `/projects/${projectId}/optimize/${layoutIndex}/results${queryString ? "?" + queryString : ""}`,
+			path: `/projects/${projectId}/optimize/results/${layoutIndex}${query ? `?${query}` : ""}`,
 		});
 	}
 
-	async applyProjectImposeResult(
-		projectId: string,
-		layoutIndex: number,
-		resultId: string,
-		applyResource: ApplyImposeResultResource
-	): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/impose/${layoutIndex}/result/${resultId}/apply`,
-			body: applyResource,
-		});
-	}
-
-	async applyProjectPopulateResult(
-		projectId: string,
-		layoutIndex: number,
-		resultId: string,
-		applyResource: ApplyPopulateResultResource
-	): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/populate/${layoutIndex}/result/${resultId}/apply`,
-			body: applyResource,
-		});
-	}
-
-	async applyProjectPlanResult(projectId: string, resultId: string, applyResource: ApplyPlanResultResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/plan/result/${resultId}/apply`,
-			body: applyResource,
-		});
-	}
-
-	// File Management
-	async getProjectFiles(projectId: string): Promise<JobFilesEntity> {
-		return this.makeRequest<JobFilesEntity>({
+	async getProjectPlanResults(projectId: string): Promise<PlanResultEntity[]> {
+		return this.makeRequest<PlanResultEntity[]>({
 			method: "GET",
-			path: `/projects/${projectId}/files`,
+			path: `/projects/${projectId}/plan/results`,
+		});
+	}
+
+	// ===========================================
+	// FILES
+	// ===========================================
+
+	async getProjectUploadedFiles(projectId: string): Promise<JobFilesEntity[]> {
+		return this.makeRequest<JobFilesEntity[]>({
+			method: "GET",
+			path: `/projects/${projectId}/files/upload`,
 		});
 	}
 
 	async uploadProjectFile(projectId: string, file: Buffer, filename: string): Promise<ResponseEntity> {
-		const boundary = `----formdata-boundary-${Date.now()}`;
-		const formData = this.createMultipartFormData(file, filename, boundary);
-
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/files/upload`,
-			body: formData,
-			headers: {
-				"Content-Type": `multipart/form-data; boundary=${boundary}`,
-			},
-		});
+		return this.uploadFile(`/projects/${projectId}/files/upload`, file, filename);
 	}
 
 	async getProjectUploadedFile(projectId: string, fileId: string): Promise<JobFilesEntity> {
@@ -424,10 +435,17 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async downloadProjectUploadedFile(projectId: string, fileId: string, filePath: string): Promise<any> {
+	async downloadProjectUploadedFile(projectId: string, fileId: string, filepath: string): Promise<any> {
 		return this.makeRequest<any>({
 			method: "GET",
-			path: `/projects/${projectId}/files/upload/${fileId}/${filePath}`,
+			path: `/projects/${projectId}/files/upload/${fileId}/${filepath}`,
+		});
+	}
+
+	async getProjectOutputFiles(projectId: string): Promise<JobFilesEntity[]> {
+		return this.makeRequest<JobFilesEntity[]>({
+			method: "GET",
+			path: `/projects/${projectId}/files/output`,
 		});
 	}
 
@@ -445,169 +463,82 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async downloadProjectOutputFile(projectId: string, fileId: string, filePath: string): Promise<any> {
+	async downloadProjectOutputFile(projectId: string, fileId: string, filepath: string): Promise<any> {
 		return this.makeRequest<any>({
 			method: "GET",
-			path: `/projects/${projectId}/files/output/${fileId}/${filePath}`,
+			path: `/projects/${projectId}/files/output/${fileId}/${filepath}`,
 		});
 	}
 
-	// Products Management
-	async createProjectFlatProduct(projectId: string, productResource: CreateFlatProductResource): Promise<ResponseEntity> {
+	// ===========================================
+	// EXPORTS
+	// ===========================================
+
+	async exportProjectPdf(projectId: string, exportPdf: ExportPdfResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/products/flat`,
-			body: productResource,
+			path: `/projects/${projectId}/export/pdf`,
+			body: exportPdf,
 		});
 	}
 
-	async createProjectBoundProduct(projectId: string, productResource: CreateBoundProductResource): Promise<ResponseEntity> {
+	async exportProjectPdfLayout(projectId: string, exportPdf: ExportPdfResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/products/bound`,
-			body: productResource,
+			path: `/projects/${projectId}/export/pdf/layout`,
+			body: exportPdf,
 		});
 	}
 
-	async createProjectFoldedProduct(projectId: string, productResource: CreateFoldedProductResource): Promise<ResponseEntity> {
+	async exportProjectDxf(projectId: string, exportDxf: ExportDxfResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/products/folded`,
-			body: productResource,
+			path: `/projects/${projectId}/export/dxf`,
+			body: exportDxf,
 		});
 	}
 
-	async createProjectTiledProduct(projectId: string, productResource: CreateTiledProductResource): Promise<ResponseEntity> {
+	async exportProjectDxfLayout(projectId: string, exportDxf: ExportDxfResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/products/tiled`,
-			body: productResource,
+			path: `/projects/${projectId}/export/dxf/layout`,
+			body: exportDxf,
 		});
 	}
 
-	// Import Operations
-	async importProjectProductCsv(projectId: string, importResource: ImportProductCsvResource): Promise<ResponseEntity> {
+	async exportProjectXmlReport(projectId: string, exportReport: ExportReportResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/import/product-csv`,
-			body: importResource,
+			path: `/projects/${projectId}/export/xml/report`,
+			body: exportReport,
 		});
 	}
 
-	async importProjectDieTemplate(projectId: string, importResource: ImportDieTemplateResource): Promise<ResponseEntity> {
+	async exportProjectCoverSheet(projectId: string, exportPdf: ExportPdfResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/import/die-template`,
-			body: importResource,
+			path: `/projects/${projectId}/export/pdf/coversheet`,
+			body: exportPdf,
 		});
 	}
 
-	async importProjectDieDesign(projectId: string, importResource: ImportDieDesignResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/import/die-design`,
-			body: importResource,
-		});
-	}
-
-	// Export Operations
-	async exportProjectCoverSheet(projectId: string, exportResource: ExportCoverSheetResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/export/coversheet`,
-			body: exportResource,
-		});
-	}
-
-	async exportProjectPdfLayout(projectId: string, exportResource: ExportPdfLayoutResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/export/layout/pdf`,
-			body: exportResource,
-		});
-	}
-
-	async exportProjectDxfLayout(projectId: string, exportResource: ExportDxfLayoutResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/export/layout/dxf`,
-			body: exportResource,
-		});
-	}
-
-	async exportProjectMfgLayout(projectId: string, exportResource: ExportMfgLayoutResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/export/layout/mfg`,
-			body: exportResource,
-		});
-	}
-
-	async exportProjectZccLayout(projectId: string, exportResource: ExportZccLayoutResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/export/layout/zcc`,
-			body: exportResource,
-		});
-	}
-
-	async exportProjectCff2Layout(projectId: string, exportResource: ExportCff2LayoutResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/export/layout/cff2`,
-			body: exportResource,
-		});
-	}
-
-	async exportProjectHpJdf(projectId: string, exportResource: ExportHpJdfResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/export/hp-jdf`,
-			body: exportResource,
-		});
-	}
-
-	async exportProjectJdf(projectId: string, exportResource: ExportJdfResource): Promise<ResponseEntity> {
+	async exportProjectJdf(projectId: string, exportJdf: ExportJdfResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: `/projects/${projectId}/export/jdf`,
-			body: exportResource,
+			body: exportJdf,
 		});
 	}
 
-	async exportProjectXmlReport(projectId: string, exportResource: ExportXmlReportResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/export/report/xml`,
-			body: exportResource,
-		});
-	}
+	// ===========================================
+	// IMPORT
+	// ===========================================
 
-	async exportProjectJsonReport(projectId: string, exportResource: ExportJsonReportResource): Promise<ResponseEntity> {
+	async importProjectProductCsv(projectId: string, importCsv: ImportProductCsvResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/report/json`,
-			body: exportResource,
-		});
-	}
-
-	async exportProjectCsvReport(projectId: string, exportResource: ExportCsvReportResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/export/report/csv`,
-			body: exportResource,
-		});
-	}
-
-	async exportProjectProductTilingReport(
-		projectId: string,
-		productName: string,
-		exportResource: ExportTilingReportResource
-	): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/products/${productName}/export/tiling-report`,
-			body: exportResource,
+			path: `/projects/${projectId}/import/product/csv`,
+			body: importCsv,
 		});
 	}
 }

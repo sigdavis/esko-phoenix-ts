@@ -1,0 +1,31 @@
+{
+	"name": "phoenix-api",
+	"version": "1.0.0",
+	"description": "A TypeScript wrapper for Esko Phoenix's API",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"start": "node dist/index.js",
+		"clean": "rm -rf dist"
+	},
+	"files": [
+		"dist/**/*",
+		"README.md"
+	],
+	"keywords": [
+		"Significans",
+		"Automation",
+		"Esko",
+		"Phoenix",
+		"API"
+	],
+	"author": "Significans Automation Inc.",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^24.5.2",
+		"nodemon": "^3.1.10",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.9.2"
+	}
+}

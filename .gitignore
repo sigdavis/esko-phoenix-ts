@@ -1,0 +1,303 @@
+# =====================================
+# NODE.JS / NPM
+# =====================================
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage
+.grunt
+
+# Bower dependency directory
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# =====================================
+# TYPESCRIPT
+# =====================================
+
+# Compiled JavaScript files
+dist/
+build/
+lib/
+
+# TypeScript compiled files
+*.js
+*.js.map
+*.d.ts
+*.d.ts.map
+
+# Don't ignore necessary JS config files
+!jest.config.js
+!webpack.config.js
+!rollup.config.js
+!vite.config.js
+!vitest.config.js
+
+# =====================================
+# ENVIRONMENT & CONFIG
+# =====================================
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Configuration files with sensitive data
+.env.*
+config/local.json
+config/development.json
+config/production.json
+
+# =====================================
+# LOGS
+# =====================================
+
+# Log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# =====================================
+# OS SPECIFIC
+# =====================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# =====================================
+# EDITORS & IDEs
+# =====================================
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.swp
+*.swo
+*~
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+*~
+tags
+[._]*.un~
+
+# Emacs
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =====================================
+# TESTING
+# =====================================
+
+# Jest
+coverage/
+.nyc_output/
+
+# Cypress
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# =====================================
+# BUILD & BUNDLERS
+# =====================================
+
+# Webpack
+.webpack/
+
+# Parcel
+.cache/
+.parcel-cache/
+dist/
+
+# Rollup
+.rollup.cache/
+
+# Vite
+dist/
+dist-ssr/
+*.local
+
+# ESBuild
+.esbuild/
+
+# =====================================
+# PACKAGE MANAGERS
+# =====================================
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# pnpm
+.pnpm-store/
+
+# Rush
+common/temp/
+
+# =====================================
+# DOCUMENTATION
+# =====================================
+
+# Generated documentation
+docs/generated/
+typedoc/
+jsdoc/
+
+# =====================================
+# TEMPORARY FILES
+# =====================================
+
+# Temporary folders
+tmp/
+temp/
+.tmp/
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+*.temp
+
+# =====================================
+# PHOENIX / ESKO SPECIFIC
+# =====================================
+
+# Phoenix project files (if not needed in version control)
+*.cf2
+*.cf3
+*.phoenix
+
+# Phoenix cache files
+.phoenix/
+phoenix-cache/
+
+# Phoenix temporary files
+phoenix-temp/
+*.phoenix-tmp
+
+# Export files (typically generated)
+exports/
+output/
+renders/
+
+# =====================================
+# PROJECT SPECIFIC
+#

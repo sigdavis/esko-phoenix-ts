@@ -16,56 +16,46 @@ import {
 	TilingEntity,
 	DieDesignEntity,
 	TemplateEntity,
-	ImportStockCsvResource,
 } from "./types";
 
 export class PhoenixLibrariesAPI extends PhoenixBase {
 	// ===========================================
-	// STOCKS
+	// STOCKS V2 API
 	// ===========================================
-
-	async getStocks(): Promise<StockEntity[]> {
-		return this.makeRequest<StockEntity[]>({
+	async getStocksV2(): Promise<any[]> {
+		return this.makeRequest<any[]>({
 			method: "GET",
-			path: "/libraries/stocks",
+			path: "/libraries/v2/stocks",
 		});
 	}
 
-	async createStock(stock: StockEntity): Promise<ResponseEntity> {
+	async createStockV2(stock: any): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: "/libraries/stocks",
+			path: "/libraries/v2/stocks",
 			body: stock,
 		});
 	}
 
-	async getStock(stockId: string): Promise<StockEntity> {
-		return this.makeRequest<StockEntity>({
+	async getStockV2(stockId: string): Promise<any> {
+		return this.makeRequest<any>({
 			method: "GET",
-			path: `/libraries/stocks/${stockId}`,
+			path: `/libraries/v2/stocks/${stockId}`,
 		});
 	}
 
-	async updateStock(stockId: string, stock: Partial<StockEntity>): Promise<ResponseEntity> {
+	async updateStockV2(stockId: string, stock: any): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "PUT",
-			path: `/libraries/stocks/${stockId}`,
+			path: `/libraries/v2/stocks/${stockId}`,
 			body: stock,
 		});
 	}
 
-	async deleteStock(stockId: string): Promise<ResponseEntity> {
+	async deleteStockV2(stockId: string): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "DELETE",
-			path: `/libraries/stocks/${stockId}`,
-		});
-	}
-
-	async importStockCsv(importCsv: ImportStockCsvResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/libraries/stocks/import/csv",
-			body: importCsv,
+			path: `/libraries/v2/stocks/${stockId}`,
 		});
 	}
 
@@ -357,9 +347,51 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 	}
 
 	// ===========================================
+	// MARKS V2 API
+	// ===========================================
+	async getMarksV2(): Promise<any[]> {
+		return this.makeRequest<any[]>({
+			method: "GET",
+			path: "/libraries/v2/marks",
+		});
+	}
+
+	async createMarkV2(mark: any): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/libraries/v2/marks",
+			body: mark,
+		});
+	}
+
+	async getMarkV2(markId: string): Promise<any> {
+		return this.makeRequest<any>({
+			method: "GET",
+			path: `/libraries/v2/marks/${markId}`,
+		});
+	}
+
+	async updateMarkV2(markId: string, mark: any): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/libraries/v2/marks/${markId}`,
+			body: mark,
+		});
+	}
+
+	// ===========================================
+	// MARK SETS
+	// ===========================================
+	async getMarkSets(): Promise<any[]> {
+		return this.makeRequest<any[]>({
+			method: "GET",
+			path: "/libraries/marksets",
+		});
+	}
+
+	// ===========================================
 	// SCRIPTS
 	// ===========================================
-
 	async getScripts(): Promise<ScriptAsset[]> {
 		return this.makeRequest<ScriptAsset[]>({
 			method: "GET",
@@ -400,7 +432,6 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 	// ===========================================
 	// TILINGS
 	// ===========================================
-
 	async getTilings(): Promise<TilingEntity[]> {
 		return this.makeRequest<TilingEntity[]>({
 			method: "GET",
@@ -439,9 +470,26 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 	}
 
 	// ===========================================
+	// FOLDING PATTERNS
+	// ===========================================
+	async getFoldingPatterns(): Promise<any[]> {
+		return this.makeRequest<any[]>({
+			method: "GET",
+			path: "/libraries/folding-patterns",
+		});
+	}
+
+	async createFoldingPattern(pattern: any): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/libraries/folding-patterns",
+			body: pattern,
+		});
+	}
+
+	// ===========================================
 	// DIE DESIGNS
 	// ===========================================
-
 	async getDieDesigns(): Promise<DieDesignEntity[]> {
 		return this.makeRequest<DieDesignEntity[]>({
 			method: "GET",
@@ -482,7 +530,6 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 	// ===========================================
 	// TEMPLATES
 	// ===========================================
-
 	async getTemplates(): Promise<TemplateEntity[]> {
 		return this.makeRequest<TemplateEntity[]>({
 			method: "GET",

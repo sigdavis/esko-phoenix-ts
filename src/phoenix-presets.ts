@@ -69,6 +69,20 @@ export class PhoenixPresetsAPI extends PhoenixBase {
 		});
 	}
 
+	async getArdDieLayoutImportPresets(): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: "/presets/import/die/ard",
+		});
+	}
+
+	async getCff2DieLayoutImportPresets(): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: "/presets/import/die/cff2",
+		});
+	}
+
 	async getDxfDieLayoutImportPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
@@ -137,7 +151,7 @@ export class PhoenixPresetsAPI extends PhoenixBase {
 	async getTilingReportPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
-			path: "/presets/export/report/tiling",
+			path: "/presets/export/tiling-report",
 		});
 	}
 
@@ -177,11 +191,27 @@ export class PhoenixPresetsAPI extends PhoenixBase {
 		});
 	}
 
+	// Export Presets - Other
+	async getPdfVectorExportPresets(): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: "/presets/export/pdf-vector",
+		});
+	}
+
 	// Cover Sheet
 	async getCoverSheetPresets(): Promise<PresetEntity[]> {
 		return this.makeRequest<PresetEntity[]>({
 			method: "GET",
 			path: "/presets/export/coversheet",
+		});
+	}
+
+	// Tool Presets
+	async getStepAndRepeatPresets(): Promise<PresetEntity[]> {
+		return this.makeRequest<PresetEntity[]>({
+			method: "GET",
+			path: "/presets/tools/step-and-repeat",
 		});
 	}
 

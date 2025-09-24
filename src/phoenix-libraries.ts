@@ -18,9 +18,82 @@ import {
 	Sheet,
 	Roll,
 	StockType,
+	ThingEntity,
+	FoldingPatternEntity,
+	MarkSetEntity,
 } from "./types";
 
 export class PhoenixLibrariesAPI extends PhoenixBase {
+	// Things Management
+	async getThings(): Promise<ThingEntity[]> {
+		return this.makeRequest<ThingEntity[]>({
+			method: "GET",
+			path: "/libraries/things",
+		});
+	}
+
+	async addThing(thing: ThingEntity): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/libraries/things",
+			body: thing,
+		});
+	}
+
+	async getThing(thingId: string): Promise<ThingEntity> {
+		return this.makeRequest<ThingEntity>({
+			method: "GET",
+			path: `/libraries/things/${thingId}`,
+		});
+	}
+
+	async editThing(thingId: string, thing: ThingEntity): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PUT",
+			path: `/libraries/things/${thingId}`,
+			body: thing,
+		});
+	}
+
+	async deleteThing(thingId: string): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "DELETE",
+			path: `/libraries/things/${thingId}`,
+		});
+	}
+
+	// Folding Patterns Management
+	async getFoldingPatterns(): Promise<FoldingPatternEntity[]> {
+		return this.makeRequest<FoldingPatternEntity[]>({
+			method: "GET",
+			path: "/libraries/folding",
+		});
+	}
+
+	async addFoldingPattern(pattern: FoldingPatternEntity): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/libraries/folding",
+			body: pattern,
+		});
+	}
+
+	// Mark Sets Management
+	async getMarkSets(): Promise<MarkSetEntity[]> {
+		return this.makeRequest<MarkSetEntity[]>({
+			method: "GET",
+			path: "/libraries/marksets",
+		});
+	}
+
+	async addMarkSet(markSet: MarkSetEntity): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/libraries/marksets",
+			body: markSet,
+		});
+	}
+
 	// V2 Stock Management (COMPLETE)
 	async getStocksV2(): Promise<Stock[]> {
 		return this.makeRequest<Stock[]>({
@@ -173,7 +246,7 @@ export class PhoenixLibrariesAPI extends PhoenixBase {
 		});
 	}
 
-	// Stock Types
+	// Stock Types Management
 	async getStockTypes(): Promise<StockType[]> {
 		return this.makeRequest<StockType[]>({
 			method: "GET",

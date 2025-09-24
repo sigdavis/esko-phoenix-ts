@@ -33,20 +33,22 @@ import {
 	RenameJobResource,
 	StepRepeatResource,
 	PlanResource,
-	PlanResultEntity,
-	RunScriptResource,
 	SetSheetResource,
 	SetPlateResource,
 	SetPressResource,
 	ResizeSheetResource,
-	SheetEntity,
-	PlateEntity,
-	PressEntity,
 	CreateFlatProductResource,
 	CreateBoundProductResource,
 	CreateFoldedProductResource,
 	CreateTiledProductResource,
-	LayoutEntity
+	LayoutEntity,
+	RestScriptContext,
+	AutosnapArtworkEntity,
+	SaveJobTemplateResource,
+	EditLayoutResource,
+	ApplyImposeResultResource,
+	ApplyPopulateResultResource,
+	ApplyPlanResultResource,
 } from "./types";
 
 export class PhoenixJobsAPI extends PhoenixBase {
@@ -63,6 +65,20 @@ export class PhoenixJobsAPI extends PhoenixBase {
 			method: "POST",
 			path: "/jobs",
 			body: jobResource,
+		});
+	}
+
+	async openJob(file: Buffer, filename: string): Promise<ResponseEntity> {
+		const boundary = `----formdata-boundary-${Date.now()}`;
+		const formData = this.createMultipartFormData(file, filename, boundary);
+
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/jobs/open",
+			body: formData,
+			headers: {
+				"Content-Type": `multipart/form-data; boundary=${boundary}`,
+			},
 		});
 	}
 
@@ -109,25 +125,23 @@ export class PhoenixJobsAPI extends PhoenixBase {
 		});
 	}
 
-	async createJobProduct(
-		jobId: string,
-		productResource: CreateFlatProductResource | CreateBoundProductResource | CreateFoldedProductResource | CreateTiledProductResource
-	): Promise<ResponseEntity> {
+	// Job Actions
+	async snapJob(jobId: string, autosnapResource: AutosnapArtworkEntity): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/products`,
-			body: productResource,
+			path: `/jobs/${jobId}/snap`,
+			body: autosnapResource,
 		});
 	}
 
-	async deleteJobProduct(jobId: string, productIndex: number): Promise<ResponseEntity> {
+	async runJobScript(jobId: string, scriptResource: RestScriptContext): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
-			method: "DELETE",
-			path: `/jobs/${jobId}/products/${productIndex}`,
+			method: "POST",
+			path: `/jobs/${jobId}/script`,
+			body: scriptResource,
 		});
 	}
 
-	// Job Actions
 	async imposeJob(jobId: string, imposeResource: ImposeResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
@@ -136,7 +150,7 @@ export class PhoenixJobsAPI extends PhoenixBase {
 		});
 	}
 
-	async populateJobLayout(jobId: string, populateResource: PopulateResource): Promise<ResponseEntity> {
+	async populateJob(jobId: string, populateResource: PopulateResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: `/jobs/${jobId}/populate`,
@@ -184,14 +198,6 @@ export class PhoenixJobsAPI extends PhoenixBase {
 		});
 	}
 
-	async runJobScript(jobId: string, runScriptResource: RunScriptResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/jobs/${jobId}/runscript`,
-			body: runScriptResource,
-		});
-	}
-
 	async copyJob(jobId: string, copyResource: CopyJobResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
@@ -205,6 +211,14 @@ export class PhoenixJobsAPI extends PhoenixBase {
 			method: "POST",
 			path: `/jobs/${jobId}/rename`,
 			body: renameResource,
+		});
+	}
+
+	async saveJobTemplate(jobId: string, saveTemplateResource: SaveJobTemplateResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/save-template`,
+			body: saveTemplateResource,
 		});
 	}
 
@@ -223,10 +237,19 @@ export class PhoenixJobsAPI extends PhoenixBase {
 		});
 	}
 
-	async getJobLayoutSheet(jobId: string, layoutIndex: number): Promise<SheetEntity> {
-		return this.makeRequest<SheetEntity>({
-			method: "GET",
-			path: `/jobs/${jobId}/layouts/${layoutIndex}/sheet`,
+	async editJobLayout(jobId: string, layoutIndex: number, editResource: EditLayoutResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PATCH",
+			path: `/jobs/${jobId}/layouts/${layoutIndex}`,
+			body: editResource,
+		});
+	}
+
+	async resizeJobLayoutSheet(jobId: string, layoutIndex: number, resizeResource: ResizeSheetResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/layouts/${layoutIndex}/sheet/resize`,
+			body: resizeResource,
 		});
 	}
 
@@ -238,33 +261,11 @@ export class PhoenixJobsAPI extends PhoenixBase {
 		});
 	}
 
-	async resizeJobLayoutSheet(jobId: string, layoutIndex: number, resizeResource: ResizeSheetResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PUT",
-			path: `/jobs/${jobId}/layouts/${layoutIndex}/sheet`,
-			body: resizeResource,
-		});
-	}
-
-	async getJobLayoutPlate(jobId: string, layoutIndex: number): Promise<PlateEntity> {
-		return this.makeRequest<PlateEntity>({
-			method: "GET",
-			path: `/jobs/${jobId}/layouts/${layoutIndex}/plate`,
-		});
-	}
-
 	async setJobLayoutPlate(jobId: string, layoutIndex: number, setPlateResource: SetPlateResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: `/jobs/${jobId}/layouts/${layoutIndex}/plate`,
 			body: setPlateResource,
-		});
-	}
-
-	async getJobLayoutPress(jobId: string, layoutIndex: number): Promise<PressEntity> {
-		return this.makeRequest<PressEntity>({
-			method: "GET",
-			path: `/jobs/${jobId}/layouts/${layoutIndex}/press`,
 		});
 	}
 
@@ -339,41 +340,158 @@ export class PhoenixJobsAPI extends PhoenixBase {
 		});
 	}
 
-	async getJobPlanResults(jobId: string): Promise<PlanResultEntity[]> {
-		return this.makeRequest<PlanResultEntity[]>({
-			method: "GET",
-			path: `/jobs/${jobId}/plan/results`,
+	async applyImposeResult(jobId: string, layoutIndex: number, resultId: string, applyResource: ApplyImposeResultResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/impose/${layoutIndex}/result/${resultId}/apply`,
+			body: applyResource,
 		});
 	}
 
-	// Job Files
-	async getJobFiles(jobId: string): Promise<JobFilesEntity[]> {
-		return this.makeRequest<JobFilesEntity[]>({
+	async applyPopulateResult(
+		jobId: string,
+		layoutIndex: number,
+		resultId: string,
+		applyResource: ApplyPopulateResultResource
+	): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/populate/${layoutIndex}/result/${resultId}/apply`,
+			body: applyResource,
+		});
+	}
+
+	async applyPlanResult(jobId: string, resultId: string, applyResource: ApplyPlanResultResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/plan/result/${resultId}/apply`,
+			body: applyResource,
+		});
+	}
+
+	// File Management
+	async getJobFiles(jobId: string): Promise<JobFilesEntity> {
+		return this.makeRequest<JobFilesEntity>({
 			method: "GET",
 			path: `/jobs/${jobId}/files`,
 		});
 	}
 
 	async uploadJobFile(jobId: string, file: Buffer, filename: string): Promise<ResponseEntity> {
-		const boundary = "----formdata-boundary-" + Math.random().toString(36);
+		const boundary = `----formdata-boundary-${Date.now()}`;
 		const formData = this.createMultipartFormData(file, filename, boundary);
 
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/files`,
+			path: `/jobs/${jobId}/files/upload`,
 			body: formData,
-			contentType: `multipart/form-data; boundary=${boundary}`,
+			headers: {
+				"Content-Type": `multipart/form-data; boundary=${boundary}`,
+			},
 		});
 	}
 
-	async deleteJobFile(jobId: string, filename: string): Promise<ResponseEntity> {
+	async getJobUploadedFile(jobId: string, fileId: string): Promise<JobFilesEntity> {
+		return this.makeRequest<JobFilesEntity>({
+			method: "GET",
+			path: `/jobs/${jobId}/files/upload/${fileId}`,
+		});
+	}
+
+	async deleteJobUploadedFile(jobId: string, fileId: string): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "DELETE",
-			path: `/jobs/${jobId}/files/${filename}`,
+			path: `/jobs/${jobId}/files/upload/${fileId}`,
 		});
 	}
 
-	// Job Exports
+	async downloadJobUploadedFile(jobId: string, fileId: string, filePath: string): Promise<any> {
+		return this.makeRequest<any>({
+			method: "GET",
+			path: `/jobs/${jobId}/files/upload/${fileId}/${filePath}`,
+		});
+	}
+
+	async getJobOutputFile(jobId: string, fileId: string): Promise<JobFilesEntity> {
+		return this.makeRequest<JobFilesEntity>({
+			method: "GET",
+			path: `/jobs/${jobId}/files/output/${fileId}`,
+		});
+	}
+
+	async deleteJobOutputFile(jobId: string, fileId: string): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "DELETE",
+			path: `/jobs/${jobId}/files/output/${fileId}`,
+		});
+	}
+
+	async downloadJobOutputFile(jobId: string, fileId: string, filePath: string): Promise<any> {
+		return this.makeRequest<any>({
+			method: "GET",
+			path: `/jobs/${jobId}/files/output/${fileId}/${filePath}`,
+		});
+	}
+
+	// Products Management
+	async createJobFlatProduct(jobId: string, productResource: CreateFlatProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/products/flat`,
+			body: productResource,
+		});
+	}
+
+	async createJobBoundProduct(jobId: string, productResource: CreateBoundProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/products/bound`,
+			body: productResource,
+		});
+	}
+
+	async createJobFoldedProduct(jobId: string, productResource: CreateFoldedProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/products/folded`,
+			body: productResource,
+		});
+	}
+
+	async createJobTiledProduct(jobId: string, productResource: CreateTiledProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/products/tiled`,
+			body: productResource,
+		});
+	}
+
+	// Import Operations
+	async importJobProductCsv(jobId: string, importResource: ImportProductCsvResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/import/product-csv`,
+			body: importResource,
+		});
+	}
+
+	async importJobDieTemplate(jobId: string, importResource: ImportDieTemplateResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/import/die-template`,
+			body: importResource,
+		});
+	}
+
+	async importJobDieDesign(jobId: string, importResource: ImportDieDesignResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/jobs/${jobId}/import/die-design`,
+			body: importResource,
+		});
+	}
+
+	// Export Operations
 	async exportJobCoverSheet(jobId: string, exportResource: ExportCoverSheetResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
@@ -385,7 +503,7 @@ export class PhoenixJobsAPI extends PhoenixBase {
 	async exportJobPdfLayout(jobId: string, exportResource: ExportPdfLayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/export/pdf`,
+			path: `/jobs/${jobId}/export/layout/pdf`,
 			body: exportResource,
 		});
 	}
@@ -393,7 +511,7 @@ export class PhoenixJobsAPI extends PhoenixBase {
 	async exportJobDxfLayout(jobId: string, exportResource: ExportDxfLayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/export/dxf`,
+			path: `/jobs/${jobId}/export/layout/dxf`,
 			body: exportResource,
 		});
 	}
@@ -401,7 +519,7 @@ export class PhoenixJobsAPI extends PhoenixBase {
 	async exportJobMfgLayout(jobId: string, exportResource: ExportMfgLayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/export/mfg`,
+			path: `/jobs/${jobId}/export/layout/mfg`,
 			body: exportResource,
 		});
 	}
@@ -409,7 +527,7 @@ export class PhoenixJobsAPI extends PhoenixBase {
 	async exportJobZccLayout(jobId: string, exportResource: ExportZccLayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/export/zcc`,
+			path: `/jobs/${jobId}/export/layout/zcc`,
 			body: exportResource,
 		});
 	}
@@ -417,7 +535,7 @@ export class PhoenixJobsAPI extends PhoenixBase {
 	async exportJobCff2Layout(jobId: string, exportResource: ExportCff2LayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/export/cff2`,
+			path: `/jobs/${jobId}/export/layout/cff2`,
 			body: exportResource,
 		});
 	}
@@ -441,7 +559,7 @@ export class PhoenixJobsAPI extends PhoenixBase {
 	async exportJobXmlReport(jobId: string, exportResource: ExportXmlReportResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/export/xml`,
+			path: `/jobs/${jobId}/export/report/xml`,
 			body: exportResource,
 		});
 	}
@@ -449,7 +567,7 @@ export class PhoenixJobsAPI extends PhoenixBase {
 	async exportJobJsonReport(jobId: string, exportResource: ExportJsonReportResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/export/json`,
+			path: `/jobs/${jobId}/export/report/json`,
 			body: exportResource,
 		});
 	}
@@ -457,41 +575,16 @@ export class PhoenixJobsAPI extends PhoenixBase {
 	async exportJobCsvReport(jobId: string, exportResource: ExportCsvReportResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/export/csv`,
+			path: `/jobs/${jobId}/export/report/csv`,
 			body: exportResource,
 		});
 	}
 
-	async exportJobTilingReport(jobId: string, exportResource: ExportTilingReportResource): Promise<ResponseEntity> {
+	async exportJobProductTilingReport(jobId: string, productName: string, exportResource: ExportTilingReportResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/jobs/${jobId}/export/tiling`,
+			path: `/jobs/${jobId}/products/${productName}/export/tiling-report`,
 			body: exportResource,
-		});
-	}
-
-	// Job Imports
-	async importJobProductCsv(jobId: string, importResource: ImportProductCsvResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/jobs/${jobId}/import/csv`,
-			body: importResource,
-		});
-	}
-
-	async importJobDieTemplate(jobId: string, importResource: ImportDieTemplateResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/jobs/${jobId}/import/dietemplate`,
-			body: importResource,
-		});
-	}
-
-	async importJobDieDesign(jobId: string, importResource: ImportDieDesignResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/jobs/${jobId}/import/diedesign`,
-			body: importResource,
 		});
 	}
 }

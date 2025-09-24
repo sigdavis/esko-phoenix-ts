@@ -211,13 +211,7 @@ export interface ComponentEntity {
 // PART 4: PRODUCT CREATION export interfaceS
 // ============================================
 
-export type DieShapeSource =
-  | "CAD"
-  | "ArtworkPaths"
-  | "ArtworkTrimbox"
-  | "CustomSize"
-  | "DieDesignLibrary"
-  | "PdfPlus";
+export type DieShapeSource = "CAD" | "ArtworkPaths" | "ArtworkTrimbox" | "CustomSize" | "DieDesignLibrary" | "PdfPlus";
 
 export interface CreateFlatProductResource {
 	name: string;
@@ -937,4 +931,108 @@ export interface ImportTemplateResource {
 	id?: string;
 	"create-folder"?: boolean;
 	"overwrite-existing"?: boolean;
+}
+
+// Additional interface definitions needed for missing API endpoints
+
+export interface RestScriptContext {
+	idref?: number;
+	script?: string;
+	name?: string;
+	parameters?: ScriptParameter[];
+}
+
+export interface ScriptParameter {
+	name: string;
+	type: string;
+	value: any;
+}
+
+export interface AutosnapArtworkEntity {
+	idref?: number;
+	"product-names"?: string[];
+	"die-numbers"?: string[];
+	tolerance?: number;
+}
+
+export interface SaveJobTemplateResource {
+	idref?: number;
+	name?: string;
+	path?: string;
+	"create-folder"?: boolean;
+}
+
+export interface EditLayoutResource {
+	idref?: number;
+	name?: string;
+	workstyle?: "FlatWork" | "Sheetwise" | "Perfecting" | "WorkAndTurn" | "WorkAndTumble";
+	"run-length"?: number;
+	properties?: PropertyObject[];
+}
+
+export interface ApplyImposeResultResource {
+	idref?: number;
+}
+
+export interface ApplyPopulateResultResource {
+	idref?: number;
+}
+
+export interface ApplyPlanResultResource {
+	idref?: number;
+}
+
+export interface ThingEntity {
+	id?: string;
+	name?: string;
+	description?: string;
+	type?: string;
+}
+
+export interface FoldingPatternEntity {
+	id?: string;
+	name?: string;
+	description?: string;
+	pattern?: string;
+}
+
+export interface MarkSetEntity {
+	id?: string;
+	name?: string;
+	description?: string;
+	marks?: MarkEntity[];
+}
+
+// Additional export interfaces for completeness
+export interface Sheet {
+	id?: string;
+	name?: string;
+	width?: number;
+	height?: number;
+	orientation?: "Portrait" | "Landscape";
+}
+
+export interface Roll {
+	id?: string;
+	name?: string;
+	width?: number;
+	diameter?: number;
+	core?: number;
+}
+
+export interface Grade {
+	id?: string;
+	name?: string;
+	thickness?: number;
+	weight?: number;
+	description?: string;
+}
+
+export interface Stock {
+	id?: string;
+	name?: string;
+	description?: string;
+	manufacturer?: string;
+	category?: string;
+	grades?: Grade[];
 }

@@ -5,27 +5,11 @@ import {
 	PhoenixProductEntity,
 	CreateJobResource,
 	EditProjectResource,
-	CreateFlatProductResource,
-	CreateBoundProductResource,
-	CreateFoldedProductResource,
-	CreateTiledProductResource,
-	LayoutEntity,
+	LayoutResultEntity,
 	ImposeResource,
 	PopulateResource,
 	PlaceComponentResource,
-	AutosnapResource,
-	StepRepeatResource,
-	PlanResource,
-	OptimizeResource,
-	RunScriptResource,
-	CopyJobResource,
-	RenameJobResource,
-	MoveComponentResource,
-	RotateComponentResource,
-	SetSheetResource,
-	ResizeSheetResource,
-	SetPlateResource,
-	SetPressResource,
+	JobFilesEntity,
 	ExportCoverSheetResource,
 	ExportPdfLayoutResource,
 	ExportDxfLayoutResource,
@@ -41,12 +25,35 @@ import {
 	ImportProductCsvResource,
 	ImportDieTemplateResource,
 	ImportDieDesignResource,
+	AutosnapResource,
+	MoveComponentResource,
+	RotateComponentResource,
+	OptimizeResource,
+	CopyJobResource,
+	RenameJobResource,
+	StepRepeatResource,
+	PlanResource,
+	PlanResultEntity,
+	RunScriptResource,
+	SetSheetResource,
+	SetPlateResource,
+	SetPressResource,
+	ResizeSheetResource,
 	SheetEntity,
 	PlateEntity,
 	PressEntity,
-	LayoutResultEntity,
-	PlanResultEntity,
-	JobFilesEntity,
+	CreateFlatProductResource,
+	CreateBoundProductResource,
+	CreateFoldedProductResource,
+	CreateTiledProductResource,
+	LayoutEntity,
+	RestScriptContext,
+	AutosnapArtworkEntity,
+	SaveJobTemplateResource,
+	EditLayoutResource,
+	ApplyImposeResultResource,
+	ApplyPopulateResultResource,
+	ApplyPlanResultResource,
 } from "./types";
 
 export class PhoenixProjectsAPI extends PhoenixBase {
@@ -58,11 +65,25 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async createProject(jobResource: CreateJobResource): Promise<ResponseEntity> {
+	async createProject(projectResource: CreateJobResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: "/projects",
-			body: jobResource,
+			body: projectResource,
+		});
+	}
+
+	async openProject(file: Buffer, filename: string): Promise<ResponseEntity> {
+		const boundary = `----formdata-boundary-${Date.now()}`;
+		const formData = this.createMultipartFormData(file, filename, boundary);
+
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/projects/open",
+			body: formData,
+			headers: {
+				"Content-Type": `multipart/form-data; boundary=${boundary}`,
+			},
 		});
 	}
 
@@ -88,18 +109,6 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async openProject(file: Buffer, filename: string): Promise<ResponseEntity> {
-		const boundary = "----formdata-boundary-" + Math.random().toString(36);
-		const formData = this.createMultipartFormData(file, filename, boundary);
-
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: "/projects/open",
-			body: formData,
-			contentType: `multipart/form-data; boundary=${boundary}`,
-		});
-	}
-
 	// Project Products
 	async getProjectProducts(
 		projectId: string,
@@ -121,46 +130,23 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async createFlatProduct(projectId: string, productResource: CreateFlatProductResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/products/flat`,
-			body: productResource,
-		});
-	}
-
-	async createBoundProduct(projectId: string, productResource: CreateBoundProductResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/products/bound`,
-			body: productResource,
-		});
-	}
-
-	async createFoldedProduct(projectId: string, productResource: CreateFoldedProductResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/products/folded`,
-			body: productResource,
-		});
-	}
-
-	async createTiledProduct(projectId: string, productResource: CreateTiledProductResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/products/tiled`,
-			body: productResource,
-		});
-	}
-
-	async deleteProjectProduct(projectId: string, productIndex: number): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "DELETE",
-			path: `/projects/${projectId}/products/${productIndex}`,
-		});
-	}
-
 	// Project Actions
+	async snapProject(projectId: string, autosnapResource: AutosnapArtworkEntity): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/snap`,
+			body: autosnapResource,
+		});
+	}
+
+	async runProjectScript(projectId: string, scriptResource: RestScriptContext): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/script`,
+			body: scriptResource,
+		});
+	}
+
 	async imposeProject(projectId: string, imposeResource: ImposeResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
@@ -169,7 +155,7 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async populateProjectLayout(projectId: string, populateResource: PopulateResource): Promise<ResponseEntity> {
+	async populateProject(projectId: string, populateResource: PopulateResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: `/projects/${projectId}/populate`,
@@ -217,14 +203,6 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async runProjectScript(projectId: string, runScriptResource: RunScriptResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/runscript`,
-			body: runScriptResource,
-		});
-	}
-
 	async copyProject(projectId: string, copyResource: CopyJobResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
@@ -238,6 +216,23 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 			method: "POST",
 			path: `/projects/${projectId}/rename`,
 			body: renameResource,
+		});
+	}
+
+	async saveProjectTemplate(projectId: string, saveTemplateResource: SaveJobTemplateResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/save-template`,
+			body: saveTemplateResource,
+		});
+	}
+
+	// Script operations that are not deprecated
+	async runScript(scriptResource: RestScriptContext): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: "/projects/script",
+			body: scriptResource,
 		});
 	}
 
@@ -256,10 +251,19 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async getProjectLayoutSheet(projectId: string, layoutIndex: number): Promise<SheetEntity> {
-		return this.makeRequest<SheetEntity>({
-			method: "GET",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/sheet`,
+	async editProjectLayout(projectId: string, layoutIndex: number, editResource: EditLayoutResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "PATCH",
+			path: `/projects/${projectId}/layouts/${layoutIndex}`,
+			body: editResource,
+		});
+	}
+
+	async resizeProjectLayoutSheet(projectId: string, layoutIndex: number, resizeResource: ResizeSheetResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/layouts/${layoutIndex}/sheet/resize`,
+			body: resizeResource,
 		});
 	}
 
@@ -271,33 +275,11 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async resizeProjectLayoutSheet(projectId: string, layoutIndex: number, resizeResource: ResizeSheetResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "PUT",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/sheet`,
-			body: resizeResource,
-		});
-	}
-
-	async getProjectLayoutPlate(projectId: string, layoutIndex: number): Promise<PlateEntity> {
-		return this.makeRequest<PlateEntity>({
-			method: "GET",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/plate`,
-		});
-	}
-
 	async setProjectLayoutPlate(projectId: string, layoutIndex: number, setPlateResource: SetPlateResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
 			path: `/projects/${projectId}/layouts/${layoutIndex}/plate`,
 			body: setPlateResource,
-		});
-	}
-
-	async getProjectLayoutPress(projectId: string, layoutIndex: number): Promise<PressEntity> {
-		return this.makeRequest<PressEntity>({
-			method: "GET",
-			path: `/projects/${projectId}/layouts/${layoutIndex}/press`,
 		});
 	}
 
@@ -372,41 +354,163 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 		});
 	}
 
-	async getProjectPlanResults(projectId: string): Promise<PlanResultEntity[]> {
-		return this.makeRequest<PlanResultEntity[]>({
-			method: "GET",
-			path: `/projects/${projectId}/plan/results`,
+	async applyProjectImposeResult(
+		projectId: string,
+		layoutIndex: number,
+		resultId: string,
+		applyResource: ApplyImposeResultResource
+	): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/impose/${layoutIndex}/result/${resultId}/apply`,
+			body: applyResource,
 		});
 	}
 
-	// Project Files
-	async getProjectFiles(projectId: string): Promise<JobFilesEntity[]> {
-		return this.makeRequest<JobFilesEntity[]>({
+	async applyProjectPopulateResult(
+		projectId: string,
+		layoutIndex: number,
+		resultId: string,
+		applyResource: ApplyPopulateResultResource
+	): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/populate/${layoutIndex}/result/${resultId}/apply`,
+			body: applyResource,
+		});
+	}
+
+	async applyProjectPlanResult(projectId: string, resultId: string, applyResource: ApplyPlanResultResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/plan/result/${resultId}/apply`,
+			body: applyResource,
+		});
+	}
+
+	// File Management
+	async getProjectFiles(projectId: string): Promise<JobFilesEntity> {
+		return this.makeRequest<JobFilesEntity>({
 			method: "GET",
 			path: `/projects/${projectId}/files`,
 		});
 	}
 
 	async uploadProjectFile(projectId: string, file: Buffer, filename: string): Promise<ResponseEntity> {
-		const boundary = "----formdata-boundary-" + Math.random().toString(36);
+		const boundary = `----formdata-boundary-${Date.now()}`;
 		const formData = this.createMultipartFormData(file, filename, boundary);
 
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/files`,
+			path: `/projects/${projectId}/files/upload`,
 			body: formData,
-			contentType: `multipart/form-data; boundary=${boundary}`,
+			headers: {
+				"Content-Type": `multipart/form-data; boundary=${boundary}`,
+			},
 		});
 	}
 
-	async deleteProjectFile(projectId: string, filename: string): Promise<ResponseEntity> {
+	async getProjectUploadedFile(projectId: string, fileId: string): Promise<JobFilesEntity> {
+		return this.makeRequest<JobFilesEntity>({
+			method: "GET",
+			path: `/projects/${projectId}/files/upload/${fileId}`,
+		});
+	}
+
+	async deleteProjectUploadedFile(projectId: string, fileId: string): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "DELETE",
-			path: `/projects/${projectId}/files/${filename}`,
+			path: `/projects/${projectId}/files/upload/${fileId}`,
 		});
 	}
 
-	// Project Exports
+	async downloadProjectUploadedFile(projectId: string, fileId: string, filePath: string): Promise<any> {
+		return this.makeRequest<any>({
+			method: "GET",
+			path: `/projects/${projectId}/files/upload/${fileId}/${filePath}`,
+		});
+	}
+
+	async getProjectOutputFile(projectId: string, fileId: string): Promise<JobFilesEntity> {
+		return this.makeRequest<JobFilesEntity>({
+			method: "GET",
+			path: `/projects/${projectId}/files/output/${fileId}`,
+		});
+	}
+
+	async deleteProjectOutputFile(projectId: string, fileId: string): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "DELETE",
+			path: `/projects/${projectId}/files/output/${fileId}`,
+		});
+	}
+
+	async downloadProjectOutputFile(projectId: string, fileId: string, filePath: string): Promise<any> {
+		return this.makeRequest<any>({
+			method: "GET",
+			path: `/projects/${projectId}/files/output/${fileId}/${filePath}`,
+		});
+	}
+
+	// Products Management
+	async createProjectFlatProduct(projectId: string, productResource: CreateFlatProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/products/flat`,
+			body: productResource,
+		});
+	}
+
+	async createProjectBoundProduct(projectId: string, productResource: CreateBoundProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/products/bound`,
+			body: productResource,
+		});
+	}
+
+	async createProjectFoldedProduct(projectId: string, productResource: CreateFoldedProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/products/folded`,
+			body: productResource,
+		});
+	}
+
+	async createProjectTiledProduct(projectId: string, productResource: CreateTiledProductResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/products/tiled`,
+			body: productResource,
+		});
+	}
+
+	// Import Operations
+	async importProjectProductCsv(projectId: string, importResource: ImportProductCsvResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/import/product-csv`,
+			body: importResource,
+		});
+	}
+
+	async importProjectDieTemplate(projectId: string, importResource: ImportDieTemplateResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/import/die-template`,
+			body: importResource,
+		});
+	}
+
+	async importProjectDieDesign(projectId: string, importResource: ImportDieDesignResource): Promise<ResponseEntity> {
+		return this.makeRequest<ResponseEntity>({
+			method: "POST",
+			path: `/projects/${projectId}/import/die-design`,
+			body: importResource,
+		});
+	}
+
+	// Export Operations
 	async exportProjectCoverSheet(projectId: string, exportResource: ExportCoverSheetResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
@@ -418,7 +522,7 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 	async exportProjectPdfLayout(projectId: string, exportResource: ExportPdfLayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/pdf`,
+			path: `/projects/${projectId}/export/layout/pdf`,
 			body: exportResource,
 		});
 	}
@@ -426,7 +530,7 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 	async exportProjectDxfLayout(projectId: string, exportResource: ExportDxfLayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/dxf`,
+			path: `/projects/${projectId}/export/layout/dxf`,
 			body: exportResource,
 		});
 	}
@@ -434,7 +538,7 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 	async exportProjectMfgLayout(projectId: string, exportResource: ExportMfgLayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/mfg`,
+			path: `/projects/${projectId}/export/layout/mfg`,
 			body: exportResource,
 		});
 	}
@@ -442,7 +546,7 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 	async exportProjectZccLayout(projectId: string, exportResource: ExportZccLayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/zcc`,
+			path: `/projects/${projectId}/export/layout/zcc`,
 			body: exportResource,
 		});
 	}
@@ -450,7 +554,7 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 	async exportProjectCff2Layout(projectId: string, exportResource: ExportCff2LayoutResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/cff2`,
+			path: `/projects/${projectId}/export/layout/cff2`,
 			body: exportResource,
 		});
 	}
@@ -474,7 +578,7 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 	async exportProjectXmlReport(projectId: string, exportResource: ExportXmlReportResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/xml`,
+			path: `/projects/${projectId}/export/report/xml`,
 			body: exportResource,
 		});
 	}
@@ -482,7 +586,7 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 	async exportProjectJsonReport(projectId: string, exportResource: ExportJsonReportResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/json`,
+			path: `/projects/${projectId}/export/report/json`,
 			body: exportResource,
 		});
 	}
@@ -490,41 +594,20 @@ export class PhoenixProjectsAPI extends PhoenixBase {
 	async exportProjectCsvReport(projectId: string, exportResource: ExportCsvReportResource): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/csv`,
+			path: `/projects/${projectId}/export/report/csv`,
 			body: exportResource,
 		});
 	}
 
-	async exportProjectTilingReport(projectId: string, exportResource: ExportTilingReportResource): Promise<ResponseEntity> {
+	async exportProjectProductTilingReport(
+		projectId: string,
+		productName: string,
+		exportResource: ExportTilingReportResource
+	): Promise<ResponseEntity> {
 		return this.makeRequest<ResponseEntity>({
 			method: "POST",
-			path: `/projects/${projectId}/export/tiling`,
+			path: `/projects/${projectId}/products/${productName}/export/tiling-report`,
 			body: exportResource,
-		});
-	}
-
-	// Project Imports
-	async importProjectProductCsv(projectId: string, importResource: ImportProductCsvResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/import/csv`,
-			body: importResource,
-		});
-	}
-
-	async importProjectDieTemplate(projectId: string, importResource: ImportDieTemplateResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/import/dietemplate`,
-			body: importResource,
-		});
-	}
-
-	async importProjectDieDesign(projectId: string, importResource: ImportDieDesignResource): Promise<ResponseEntity> {
-		return this.makeRequest<ResponseEntity>({
-			method: "POST",
-			path: `/projects/${projectId}/import/diedesign`,
-			body: importResource,
 		});
 	}
 }

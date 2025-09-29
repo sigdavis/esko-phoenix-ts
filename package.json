@@ -1,17 +1,20 @@
 {
 	"name": "phoenix-api",
 	"version": "1.0.0",
-	"description": "A TypeScript wrapper for Esko Phoenix's API",
+	"description": "TypeScript client for Phoenix API v25.03",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"build": "tsc",
-		"start": "node dist/index.js",
-		"clean": "rm -rf dist"
+		"clean": "rm -rf dist",
+		"prebuild": "npm run clean",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prepare": "npm run build"
 	},
 	"files": [
 		"dist/**/*",
-		"README.md"
+		"README.md",
+		"LICENSE"
 	],
 	"keywords": [
 		"Significans",

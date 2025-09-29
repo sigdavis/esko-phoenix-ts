@@ -1,255 +1,140 @@
-# Phoenix API Client
+# Phoenix API TypeScript Client
 
-A complete TypeScript client for the Esko Phoenix API, providing type-safe access to all Phoenix automation capabilities.
+A fully-typed TypeScript client for the Phoenix API v25.03.
 
-## ✨ Features
+## Installation
 
-- **Complete API Coverage**: Full implementation of ALL Phoenix API endpoints
-- **Type Safety**: Comprehensive TypeScript types for all operations
-- **Clean Architecture**: Modular design with separate API modules
-- **Easy to Use**: Simple, intuitive API following Phoenix patterns
-- **Well Documented**: Extensive documentation and examples
-- **Error Handling**: Robust error handling with detailed messages
-
-## 📦 Installation
-
-```bash
+\`\`\`bash
 npm install phoenix-api-client
-```
+\`\`\`
 
-## 🚀 Quick Start
+## Usage
 
-```typescript
-import { Phoenix } from 'phoenix-api-client';
+### Basic Setup
 
-// Initialize the client
-const phoenix = new Phoenix({
-  host: 'localhost',
-  port: 9090,
-  timeout: 30000
+\`\`\`typescript
+import { PhoenixClient } from 'phoenix-api-client';
+
+const client = new PhoenixClient({
+  baseUrl: 'https://your-server.com/phoenix',
+  headers: {
+    'Authorization': 'Bearer your-token'
+  }
 });
+\`\`\`
 
-// Check API availability
-const isAvailable = await phoenix.healthCheck();
-console.log('Phoenix API available:', isAvailable);
+### Jobs API Examples
+
+\`\`\`typescript
+// Get all projects
+const projects = await client.jobs.getJobs();
 
 // Create a new project
-await phoenix.projects.createProject({
-  id: 'my-project',
-  name: 'Sample Project',
-  client: 'Acme Corp'
-});
-```
-
-## 📚 API Modules
-
-### Projects API (`phoenix.projects`)
-
-Complete project management including:
-
-- **Project Operations**: Create, read, update, delete projects
-- **Product Management**: All product types (flat, bound, folded, tiled, part)
-- **Layout Management**: Full layout control and manipulation
-- **Component Operations**: Place, move, rotate components
-- **Optimization**: Impose, populate, optimize, autosnap, step-repeat, plan
-- **File Management**: Upload/download project files
-- **Export Functions**: PDF, DXF, XML, JDF exports
-- **Import Functions**: CSV imports for products
-
-### Libraries API (`phoenix.libraries`)
-
-Complete resource library management:
-
-- **Material Resources**: Stocks, grades, coatings, substrates
-- **Equipment**: Presses, processes, modes
-- **Design Elements**: Marks, scripts, tilings, die designs
-- **Templates**: Project and layout templates
-
-### Presets API (`phoenix.presets`)
-
-Full preset management for all operations:
-
-- **Export Presets**: PDF, DXF, XML, JDF, Zund, CFF2
-- **Import Presets**: Product CSV, Stock CSV, Die formats
-- **Tool Presets**: Step-and-repeat, optimization, planning, imposition
-- **Profile Presets**: AI profiles for various operations
-
-## 🔧 Configuration
-
-```typescript
-const phoenix = new Phoenix({
-  host: 'phoenix-server',      // Required: Phoenix server hostname
-  port: 9090,                   // Optional: Default 9090
-  basePath: '/api/v1',          // Optional: API base path
-  timeout: 30000,               // Optional: Request timeout in ms
-  headers: {                    // Optional: Custom headers
-    'Authorization': 'Bearer token',
-    'X-Custom-Header': 'value'
-  }
-});
-```
-
-## 📖 Usage Examples
-
-### Project Management
-
-```typescript
-// Get all projects
-const projects = await phoenix.projects.getProjects();
-
-// Create a flat product
-await phoenix.projects.createProjectFlatProduct('project-id', {
-  name: 'Business Card',
-  width: '85mm',
-  height: '55mm',
-  quantity: 1000,
-  pages: 2,
-  'bleed-top': '3mm',
-  'bleed-bottom': '3mm',
-  'bleed-left': '3mm',
-  'bleed-right': '3mm'
+const newProject = await client.jobs.createJob({
+  name: 'My Project',
+  // ... other properties
 });
 
-// Run optimization
-await phoenix.projects.optimizeProject('project-id', {
-  idref: 1,
-  products: ['product-1', 'product-2'],
-  'stop-minutes': 10
+// Get a specific job
+const job = await client.jobs.getJob('job-id');
+\`\`\`
+
+### Projects API Examples
+
+\`\`\`typescript
+// Get project details
+const project = await client.projects.getProject('project-id');
+
+// Get products in a project
+const products = await client.projects.getProducts('project-id');
+
+// Import a product
+await client.projects.importProduct('project-id', {
+  path: '/path/to/product.xml'
 });
+\`\`\`
 
-// Export to PDF
-await phoenix.projects.exportProjectPdf('project-id', {
-  idref: 1,
-  filename: 'output.pdf',
-  path: '/exports/',
-  preset: 'high-quality',
-  'include-marks': true
-});
-```
+### Libraries API Examples
 
-### Library Management
-
-```typescript
+\`\`\`typescript
 // Get all stocks
-const stocks = await phoenix.libraries.getStocks();
+const stocks = await client.libraries.getStocks();
 
-// Create a new press
-await phoenix.libraries.createPress({
-  name: 'Heidelberg XL 106',
-  type: 'Sheetfed',
-  manufacturer: 'Heidelberg',
-  'max-sheet-width': '1060mm',
-  'max-sheet-height': '750mm'
+// Create a new stock
+const stock = await client.libraries.createStock({
+  name: 'My Stock',
+  width: { value: 100, unit: 'mm' },
+  height: { value: 200, unit: 'mm' }
 });
+\`\`\`
 
-// Import stock CSV
-await phoenix.libraries.importStockCsv({
-  preset: 'standard-import',
-  'csv-file': '/imports/stocks.csv'
-});
-```
+### Presets API Examples
 
-### Working with Presets
+\`\`\`typescript
+// Get export presets
+const presets = await client.presets.getExportPresets();
 
-```typescript
-// Get PDF export presets
-const pdfPresets = await phoenix.presets.getExportPdfPresets();
+// Get import presets
+const importPresets = await client.presets.getImportPresets();
+\`\`\`
 
-// Get optimization profiles
-const profiles = await phoenix.presets.getOptimizationProfiles();
+## API Coverage
 
-// Get all presets of a specific type
-const impositionPresets = await phoenix.presets.getPresetsByType('imposition');
-```
+- **252** non-deprecated endpoints implemented
+- **4** API modules: Jobs, Projects, Libraries, Presets
+- Full TypeScript type definitions for all operations
+- Comprehensive request/response typing
 
-## 🔄 File Operations
+## Configuration Options
 
-```typescript
-// Upload a file
-const fileBuffer = await fs.readFile('./artwork.pdf');
-await phoenix.projects.uploadProjectFile('project-id', fileBuffer, 'artwork.pdf');
+\`\`\`typescript
+interface ClientConfig {
+  baseUrl: string;
+  headers?: Record<string, string>;
+  timeout?: number;
+  retries?: number;
+  retryDelay?: number;
+}
+\`\`\`
 
-// Get uploaded files
-const files = await phoenix.projects.getProjectUploadedFiles('project-id');
+## Error Handling
 
-// Download a file
-const content = await phoenix.projects.downloadProjectUploadedFile(
-  'project-id',
-  'file-id',
-  'artwork.pdf'
-);
-```
-
-## ⚡ Advanced Features
-
-### Dynamic Configuration
-
-```typescript
-// Update headers dynamically
-phoenix.setHeaders({
-  'Authorization': 'Bearer new-token'
-});
-
-// Update timeout
-phoenix.setTimeout(60000);
-
-// Create new instance with different config
-const newClient = phoenix.withConfig({
-  host: 'backup-server',
-  timeout: 45000
-});
-```
-
-### Error Handling
-
-```typescript
+\`\`\`typescript
 try {
-  await phoenix.projects.getProject('non-existent');
+  const result = await client.jobs.getJob('invalid-id');
 } catch (error) {
   if (error.status === 404) {
-    console.log('Project not found');
-  } else {
-    console.error('API Error:', error.message);
+    console.error('Job not found');
+  } else if (error.status === 503) {
+    console.error('Service at maximum concurrency');
   }
 }
-```
+\`\`\`
 
-## 📝 API Structure
+## License
 
-```
-phoenix-api-client/
-├── src/
-│   ├── index.ts           # Main entry point
-│   ├── phoenix.ts          # Main Phoenix client
-│   ├── phoenix-base.ts     # Base HTTP client
-│   ├── phoenix-projects.ts # Projects API module
-│   ├── phoenix-libraries.ts # Libraries API module
-│   ├── phoenix-presets.ts  # Presets API module
-│   └── types.ts            # TypeScript type definitions
-├── package.json
-├── tsconfig.json
-└── README.md
-```
+MIT
+\`\`\`
 
-## 🤝 Contributing
+## src/index.ts
+```typescript
+/**
+ * Phoenix API TypeScript Client
+ * Version: 25.03
+ */
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+// Main client
+export { PhoenixClient } from './client/PhoenixClient';
+export { BaseApiClient } from './client/BaseApiClient';
 
-## 📄 License
+// API Endpoints
+export { JobsApi } from './endpoints/JobsApi';
+export { ProjectsApi } from './endpoints/ProjectsApi';
+export { LibrariesApi } from './endpoints/LibrariesApi';
+export { PresetsApi } from './endpoints/PresetsApi';
 
-MIT License - see LICENSE file for details
+// Types
+export * from './types';
 
-## 🔗 Links
-
-- [Phoenix Documentation](https://www.esko.com/phoenix)
-- [API Reference](https://docs.phoenix.api)
-- [Support](https://support.esko.com)
-
-## 🏷️ Version
-
-Current Version: 2.0.0
-
-### Changelog
-
-- **2.0.0**: Complete rewrite with ALL API endpoints
-- **1.0.0**: Initial release with basic functionality
+// Client configuration
+export type { ClientConfig, ApiResponse, ApiError } from './client/types';

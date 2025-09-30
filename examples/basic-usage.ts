@@ -23,27 +23,25 @@ async function basicExample() {
 		// Create a new project
 		console.log("Creating new project...");
 		const newProjectResponse = await client.jobs.createJob({
+			id: "123",
 			name: "Sample Project",
-			description: "Created via API",
-			customer: "ACME Corp",
-			due: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Due in 7 days
+			notes: "Created via API",
+			client: "ACME Corp"
 		});
-		console.log("Project created:", newProjectResponse.data);
 
 		// Get project details
-		const projectId = newProjectResponse.data.id;
-		const projectResponse = await client.jobs.getJob(projectId);
+		const projectResponse = await client.jobs.getJob("123");
 		const project = projectResponse.data;
 		console.log("Project details:", project);
 
 		// Import a product
-		await client.jobs.importProductXml(projectId, {
+		await client.jobs.importProductXml("123", {
 			path: "/path/to/product.xml",
 			preset: "standard",
 		});
 
 		// Get products in project
-		const productsResponse = await client.jobs.getProducts(projectId);
+		const productsResponse = await client.jobs.getProducts("123");
 		const products = productsResponse.data;
 		console.log(`Project contains ${products.length} products`);
 

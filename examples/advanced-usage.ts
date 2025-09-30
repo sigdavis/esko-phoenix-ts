@@ -54,7 +54,7 @@ async function advancedExample() {
 				"due-date": new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
 				constraints: {
 					"max-waste-percent": 15,
-					stocks: [layout.stock],
+					stocks: layout.stock ? [layout.stock] : [],
 				},
 			});
 			console.log(`Production planned on ${press.name}`);

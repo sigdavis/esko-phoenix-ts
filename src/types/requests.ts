@@ -1,8 +1,3 @@
-/**
- * Request type definitions - CORRECTED to match OpenAPI 3.0.1 specification
- * All interfaces now match the exact schemas defined in the API documentation
- */
-
 import { PropertyObject, ScalarValue, ScalarRange, Reference, Resource, PageColorResource, ProcessSettingResource } from "./models";
 
 // ============================================================================

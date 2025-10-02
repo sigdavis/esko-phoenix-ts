@@ -1,5 +1,23 @@
-import { PropertyObject, ScalarValue, ScalarRange, Reference, Resource, PageColorResource, ProcessSettingResource } from "./models";
-
+import {
+	PropertyObject,
+	ScalarValue,
+	ScalarRange,
+	Reference,
+	Resource,
+	PageColorResource,
+	ProcessSettingResource,
+	Bleed,
+	Spacing,
+	Offcut,
+	Trim,
+	Creep,
+	Point,
+	MarkAssetRef,
+	CreatePagesResource,
+	PathResource,
+	EditPageResource,
+	PropsResource,
+} from "./models";
 // ============================================================================
 // Job/Project Management Requests
 // ============================================================================
@@ -567,11 +585,6 @@ export interface PropertiesResource {
 	/** ID of action resource (Hot Folders only) */
 	idref?: number;
 }
-
-/**
- * Props resource (alias for PropertiesResource)
- */
-export type PropsResource = PropertiesResource;
 
 // ============================================================================
 // Apply Operations

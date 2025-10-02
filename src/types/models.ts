@@ -691,10 +691,357 @@ export interface PresetEntity {
   'modified-on'?: string;
 }
 
-export interface ResponseEntity {
-  status?: number;
-  message?: string;
-  data?: any;
-  errors?: string[];
-  warnings?: string[];
+/**
+ * Scalar Range
+ * Represents a range with start and end scalar values
+ */
+export interface ScalarRange {
+  start?: string;
+  end?: string;
+  type: 'IntegerRange' | 'DoubleRange' | 'ScalarRange' | 'StockWeightRange' | 'DateRange';
 }
+
+/**
+ * Resource reference
+ * Represents a reference to a library resource with optional embedded asset
+ */
+export interface Resource {
+  /** Unique ID of asset */
+  id?: string;
+  /** Path to asset */
+  path?: string;
+  /** Embedded asset object */
+  asset?: Asset;
+}
+
+/**
+ * Asset
+ * Represents an embedded asset in a resource reference
+ */
+export interface Asset {
+  id?: string;
+  name?: string;
+  type?: string;
+  [key: string]: any;
+}
+
+/**
+ * Page Color Resource
+ * Used for specifying page colors when creating products
+ */
+export interface PageColorResource {
+  /** Color name */
+  name?: string;
+  /** Color type */
+  type?: 'CMYK' | 'Lab' | 'RGB';
+  /** Color coverage percentage */
+  coverage?: number;
+  /** Process reference */
+  process?: Process;
+  /** Array of color values */
+  values?: number[];
+}
+
+/**
+ * Page Color (full schema)
+ * Represents a page color with all properties
+ */
+export interface PageColor {
+  /** Color (spot) name */
+  name: string;
+  /** Color type */
+  type?: 'CMYK' | 'Lab' | 'RGB';
+  /** Array of color values */
+  values?: number[];
+  /** Color coverage percentage */
+  coverage?: number;
+  /** Process reference */
+  process: Process;
+}
+
+/**
+ * Process Setting Resource
+ * Used for specifying process settings when creating products
+ */
+export interface ProcessSettingResource {
+  /** Process reference (required) */
+  process: ReferenceProcess;
+  /** Mode reference */
+  mode?: ReferenceMode;
+  /** Mode value */
+  'mode-value'?: number;
+  /** Array of thing references */
+  things?: ReferenceThing[];
+  /** Array of process type references */
+  'process-types'?: ReferenceProcessType[];
+}
+
+/**
+ * Reference to a Process
+ */
+export interface ReferenceProcess {
+  /** Unique ID of asset */
+  id?: string;
+  /** Path to asset */
+  path?: string;
+}
+
+/**
+ * Reference to a Mode
+ */
+export interface ReferenceMode {
+  /** Unique ID of asset */
+  id?: string;
+  /** Path to asset */
+  path?: string;
+}
+
+/**
+ * Reference to a Thing (machine)
+ */
+export interface ReferenceThing {
+  /** Unique ID of asset */
+  id?: string;
+  /** Path to asset */
+  path?: string;
+}
+
+/**
+ * Reference to a Process Type
+ */
+export interface ReferenceProcessType {
+  /** Unique ID of asset */
+  id?: string;
+  /** Path to asset */
+  path?: string;
+}
+
+/**
+ * Bleed settings
+ */
+export interface Bleed {
+  /** Single margin setting */
+  margin?: string;
+  /** Margins object for detailed bleed settings */
+  margins?: Margins;
+  /** Bleed type */
+  type: 'Margins' | 'Contour' | 'CAD' | 'None';
+}
+
+/**
+ * Spacing settings
+ */
+export interface Spacing {
+  /** Horizontal spacing */
+  horizontal?: ScalarValue;
+  /** Vertical spacing */
+  vertical?: ScalarValue;
+  /** All sides spacing (when uniform) */
+  all?: ScalarValue;
+}
+
+/**
+ * Offcut settings
+ */
+export interface Offcut {
+  /** Offcut type */
+  type?: 'None' | 'Trim' | 'Custom';
+  /** Offcut margins */
+  margins?: Margins;
+  /** Offcut amount */
+  amount?: ScalarValue;
+}
+
+/**
+ * Point (2D coordinate)
+ */
+export interface Point {
+  /** X coordinate */
+  x?: number;
+  /** Y coordinate */
+  y?: number;
+}
+
+/**
+ * Trim settings for bound products
+ */
+export interface Trim {
+  /** Face trim amount */
+  face?: ScalarValue;
+  /** Head trim amount */
+  head?: ScalarValue;
+  /** Foot trim amount */
+  foot?: ScalarValue;
+  /** Fore-edge trim amount */
+  'fore-edge'?: ScalarValue;
+}
+
+/**
+ * Creep settings for bound products
+ */
+export interface Creep {
+  /** Creep type */
+  type?: 'None' | 'Auto' | 'Manual';
+  /** Creep amount */
+  amount?: ScalarValue;
+}
+
+/**
+ * Mark Asset Reference
+ * Used for referencing marks to apply to products
+ */
+export interface MarkAssetRef {
+  /** Mark ID */
+  id?: string;
+  /** Mark path */
+  path?: string;
+  /** Mark name */
+  name?: string;
+}
+
+/**
+ * Create Pages Resource
+ */
+export interface CreatePagesResource {
+  /** Page size resource reference */
+  size?: Resource;
+  /** Bleed margins */
+  bleed?: Margins;
+  /** Number of pages to add */
+  count?: number;
+}
+
+/**
+ * Path Resource
+ */
+export interface PathResource {
+  /** Path to file */
+  path?: string;
+}
+
+/**
+ * Edit Page Resource
+ */
+export interface EditPageResource {
+  /** Custom properties */
+  properties?: PropertyObject[];
+  /** Color analysis mode */
+  'color-analysis'?: 'Fast' | 'Raster';
+  /** Color detection mode */
+  'color-detection'?: 'Cut' | 'Bleed';
+  /** Color source */
+  'color-source'?: 'Artwork' | 'Specified';
+  /** Mark color source */
+  'mark-color-source'?: 'PageColors' | 'ArtworkColors';
+  /** Autosnap enabled */
+  autosnap?: boolean;
+  /** Autosnap color */
+  'autosnap-color'?: string;
+  /** Autosnap layer */
+  'autosnap-layer'?: string;
+  /** Size reference */
+  size?: Resource;
+  /** Position */
+  position?: Point;
+  /** Rotation in degrees */
+  rotation?: number;
+  /** X-scale factor */
+  'x-scale'?: number;
+  /** Y-scale factor */
+  'y-scale'?: number;
+  /** Mirror flag */
+  mirror?: boolean;
+}
+
+/**
+ * Edit Part Resource (from OpenAPI)
+ */
+export interface EditPartResourceSchema {
+  /** Custom properties */
+  properties?: PropertyObject[];
+  /** Part name */
+  name?: string;
+  /** Grain direction */
+  grain?: 'Horizontal' | 'Vertical' | 'Consistent' | 'None';
+  /** Stock reference */
+  stock?: Reference;
+  /** Stock grade */
+  grade?: string;
+  /** Rotation */
+  rotation?: Rotation;
+  /** Bleed settings */
+  bleed?: Bleed;
+  /** Spacing settings */
+  spacing?: Spacing;
+  /** Offcut settings */
+  offcut?: Offcut;
+}
+
+/**
+ * Message Entity
+ * Represents an error or warning message
+ */
+export interface MessageEntity {
+  /** Message code */
+  code?: string;
+  /** Message text */
+  message?: string;
+  /** Message severity */
+  severity?: 'Error' | 'Warning' | 'Info';
+  /** Additional details */
+  details?: string;
+}
+
+/**
+ * Response Entity (Standard API Response)
+ */
+export interface ResponseEntity {
+  /** HTTP status code */
+  status?: number;
+  /** Success flag */
+  success?: boolean;
+  /** Response message */
+  message?: string;
+  /** Response data */
+  data?: any;
+  /** Array of error messages */
+  errors?: MessageEntity[];
+  /** Array of warning messages */
+  warnings?: MessageEntity[];
+  /** URIs of newly created resources */
+  resources?: string[];
+}
+
+/**
+ * Layouts info
+ * Contains layout placement information for a component
+ */
+export interface Layouts {
+  /** Array of layout names where component is placed */
+  layouts?: string[];
+}
+
+/**
+ * Page Color Entity
+ * Used in legacy Jobs API
+ */
+export interface PageColorEntity {
+  /** Color name */
+  name?: string;
+  /** Color type */
+  type?: 'CMYK' | 'Lab' | 'RGB';
+  /** Color coverage */
+  coverage?: number;
+  /** Color values array */
+  values?: number[];
+}
+
+/**
+ * Props Resource
+ * Used for setting custom properties
+ */
+export interface PropsResource {
+  /** Custom properties array */
+  properties?: PropertyObject[];
+}
+

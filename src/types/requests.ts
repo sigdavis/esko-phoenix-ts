@@ -21,6 +21,7 @@ import {
 	Spacing,
 	Offcut,
 	Rotation,
+	TileDefinition,
 } from "./models";
 
 // ============================================================================
@@ -211,7 +212,7 @@ export interface CreateProductResource {
  * Base interface for create product resources (Projects API)
  * Contains common fields for all product types
  */
-interface CreateProductResourceBase {
+export interface CreateProductResourceBase {
 	/** Custom properties */
 	properties?: PropertyObject[];
 	/** Unique product name */
@@ -571,6 +572,102 @@ export interface EditComponentResource {
 	colors?: PageColorResource[];
 	/** Process settings */
 	"process-settings"?: ProcessSettingResource[];
+}
+
+/**
+ * Edit Flat Resource
+ * Used to edit a flat component specifically
+ *
+ * @description Per OpenAPI schema: edit-flat-resource
+ */
+export interface EditFlatResource {
+	/** Custom properties */
+	properties?: PropertyObject[];
+	/** Bleed settings */
+	bleed?: Bleed;
+	/** Spacing settings */
+	spacing?: Spacing;
+	/** Offcut settings */
+	offcut?: Offcut;
+	/** Component x-scale */
+	"x-scale"?: number;
+	/** Component y-scale */
+	"y-scale"?: number;
+	/** Die design reference */
+	"die-design"?: Resource;
+	/** Bundle size */
+	"bundle-size"?: number;
+	/** Maximum bundle splits */
+	"max-bundle-splits"?: number;
+}
+
+/**
+ * Edit Signature Resource
+ * Used to edit signature components (bound or folded)
+ *
+ * @description Note: The OpenAPI spec doesn't have a separate edit-signature-resource.
+ * Signatures use EditComponentResource instead. This is an alias for clarity.
+ */
+export type EditSignatureResource = EditComponentResource;
+
+/**
+ * Edit Tile Resource
+ * Used to edit a tile component specifically
+ *
+ * @description Per OpenAPI schema: edit-tile-resource
+ */
+export interface EditTileResource {
+	/** Custom properties */
+	properties?: PropertyObject[];
+	/** Bleed settings */
+	bleed?: Bleed;
+	/** Spacing settings */
+	spacing?: Spacing;
+	/** Offcut settings */
+	offcut?: Offcut;
+	/** Component x-scale */
+	"x-scale"?: number;
+	/** Component y-scale */
+	"y-scale"?: number;
+	/** Die design reference */
+	"die-design"?: Resource;
+	/** Tile definition */
+	tile?: TileDefinition;
+}
+
+// ============================================================================
+// SCRIPT EXECUTION REQUESTS
+// ============================================================================
+
+/**
+ * Run Script Resource
+ * Used to run a script from the Scripts library on the current project
+ *
+ * @description Per OpenAPI schema: RunScriptResource (Tech Preview)
+ * Note: This action is deprecated in favor of newer script execution methods
+ */
+export interface RunScriptResource {
+	/** ID of action resource (Hot Folders only) */
+	idref?: number;
+	/** Name of script in Scripts library including folder name(s) */
+	name?: string;
+	/** Input parameters for the script */
+	inputs?: Record<string, string>;
+}
+
+/**
+ * Rest Script Context
+ * Context for REST API script execution
+ *
+ * @description Client-side convenience type for script execution context
+ */
+export interface RestScriptContext {
+	/** Script name */
+	script?: string;
+	/** Script parameters */
+	parameters?: Record<string, any>;
+	/** Project ID */
+	project?: string;
 }
 
 // ============================================================================

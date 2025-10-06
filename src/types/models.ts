@@ -2,7 +2,7 @@
  * Phoenix API Type Definitions - Core Models
  * Auto-generated from OpenAPI 3.0.1 specification
  * API Version: 25.03
- * 
+ *
  * This file contains all core data model interfaces and types used throughout the Phoenix API.
  * All types strictly conform to the Phoenix-openapi.json specification.
  */
@@ -17,10 +17,10 @@
  * @example { value: 100, unit: "mm" }
  */
 export interface ScalarValue {
-  /** Numeric value of the measurement */
-  value: number;
-  /** Unit of measurement (e.g., "mm", "in", "pt") */
-  unit?: string;
+	/** Numeric value of the measurement */
+	value: number;
+	/** Unit of measurement (e.g., "mm", "in", "pt") */
+	unit?: string;
 }
 
 /**
@@ -28,10 +28,10 @@ export interface ScalarValue {
  * Generic reference to a named resource
  */
 export interface Reference {
-  /** Name of the referenced resource */
-  name: string;
-  /** Optional unique identifier */
-  id?: string;
+	/** Name of the referenced resource */
+	name: string;
+	/** Optional unique identifier */
+	id?: string;
 }
 
 /**
@@ -40,12 +40,12 @@ export interface Reference {
  * Used in product creation and other resource references
  */
 export interface Resource {
-  /** Unique ID of the asset */
-  id?: string;
-  /** Path to the asset */
-  path?: string;
-  /** Embedded asset object */
-  asset?: Asset;
+	/** Unique ID of the asset */
+	id?: string;
+	/** Path to the asset */
+	path?: string;
+	/** Embedded asset object */
+	asset?: Asset;
 }
 
 /**
@@ -53,14 +53,14 @@ export interface Resource {
  * Represents an embedded asset in a resource reference
  */
 export interface Asset {
-  /** Unique identifier */
-  id?: string;
-  /** Asset name */
-  name?: string;
-  /** Asset type */
-  type?: string;
-  /** Additional asset properties */
-  [key: string]: any;
+	/** Unique identifier */
+	id?: string;
+	/** Asset name */
+	name?: string;
+	/** Asset type */
+	type?: string;
+	/** Additional asset properties */
+	[key: string]: any;
 }
 
 /**
@@ -68,10 +68,10 @@ export interface Asset {
  * Represents 2D dimensions with width and height
  */
 export interface Size {
-  /** Width dimension */
-  width: ScalarValue;
-  /** Height dimension */
-  height: ScalarValue;
+	/** Width dimension */
+	width: ScalarValue;
+	/** Height dimension */
+	height: ScalarValue;
 }
 
 /**
@@ -80,18 +80,18 @@ export interface Size {
  * Can be used for various purposes: bleed, trim, spacing, etc.
  */
 export interface Margins {
-  /** Top margin */
-  top?: ScalarValue;
-  /** Bottom margin */
-  bottom?: ScalarValue;
-  /** Left margin */
-  left?: ScalarValue;
-  /** Right margin */
-  right?: ScalarValue;
-  /** Front margin (for 3D objects) */
-  front?: ScalarValue;
-  /** Back margin (for 3D objects) */
-  back?: ScalarValue;
+	/** Top margin */
+	top?: ScalarValue;
+	/** Bottom margin */
+	bottom?: ScalarValue;
+	/** Left margin */
+	left?: ScalarValue;
+	/** Right margin */
+	right?: ScalarValue;
+	/** Front margin (for 3D objects) */
+	front?: ScalarValue;
+	/** Back margin (for 3D objects) */
+	back?: ScalarValue;
 }
 
 /**
@@ -99,12 +99,12 @@ export interface Margins {
  * Represents a duration in hours, minutes, and/or seconds
  */
 export interface TimeValue {
-  /** Number of hours */
-  hours?: number;
-  /** Number of minutes */
-  minutes?: number;
-  /** Number of seconds */
-  seconds?: number;
+	/** Number of hours */
+	hours?: number;
+	/** Number of minutes */
+	minutes?: number;
+	/** Number of seconds */
+	seconds?: number;
 }
 
 /**
@@ -112,10 +112,10 @@ export interface TimeValue {
  * Represents a 2D coordinate
  */
 export interface Point {
-  /** X coordinate */
-  x?: number;
-  /** Y coordinate */
-  y?: number;
+	/** X coordinate */
+	x?: number;
+	/** Y coordinate */
+	y?: number;
 }
 
 /**
@@ -124,12 +124,12 @@ export interface Point {
  * Used for specifying overruns, tolerances, etc.
  */
 export interface ScalarRange {
-  /** Start of the range */
-  start?: string;
-  /** End of the range */
-  end?: string;
-  /** Type of range */
-  type: 'IntegerRange' | 'DoubleRange' | 'ScalarRange' | 'StockWeightRange' | 'DateRange';
+	/** Start of the range */
+	start?: string;
+	/** End of the range */
+	end?: string;
+	/** Type of range */
+	type: "IntegerRange" | "DoubleRange" | "ScalarRange" | "StockWeightRange" | "DateRange";
 }
 
 // ============================================================================
@@ -140,12 +140,29 @@ export interface ScalarRange {
  * Property Type Enum
  * All possible types for custom properties
  */
-export type PropertyType = 
-  | 'String' | 'Integer' | 'Long' | 'Double' | 'Boolean' 
-  | 'Scalar' | 'Size' | 'Date' | 'IntegerRange' | 'DoubleRange'
-  | 'ScalarRange' | 'DateRange' | 'Margins' | 'PlacementRule'
-  | 'Enum' | 'Matcher' | 'TextList' | 'ScalarList' | 'List'
-  | 'AssetRef' | 'Object' | 'Link';
+export type PropertyType =
+	| "String"
+	| "Integer"
+	| "Long"
+	| "Double"
+	| "Boolean"
+	| "Scalar"
+	| "Size"
+	| "Date"
+	| "IntegerRange"
+	| "DoubleRange"
+	| "ScalarRange"
+	| "DateRange"
+	| "Margins"
+	| "PlacementRule"
+	| "Enum"
+	| "Matcher"
+	| "TextList"
+	| "ScalarList"
+	| "List"
+	| "AssetRef"
+	| "Object"
+	| "Link";
 
 /**
  * Property Object Base
@@ -153,10 +170,10 @@ export type PropertyType =
  * Uses discriminator pattern based on 'type' field
  */
 export interface PropertyObject {
-  /** Property name - Required */
-  name: string;
-  /** Property type discriminator - Required */
-  type: PropertyType;
+	/** Property name - Required */
+	name: string;
+	/** Property type discriminator - Required */
+	type: PropertyType;
 }
 
 /**
@@ -164,10 +181,10 @@ export interface PropertyObject {
  * Custom property with string value
  */
 export interface StringProperty extends PropertyObject {
-  /** Type discriminator */
-  type: 'String';
-  /** String value */
-  value?: string;
+	/** Type discriminator */
+	type: "String";
+	/** String value */
+	value?: string;
 }
 
 /**
@@ -175,10 +192,10 @@ export interface StringProperty extends PropertyObject {
  * Custom property with integer value
  */
 export interface IntegerProperty extends PropertyObject {
-  /** Type discriminator */
-  type: 'Integer';
-  /** Integer value (32-bit) */
-  value?: number;
+	/** Type discriminator */
+	type: "Integer";
+	/** Integer value (32-bit) */
+	value?: number;
 }
 
 /**
@@ -186,10 +203,10 @@ export interface IntegerProperty extends PropertyObject {
  * Custom property with floating-point value
  */
 export interface DoubleProperty extends PropertyObject {
-  /** Type discriminator */
-  type: 'Double';
-  /** Double precision floating-point value */
-  value?: number;
+	/** Type discriminator */
+	type: "Double";
+	/** Double precision floating-point value */
+	value?: number;
 }
 
 /**
@@ -197,10 +214,10 @@ export interface DoubleProperty extends PropertyObject {
  * Custom property with boolean value
  */
 export interface BooleanProperty extends PropertyObject {
-  /** Type discriminator */
-  type: 'Boolean';
-  /** Boolean value */
-  value?: boolean;
+	/** Type discriminator */
+	type: "Boolean";
+	/** Boolean value */
+	value?: boolean;
 }
 
 /**
@@ -208,10 +225,10 @@ export interface BooleanProperty extends PropertyObject {
  * Custom property with ISO 8601 date-time value
  */
 export interface DateProperty extends PropertyObject {
-  /** Type discriminator */
-  type: 'Date';
-  /** ISO 8601 date-time string */
-  value?: string;
+	/** Type discriminator */
+	type: "Date";
+	/** ISO 8601 date-time string */
+	value?: string;
 }
 
 /**
@@ -219,10 +236,10 @@ export interface DateProperty extends PropertyObject {
  * Custom property with array of string values
  */
 export interface TextListProperty extends PropertyObject {
-  /** Type discriminator */
-  type: 'TextList';
-  /** Array of string values */
-  values?: string[];
+	/** Type discriminator */
+	type: "TextList";
+	/** Array of string values */
+	values?: string[];
 }
 
 // ============================================================================
@@ -234,12 +251,12 @@ export interface TextListProperty extends PropertyObject {
  * Represents a single info, warning, or error message from the API
  */
 export interface MessageEntity {
-  /** Unique, language-independent ID for this message */
-  id?: number;
-  /** Localized message text */
-  text?: string;
-  /** Action that generated this message */
-  action?: string;
+	/** Unique, language-independent ID for this message */
+	id?: number;
+	/** Localized message text */
+	text?: string;
+	/** Action that generated this message */
+	action?: string;
 }
 
 /**
@@ -248,18 +265,18 @@ export interface MessageEntity {
  * Contains success status and any errors/warnings/infos
  */
 export interface ResponseEntity {
-  /** Overall success of operation - Required */
-  success: boolean;
-  /** HTTP response status code */
-  'status-code'?: number;
-  /** Array of error messages */
-  errors?: MessageEntity[];
-  /** Array of warning messages */
-  warnings?: MessageEntity[];
-  /** Array of info messages */
-  infos?: MessageEntity[];
-  /** URIs of created/modified resources */
-  resources?: string[];
+	/** Overall success of operation - Required */
+	success: boolean;
+	/** HTTP response status code */
+	"status-code"?: number;
+	/** Array of error messages */
+	errors?: MessageEntity[];
+	/** Array of warning messages */
+	warnings?: MessageEntity[];
+	/** Array of info messages */
+	infos?: MessageEntity[];
+	/** URIs of created/modified resources */
+	resources?: string[];
 }
 
 // ============================================================================
@@ -272,36 +289,36 @@ export interface ResponseEntity {
  * Contains products, layouts, and automation settings
  */
 export interface PhoenixProject {
-  /** Unique project ID - Read-only */
-  id?: string;
-  /** Project name */
-  name?: string;
-  /** External system ID for integration */
-  'external-id'?: string;
-  /** Project description */
-  description?: string;
-  /** Project notes */
-  notes?: string;
-  /** Creation timestamp (ISO 8601) - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp (ISO 8601) - Read-only */
-  'modified-on'?: string;
-  /** Project due date (ISO 8601) */
-  due?: string;
-  /** Customer name or identifier */
-  customer?: string;
-  /** Order number or identifier */
-  order?: string;
-  /** Source system or origin */
-  source?: string;
-  /** File system path */
-  path?: string;
-  /** Project version - Read-only */
-  version?: string;
-  /** Whether auto-save is enabled */
-  'auto-save'?: boolean;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique project ID - Read-only */
+	id?: string;
+	/** Project name */
+	name?: string;
+	/** External system ID for integration */
+	"external-id"?: string;
+	/** Project description */
+	description?: string;
+	/** Project notes */
+	notes?: string;
+	/** Creation timestamp (ISO 8601) - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp (ISO 8601) - Read-only */
+	"modified-on"?: string;
+	/** Project due date (ISO 8601) */
+	due?: string;
+	/** Customer name or identifier */
+	customer?: string;
+	/** Order number or identifier */
+	order?: string;
+	/** Source system or origin */
+	source?: string;
+	/** File system path */
+	path?: string;
+	/** Project version - Read-only */
+	version?: string;
+	/** Whether auto-save is enabled */
+	"auto-save"?: boolean;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 // ============================================================================
@@ -312,8 +329,7 @@ export interface PhoenixProject {
  * Product Shape Enum
  * Defines the physical shape of a product
  */
-export type ProductShape = 
-  | 'Rectangular' | 'Triangular' | 'Round' | 'Elliptical' | 'Irregular';
+export type ProductShape = "Rectangular" | "Triangular" | "Round" | "Elliptical" | "Irregular";
 
 /**
  * Product
@@ -321,89 +337,89 @@ export type ProductShape =
  * Products contain one or more parts (flat, bound, folded, or tiled)
  */
 export interface Product {
-  /** Unique product ID - Read-only */
-  id?: string;
-  /** Product name - Required */
-  name: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Quantity to produce */
-  quantity?: number;
-  /** Ordered quantity */
-  'ordered-quantity'?: number;
-  /** Whether to impose exact quantity or allow optimization */
-  'impose-quantity'?: boolean;
-  /** Whether product can be printed multiple times per sheet */
-  'print-multiple'?: boolean;
-  /** Whether to keep parts aligned during imposition */
-  'keep-parts-aligned'?: boolean;
-  /** Physical shape of the product */
-  shape?: ProductShape;
-  /** Product width */
-  width?: ScalarValue;
-  /** Product height */
-  height?: ScalarValue;
-  /** Product depth (for 3D products) */
-  depth?: ScalarValue;
-  /** Bleed margins */
-  bleed?: Margins;
-  /** Array of product parts */
-  parts?: Part[];
-  /** Product description */
-  description?: string;
-  /** Product notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique product ID - Read-only */
+	id?: string;
+	/** Product name - Required */
+	name: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Quantity to produce */
+	quantity?: number;
+	/** Ordered quantity */
+	"ordered-quantity"?: number;
+	/** Whether to impose exact quantity or allow optimization */
+	"impose-quantity"?: boolean;
+	/** Whether product can be printed multiple times per sheet */
+	"print-multiple"?: boolean;
+	/** Whether to keep parts aligned during imposition */
+	"keep-parts-aligned"?: boolean;
+	/** Physical shape of the product */
+	shape?: ProductShape;
+	/** Product width */
+	width?: ScalarValue;
+	/** Product height */
+	height?: ScalarValue;
+	/** Product depth (for 3D products) */
+	depth?: ScalarValue;
+	/** Bleed margins */
+	bleed?: Margins;
+	/** Array of product parts */
+	parts?: Part[];
+	/** Product description */
+	description?: string;
+	/** Product notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
  * Part Type Enum
  * Discriminator for different part types
  */
-export type PartType = 'Flat' | 'Bound' | 'Folded' | 'Tiled';
+export type PartType = "Flat" | "Bound" | "Folded" | "Tiled";
 
 /**
  * Grain Direction Enum
  * Paper grain direction for parts
  */
-export type GrainDirection = 'Horizontal' | 'Vertical' | 'Consistent' | 'None';
+export type GrainDirection = "Horizontal" | "Vertical" | "Consistent" | "None";
 
 /**
  * Part
  * Base interface for all part types
  * Uses discriminator pattern with 'type' field
- * 
+ *
  * Parts represent the physical components of a product.
  * A product can have multiple parts (e.g., cover and text for a book)
  */
 export interface Part {
-  /** Part type discriminator - Required */
-  type: PartType;
-  /** Unique part ID - Read-only */
-  id?: string;
-  /** Part name */
-  name?: string;
-  /** Grain direction */
-  grain?: GrainDirection;
-  /** Array of pages in this part */
-  pages?: Page[];
-  /** Process settings for this part */
-  'process-settings'?: ProcessSetting[];
-  /** Rotation settings */
-  rotation?: Rotation;
-  /** Material specifications */
-  material?: Material;
-  /** Associated processes */
-  processes?: Process[];
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Part type discriminator - Required */
+	type: PartType;
+	/** Unique part ID - Read-only */
+	id?: string;
+	/** Part name */
+	name?: string;
+	/** Grain direction */
+	grain?: GrainDirection;
+	/** Array of pages in this part */
+	pages?: Page[];
+	/** Process settings for this part */
+	"process-settings"?: ProcessSetting[];
+	/** Rotation settings */
+	rotation?: Rotation;
+	/** Material specifications */
+	material?: Material;
+	/** Associated processes */
+	processes?: Process[];
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -412,20 +428,20 @@ export interface Part {
  * Contains array of flat components
  */
 export interface FlatPart extends Part {
-  /** Type discriminator */
-  type: 'Flat';
-  /** Array of flat components */
-  flats?: Flat[];
-  /** Stock reference */
-  stock?: Stock;
-  /** Bleed settings */
-  bleed?: Bleed;
-  /** Spacing settings */
-  spacing?: Spacing;
-  /** Offcut settings */
-  offcut?: Offcut;
-  /** Die design for cutting */
-  'die-design'?: DieDesign;
+	/** Type discriminator */
+	type: "Flat";
+	/** Array of flat components */
+	flats?: Flat[];
+	/** Stock reference */
+	stock?: Stock;
+	/** Bleed settings */
+	bleed?: Bleed;
+	/** Spacing settings */
+	spacing?: Spacing;
+	/** Offcut settings */
+	offcut?: Offcut;
+	/** Die design for cutting */
+	"die-design"?: DieDesign;
 }
 
 /**
@@ -434,38 +450,38 @@ export interface FlatPart extends Part {
  * Contains sections with signatures
  */
 export interface BoundPart extends Part {
-  /** Type discriminator */
-  type: 'Bound';
-  /** Page size for all pages in this part - Required */
-  'page-size': Size;
-  /** Array of bound sections - Required */
-  sections: BoundSection[];
-  /** Binding method - Required */
-  'binding-method': 'PerfectBound' | 'SaddleStitch' | 'None';
-  /** Number of pages per section - Required */
-  'pages-per-section': number;
-  /** Binding edge - Required */
-  'binding-edge': 'Top' | 'Bottom' | 'Right' | 'Left';
-  /** Jog edge - Required */
-  'jog-edge': 'Top' | 'Bottom' | 'Right' | 'Left';
-  /** Reading order - Required */
-  'reading-order': 'Normal' | 'Calendar';
-  /** Whether this part has a self cover - Required */
-  'self-cover': boolean;
-  /** Trim settings - Required */
-  trim: Trim;
-  /** Creep/shingling settings - Required */
-  creep: Creep;
-  /** Allowed folding patterns */
-  'allowed-folds'?: FoldingPattern[];
-  /** Stock reference */
-  stock?: Stock;
-  /** Bleed settings */
-  bleed?: Bleed;
-  /** Spacing settings */
-  spacing?: Spacing;
-  /** Offcut settings */
-  offcut?: Offcut;
+	/** Type discriminator */
+	type: "Bound";
+	/** Page size for all pages in this part - Required */
+	"page-size": Size;
+	/** Array of bound sections - Required */
+	sections: BoundSection[];
+	/** Binding method - Required */
+	"binding-method": "PerfectBound" | "SaddleStitch" | "None";
+	/** Number of pages per section - Required */
+	"pages-per-section": number;
+	/** Binding edge - Required */
+	"binding-edge": "Top" | "Bottom" | "Right" | "Left";
+	/** Jog edge - Required */
+	"jog-edge": "Top" | "Bottom" | "Right" | "Left";
+	/** Reading order - Required */
+	"reading-order": "Normal" | "Calendar";
+	/** Whether this part has a self cover - Required */
+	"self-cover": boolean;
+	/** Trim settings - Required */
+	trim: Trim;
+	/** Creep/shingling settings - Required */
+	creep: Creep;
+	/** Allowed folding patterns */
+	"allowed-folds"?: FoldingPattern[];
+	/** Stock reference */
+	stock?: Stock;
+	/** Bleed settings */
+	bleed?: Bleed;
+	/** Spacing settings */
+	spacing?: Spacing;
+	/** Offcut settings */
+	offcut?: Offcut;
 }
 
 /**
@@ -474,24 +490,24 @@ export interface BoundPart extends Part {
  * Contains folded signatures with folding patterns
  */
 export interface FoldedPart extends Part {
-  /** Type discriminator */
-  type: 'Folded';
-  /** Array of folded signatures */
-  signatures?: FoldedSignature[];
-  /** Page size */
-  'page-size'?: Size;
-  /** Stock reference */
-  stock?: Stock;
-  /** Bleed settings */
-  bleed?: Bleed;
-  /** Spacing settings */
-  spacing?: Spacing;
-  /** Offcut settings */
-  offcut?: Offcut;
-  /** Die design for cutting */
-  'die-design'?: DieDesign;
-  /** Allowed folding patterns */
-  'allowed-folds'?: FoldingPattern[];
+	/** Type discriminator */
+	type: "Folded";
+	/** Array of folded signatures */
+	signatures?: FoldedSignature[];
+	/** Page size */
+	"page-size"?: Size;
+	/** Stock reference */
+	stock?: Stock;
+	/** Bleed settings */
+	bleed?: Bleed;
+	/** Spacing settings */
+	spacing?: Spacing;
+	/** Offcut settings */
+	offcut?: Offcut;
+	/** Die design for cutting */
+	"die-design"?: DieDesign;
+	/** Allowed folding patterns */
+	"allowed-folds"?: FoldingPattern[];
 }
 
 /**
@@ -500,20 +516,20 @@ export interface FoldedPart extends Part {
  * Contains array of tiles arranged in a grid
  */
 export interface TiledPart extends Part {
-  /** Type discriminator */
-  type: 'Tiled';
-  /** Array of tiles */
-  tiles?: Tile[];
-  /** Tiling pattern reference */
-  tiling?: Reference;
-  /** Stock reference */
-  stock?: Stock;
-  /** Bleed settings */
-  bleed?: Bleed;
-  /** Spacing settings */
-  spacing?: Spacing;
-  /** Offcut settings */
-  offcut?: Offcut;
+	/** Type discriminator */
+	type: "Tiled";
+	/** Array of tiles */
+	tiles?: Tile[];
+	/** Tiling pattern reference */
+	tiling?: Reference;
+	/** Stock reference */
+	stock?: Stock;
+	/** Bleed settings */
+	bleed?: Bleed;
+	/** Spacing settings */
+	spacing?: Spacing;
+	/** Offcut settings */
+	offcut?: Offcut;
 }
 
 // ============================================================================
@@ -524,23 +540,28 @@ export interface TiledPart extends Part {
  * Component Type Enum
  * Type discriminator for components
  */
-export type ComponentType = 'Flat' | 'Bound' | 'Folded' | 'Tiled';
+export type ComponentType = "Flat" | "Bound" | "Folded" | "Tiled";
 
 /**
  * Component Anchor Enum
  * Anchor point for component positioning
  */
-export type ComponentAnchor = 
-  | 'TopLeft' | 'TopCenter' | 'TopRight' 
-  | 'MiddleLeft' | 'MiddleCenter' | 'MiddleRight'
-  | 'BottomLeft' | 'BottomCenter' | 'BottomRight';
+export type ComponentAnchor =
+	| "TopLeft"
+	| "TopCenter"
+	| "TopRight"
+	| "MiddleLeft"
+	| "MiddleCenter"
+	| "MiddleRight"
+	| "BottomLeft"
+	| "BottomCenter"
+	| "BottomRight";
 
 /**
  * Component Shape Enum
  * Physical shape of a component
  */
-export type ComponentShape = 
-  | 'Rectangular' | 'Elliptical' | 'Triangular' | 'Custom';
+export type ComponentShape = "Rectangular" | "Elliptical" | "Triangular" | "Custom";
 
 /**
  * Component
@@ -548,58 +569,56 @@ export type ComponentShape =
  * Components are the individual pieces that get imposed on layouts
  */
 export interface Component {
-  /** Unique component ID - Read-only */
-  id?: string;
-  /** Component type discriminator */
-  type: ComponentType;
-  /** Component name - Required */
-  name: string;
-  /** External ID */
-  'external-id'?: string;
-  /** Anchor point for positioning */
-  anchor?: ComponentAnchor;
-  /** X coordinate */
-  x?: number;
-  /** Y coordinate */
-  y?: number;
-  /** Component width */
-  width?: ScalarValue;
-  /** Component height */
-  height?: ScalarValue;
-  /** Path to artwork file */
-  'art-path'?: string;
-  /** Placement boundary */
-  'placement-boundary'?: string;
-  /** Rotation in degrees */
-  rotation?: number;
-  /** Whether component is mirrored */
-  mirror?: boolean;
-  /** Whether component is locked (cannot be moved) */
-  locked?: boolean;
-  /** Bleed margins */
-  bleeds?: Margins;
-  /** Array of pages */
-  pages?: Page[];
-  /** Component shape */
-  shape?: ComponentShape;
-  /** Die design reference */
-  'die-design'?: DieDesign;
-  /** Spacing settings */
-  spacing?: Spacing;
-  /** Offcut settings */
-  offcut?: Offcut;
-  /** Layout placement information */
-  layouts?: Layouts;
-  /** Total placed count across all layouts - Read-only */
-  placed?: number;
-  /** Total overrun count - Read-only */
-  overrun?: number;
-  /** Whether order quantity is fulfilled - Read-only */
-  fulfilled?: boolean;
-  /** Total copies being produced - Read-only */
-  total?: number;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique component ID - Read-only */
+	id?: string;
+	/** Component type discriminator - Required */
+	type: ComponentType;
+	/** Component name - Required */
+	name: string;
+	/** External ID */
+	"external-id"?: string;
+	/** Die design reference - Required per OpenAPI */
+	"die-design": DieDesign;
+	/** Spacing settings - Required per OpenAPI */
+	spacing: Spacing;
+	/** Offcut settings */
+	offcut?: Offcut;
+	/** Anchor point for positioning */
+	anchor?: ComponentAnchor;
+	/** X coordinate */
+	x?: number;
+	/** Y coordinate */
+	y?: number;
+	/** Component width */
+	width?: ScalarValue;
+	/** Component height */
+	height?: ScalarValue;
+	/** Path to artwork file */
+	"art-path"?: string;
+	/** Placement boundary */
+	"placement-boundary"?: string;
+	/** Rotation in degrees */
+	rotation?: number;
+	/** Whether component is mirrored */
+	mirror?: boolean;
+	/** Whether component is locked (cannot be moved) */
+	locked?: boolean;
+	/** Bleed margins */
+	bleeds?: Margins;
+	/** Component shape */
+	shape?: ComponentShape;
+	/** Layout placement information */
+	layouts?: Layouts;
+	/** Total placed count across all layouts - Read-only */
+	placed?: number;
+	/** Total overrun count - Read-only */
+	overrun?: number;
+	/** Whether order quantity is fulfilled - Read-only */
+	fulfilled?: boolean;
+	/** Total copies being produced - Read-only */
+	total?: number;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -611,64 +630,143 @@ export type ComponentObject = Component;
 /**
  * Flat
  * Represents a flat component (single-piece die-cut item)
+ * Flats do not have pages - they are single-piece items
+ *
+ * @description Per OpenAPI: required fields are die-design, name, spacing, type
  */
 export interface Flat extends Component {
-  /** Type discriminator */
-  type: 'Flat';
+	/** Type discriminator */
+	type: "Flat";
+	/** Bundle size for bundling/stacking */
+	"bundle-size"?: number;
+	/** Maximum bundle splits allowed */
+	"max-bundle-splits"?: number;
 }
 
 /**
  * Bound Signature
  * Represents a signature in a bound product
+ *
+ * @description Per OpenAPI: required fields are die-design, folding-pattern, name, spacing, type
+ * Note: pages is a NUMBER (page count), not an array of Page objects
  */
 export interface BoundSignature extends Component {
-  /** Type discriminator */
-  type: 'Bound';
-  /** Number of pages in this signature */
-  pages?: number;
-  /** Stock for this signature */
-  stock?: Stock;
-  /** Folding pattern reference */
-  'folding-pattern'?: AssetInfo;
+	/** Type discriminator */
+	type: "Bound";
+	/** Number of pages in this signature */
+	pages?: number;
+	/** Stock for this signature */
+	stock?: Stock;
+	/** Folding pattern reference */
+	"folding-pattern"?: AssetInfo;
 }
 
 /**
  * Folded Signature
  * Represents a signature in a folded product
+ *
+ * @description Per OpenAPI: required fields are die-design, folding-pattern, name, spacing, type
+ * Note: pages is a NUMBER (page count), not an array of Page objects
  */
 export interface FoldedSignature extends Component {
-  /** Type discriminator */
-  type: 'Folded';
-  /** Number of pages */
-  pages?: number;
-  /** Folding pattern reference - Required */
-  'folding-pattern': AssetInfo;
+	/** Type discriminator */
+	type: "Folded";
+	/** Number of pages */
+	pages?: number;
+	/** Folding pattern reference - Required */
+	"folding-pattern": AssetInfo;
 }
 
 /**
  * Tile
  * Represents a single tile in a tiled product
+ *
+ * @description Per OpenAPI: required fields are die-design, index, name, spacing, tile, type
  */
 export interface Tile extends Component {
-  /** Type discriminator */
-  type: 'Tiled';
-  /** X index in tile grid */
-  'x-index'?: number;
-  /** Y index in tile grid */
-  'y-index'?: number;
-  /** Tile overlap amount */
-  overlap?: ScalarValue;
+	/** Type discriminator */
+	type: "Tiled";
+	/** Tile index - Required per OpenAPI */
+	index: number;
+	/** Tile definition - Required per OpenAPI */
+	tile: TileDefinition;
+	/** X index in tile grid */
+	"x-index"?: number;
+	/** Y index in tile grid */
+	"y-index"?: number;
+	/** Tile overlap amount */
+	overlap?: ScalarValue;
+}
+
+/**
+ * Tile Definition
+ * Defines the geometry and edges of a single tile
+ *
+ * @description Per OpenAPI: required fields are bleed, height, width, x, y
+ */
+export interface TileDefinition {
+	/** X coordinate - Required */
+	x: number;
+	/** Y coordinate - Required */
+	y: number;
+	/** Width - Required */
+	width: number;
+	/** Height - Required */
+	height: number;
+	/** Bleed margins - Required */
+	bleed: Margins;
+	/** Left edge definition */
+	"left-edge"?: TileEdge;
+	/** Top edge definition */
+	"top-edge"?: TileEdge;
+	/** Right edge definition */
+	"right-edge"?: TileEdge;
+	/** Bottom edge definition */
+	"bottom-edge"?: TileEdge;
+}
+
+/**
+ * Tile Edge
+ * Base interface for tile edge types (gap or overlap)
+ */
+export interface TileEdge {
+	/** Edge type discriminator - Required */
+	type: "GapEdge" | "OverlapEdge";
+}
+
+/**
+ * Gap Tile Edge
+ * Tile edge with a gap
+ */
+export interface GapTileEdge extends TileEdge {
+	/** Type discriminator */
+	type: "GapEdge";
+	/** Gap amount */
+	gap?: ScalarValue;
+}
+
+/**
+ * Overlap Tile Edge
+ * Tile edge with overlap
+ */
+export interface OverlapTileEdge extends TileEdge {
+	/** Type discriminator */
+	type: "OverlapEdge";
+	/** Overlap amount */
+	overlap?: ScalarValue;
 }
 
 /**
  * Layouts
  * Contains layout placement information for components
+ *
+ * @description Per OpenAPI: required fields are index, placed
  */
 export interface Layouts {
-  /** Index of layout */
-  index?: number;
-  /** Number placed in this layout */
-  placed?: number;
+	/** Index of layout - Required */
+	index: number;
+	/** Number placed in this layout - Required */
+	placed: number;
 }
 
 // ============================================================================
@@ -681,12 +779,12 @@ export interface Layouts {
  * Sections group signatures by binding method
  */
 export interface BoundSection {
-  /** Unique section ID - Read-only */
-  id?: string;
-  /** Binding method for this section - Required */
-  'binding-method': 'PerfectBound' | 'SaddleStitch' | 'None';
-  /** Array of signatures in this section */
-  signatures?: BoundSignature[];
+	/** Unique section ID - Read-only */
+	id?: string;
+	/** Binding method for this section - Required */
+	"binding-method": "PerfectBound" | "SaddleStitch" | "None";
+	/** Array of signatures in this section */
+	signatures?: BoundSignature[];
 }
 
 /**
@@ -694,14 +792,14 @@ export interface BoundSection {
  * Trim specifications for bound parts
  */
 export interface Trim {
-  /** Face trim amount */
-  face?: ScalarValue;
-  /** Head trim amount */
-  head?: ScalarValue;
-  /** Foot trim amount */
-  foot?: ScalarValue;
-  /** Fore-edge trim amount */
-  'fore-edge'?: ScalarValue;
+	/** Face trim amount */
+	face?: ScalarValue;
+	/** Head trim amount */
+	head?: ScalarValue;
+	/** Foot trim amount */
+	foot?: ScalarValue;
+	/** Fore-edge trim amount */
+	"fore-edge"?: ScalarValue;
 }
 
 /**
@@ -710,10 +808,10 @@ export interface Trim {
  * Accounts for paper thickness in folded signatures
  */
 export interface Creep {
-  /** Creep calculation mode */
-  mode?: 'None' | 'Manual' | 'Automatic';
-  /** Manual creep amount (when mode is Manual) */
-  amount?: ScalarValue;
+	/** Creep calculation mode */
+	mode?: "None" | "Manual" | "Automatic";
+	/** Manual creep amount (when mode is Manual) */
+	amount?: ScalarValue;
 }
 
 /**
@@ -721,12 +819,12 @@ export interface Creep {
  * Reference to a folding pattern asset
  */
 export interface FoldingPattern {
-  /** Pattern name */
-  name?: string;
-  /** Pattern ID */
-  id?: string;
-  /** Asset reference */
-  asset?: AssetInfo;
+	/** Pattern name */
+	name?: string;
+	/** Pattern ID */
+	id?: string;
+	/** Asset reference */
+	asset?: AssetInfo;
 }
 
 /**
@@ -734,14 +832,14 @@ export interface FoldingPattern {
  * Information about an asset reference
  */
 export interface AssetInfo {
-  /** Asset ID */
-  id?: string;
-  /** Asset name */
-  name?: string;
-  /** Asset path */
-  path?: string;
-  /** Asset type */
-  type?: string;
+	/** Asset ID */
+	id?: string;
+	/** Asset name */
+	name?: string;
+	/** Asset path */
+	path?: string;
+	/** Asset type */
+	type?: string;
 }
 
 // ============================================================================
@@ -753,22 +851,22 @@ export interface AssetInfo {
  * Bleed settings for parts and components
  */
 export interface Bleed {
-  /** Bleed type - Required */
-  type: 'Margins' | 'Contour' | 'CAD' | 'None';
-  /** Single margin value (uniform bleed) */
-  margin?: string;
-  /** Detailed margins (per side) */
-  margins?: Margins;
-  /** Bleed source */
-  source?: string;
-  /** Whether shape has been modified */
-  'shape-modified'?: boolean;
-  /** Whether margins have been adjusted */
-  'margins-adjusted'?: boolean;
-  /** Path information */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Bleed type - Required */
+	type: "Margins" | "Contour" | "CAD" | "None";
+	/** Single margin value (uniform bleed) */
+	margin?: string;
+	/** Detailed margins (per side) */
+	margins?: Margins;
+	/** Bleed source */
+	source?: string;
+	/** Whether shape has been modified */
+	"shape-modified"?: boolean;
+	/** Whether margins have been adjusted */
+	"margins-adjusted"?: boolean;
+	/** Path information */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -776,12 +874,12 @@ export interface Bleed {
  * Spacing settings between components
  */
 export interface Spacing {
-  /** Horizontal spacing */
-  horizontal?: ScalarValue;
-  /** Vertical spacing */
-  vertical?: ScalarValue;
-  /** Uniform spacing (all sides) */
-  all?: ScalarValue;
+	/** Horizontal spacing */
+	horizontal?: ScalarValue;
+	/** Vertical spacing */
+	vertical?: ScalarValue;
+	/** Uniform spacing (all sides) */
+	all?: ScalarValue;
 }
 
 /**
@@ -789,12 +887,12 @@ export interface Spacing {
  * Offcut/waste settings
  */
 export interface Offcut {
-  /** Offcut type */
-  type?: 'None' | 'Trim' | 'Custom';
-  /** Offcut margins */
-  margins?: Margins;
-  /** Offcut amount */
-  amount?: ScalarValue;
+	/** Offcut type */
+	type?: "None" | "Trim" | "Custom";
+	/** Offcut margins */
+	margins?: Margins;
+	/** Offcut amount */
+	amount?: ScalarValue;
 }
 
 // ============================================================================
@@ -804,41 +902,41 @@ export interface Offcut {
 /**
  * Page Type Enum
  */
-export type PageType = 'Page';
+export type PageType = "Page";
 
 /**
  * Page Side Enum
  * Front or back side of a page
  */
-export type PageSide = 'Front' | 'Back';
+export type PageSide = "Front" | "Back";
 
 /**
  * Page
  * Represents a single page within a part or component
  */
 export interface Page {
-  /** Unique page ID - Read-only */
-  id?: string;
-  /** Page number (1-based) */
-  number?: number;
-  /** Page name */
-  name?: string;
-  /** Page type */
-  type?: PageType;
-  /** Page side (front/back) */
-  side?: PageSide;
-  /** Path to artwork file */
-  'art-path'?: string;
-  /** Page number within artwork file */
-  'art-page'?: number;
-  /** Page rotation in degrees */
-  rotation?: number;
-  /** Whether page is mirrored */
-  mirror?: boolean;
-  /** Page colors */
-  colors?: PageColor[];
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique page ID - Read-only */
+	id?: string;
+	/** Page number (1-based) */
+	number?: number;
+	/** Page name */
+	name?: string;
+	/** Page type */
+	type?: PageType;
+	/** Page side (front/back) */
+	side?: PageSide;
+	/** Path to artwork file */
+	"art-path"?: string;
+	/** Page number within artwork file */
+	"art-page"?: number;
+	/** Page rotation in degrees */
+	rotation?: number;
+	/** Whether page is mirrored */
+	mirror?: boolean;
+	/** Page colors */
+	colors?: PageColor[];
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -852,16 +950,16 @@ export type PageObject = Page;
  * Represents a color (spot or process) used on a page
  */
 export interface PageColor {
-  /** Color (spot) name - Required */
-  name: string;
-  /** Color type */
-  type?: 'CMYK' | 'Lab' | 'RGB';
-  /** Array of color values (4 for CMYK, 3 for Lab/RGB) */
-  values?: number[];
-  /** Color coverage percentage (0-100) */
-  coverage?: number;
-  /** Process reference - Required */
-  process: Process;
+	/** Color (spot) name - Required */
+	name: string;
+	/** Color type */
+	type?: "CMYK" | "Lab" | "RGB";
+	/** Array of color values (4 for CMYK, 3 for Lab/RGB) */
+	values?: number[];
+	/** Color coverage percentage (0-100) */
+	coverage?: number;
+	/** Process reference - Required */
+	process: Process;
 }
 
 /**
@@ -870,16 +968,16 @@ export interface PageColor {
  * Used when creating products
  */
 export interface PageColorResource {
-  /** Color name */
-  name?: string;
-  /** Color type */
-  type?: 'CMYK' | 'Lab' | 'RGB';
-  /** Color coverage percentage */
-  coverage?: number;
-  /** Process reference */
-  process?: Process;
-  /** Array of color values */
-  values?: number[];
+	/** Color name */
+	name?: string;
+	/** Color type */
+	type?: "CMYK" | "Lab" | "RGB";
+	/** Color coverage percentage */
+	coverage?: number;
+	/** Process reference */
+	process?: Process;
+	/** Array of color values */
+	values?: number[];
 }
 
 /**
@@ -887,16 +985,16 @@ export interface PageColorResource {
  * Legacy format for page colors (Jobs API)
  */
 export interface PageColorEntity {
-  /** Color name - Required */
-  name: string;
-  /** Color type */
-  type?: 'CMYK' | 'Lab' | 'RGB';
-  /** Color values array */
-  values?: number[];
-  /** Color coverage (0-100) */
-  coverage?: number;
-  /** Process name */
-  process?: string;
+	/** Color name - Required */
+	name: string;
+	/** Color type */
+	type?: "CMYK" | "Lab" | "RGB";
+	/** Color values array */
+	values?: number[];
+	/** Color coverage (0-100) */
+	coverage?: number;
+	/** Process name */
+	process?: string;
 }
 
 // ============================================================================
@@ -909,31 +1007,31 @@ export interface PageColorEntity {
  * Combines stock, grade, and coating information
  */
 export interface Material {
-  /** Stock reference */
-  stock?: Stock;
-  /** Grade reference */
-  grade?: Grade;
-  /** Coating reference */
-  coating?: Coating;
+	/** Stock reference */
+	stock?: Stock;
+	/** Grade reference */
+	grade?: Grade;
+	/** Coating reference */
+	coating?: Coating;
 }
 
 /**
  * Stock Type Enum
  * Type of stock (sheet-fed or roll-fed)
  */
-export type StockType = 'Sheet' | 'Roll';
+export type StockType = "Sheet" | "Roll";
 
 /**
  * Wind Direction Enum
  * Direction of paper wind on a roll
  */
-export type WindDirection = 'Inward' | 'Outward';
+export type WindDirection = "Inward" | "Outward";
 
 /**
  * Cost Basis Enum
  * How stock cost is calculated
  */
-export type CostBasis = 'PerSheet' | 'PerRoll' | 'PerWeight' | 'PerArea';
+export type CostBasis = "PerSheet" | "PerRoll" | "PerWeight" | "PerArea";
 
 /**
  * Stock
@@ -941,56 +1039,56 @@ export type CostBasis = 'PerSheet' | 'PerRoll' | 'PerWeight' | 'PerArea';
  * Can be either sheet-fed or roll-fed
  */
 export interface Stock {
-  /** Unique stock ID - Read-only */
-  id?: string;
-  /** Stock name - Required */
-  name: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Stock description */
-  description?: string;
-  /** Stock notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Stock type (Sheet or Roll) - Required */
-  type: StockType;
-  /** Stock width (sheet width or roll width) */
-  width?: ScalarValue;
-  /** Stock height (sheet height, not applicable for rolls) */
-  height?: ScalarValue;
-  /** Stock weight (basis weight, e.g., gsm or lb) */
-  weight?: ScalarValue;
-  /** Stock thickness (caliper) */
-  thickness?: ScalarValue;
-  /** Grade name */
-  grade?: string;
-  /** Coating name */
-  coating?: string;
-  /** Stock color */
-  color?: string;
-  /** Stock texture or finish */
-  texture?: string;
-  /** Vendor name */
-  vendor?: string;
-  /** Cost information */
-  cost?: CostValue;
-  /** Grain direction */
-  grain?: GrainDirection;
-  /** Number of sheets (for sheet stock) */
-  sheets?: number;
-  /** Sheet usage percentage */
-  'sheet-usage'?: number;
-  /** Roll information (for roll stock) */
-  roll?: RollInfo;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique stock ID - Read-only */
+	id?: string;
+	/** Stock name - Required */
+	name: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Stock description */
+	description?: string;
+	/** Stock notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Stock type (Sheet or Roll) - Required */
+	type: StockType;
+	/** Stock width (sheet width or roll width) */
+	width?: ScalarValue;
+	/** Stock height (sheet height, not applicable for rolls) */
+	height?: ScalarValue;
+	/** Stock weight (basis weight, e.g., gsm or lb) */
+	weight?: ScalarValue;
+	/** Stock thickness (caliper) */
+	thickness?: ScalarValue;
+	/** Grade name */
+	grade?: string;
+	/** Coating name */
+	coating?: string;
+	/** Stock color */
+	color?: string;
+	/** Stock texture or finish */
+	texture?: string;
+	/** Vendor name */
+	vendor?: string;
+	/** Cost information */
+	cost?: CostValue;
+	/** Grain direction */
+	grain?: GrainDirection;
+	/** Number of sheets (for sheet stock) */
+	sheets?: number;
+	/** Sheet usage percentage */
+	"sheet-usage"?: number;
+	/** Roll information (for roll stock) */
+	roll?: RollInfo;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -998,14 +1096,14 @@ export interface Stock {
  * Additional information for roll-fed stock
  */
 export interface RollInfo {
-  /** Roll length */
-  length?: ScalarValue;
-  /** Core diameter */
-  'core-diameter'?: ScalarValue;
-  /** Maximum roll diameter */
-  'max-diameter'?: ScalarValue;
-  /** Wind direction */
-  'wind-direction'?: WindDirection;
+	/** Roll length */
+	length?: ScalarValue;
+	/** Core diameter */
+	"core-diameter"?: ScalarValue;
+	/** Maximum roll diameter */
+	"max-diameter"?: ScalarValue;
+	/** Wind direction */
+	"wind-direction"?: WindDirection;
 }
 
 /**
@@ -1013,12 +1111,12 @@ export interface RollInfo {
  * Represents cost information with currency and basis
  */
 export interface CostValue {
-  /** Cost amount */
-  value?: number;
-  /** Currency code (e.g., USD, EUR, GBP) */
-  currency?: string;
-  /** How cost is calculated */
-  basis?: CostBasis;
+	/** Cost amount */
+	value?: number;
+	/** Currency code (e.g., USD, EUR, GBP) */
+	currency?: string;
+	/** How cost is calculated */
+	basis?: CostBasis;
 }
 
 /**
@@ -1026,30 +1124,30 @@ export interface CostValue {
  * Represents a stock grade (paper type classification)
  */
 export interface Grade {
-  /** Unique grade ID - Read-only */
-  id?: string;
-  /** Grade name - Required */
-  name: string;
-  /** Grade description */
-  description?: string;
-  /** Grade notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Grade type */
-  type?: string;
-  /** Weight specification */
-  weight?: ScalarValue;
-  /** Thickness specification */
-  thickness?: ScalarValue;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique grade ID - Read-only */
+	id?: string;
+	/** Grade name - Required */
+	name: string;
+	/** Grade description */
+	description?: string;
+	/** Grade notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Grade type */
+	type?: string;
+	/** Weight specification */
+	weight?: ScalarValue;
+	/** Thickness specification */
+	thickness?: ScalarValue;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1057,28 +1155,28 @@ export interface Grade {
  * Represents a paper coating or finish
  */
 export interface Coating {
-  /** Unique coating ID - Read-only */
-  id?: string;
-  /** Coating name - Required */
-  name: string;
-  /** Coating description */
-  description?: string;
-  /** Coating notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Coating type */
-  type?: string;
-  /** Finish description */
-  finish?: string;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique coating ID - Read-only */
+	id?: string;
+	/** Coating name - Required */
+	name: string;
+	/** Coating description */
+	description?: string;
+	/** Coating notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Coating type */
+	type?: string;
+	/** Finish description */
+	finish?: string;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 // ============================================================================
@@ -1090,26 +1188,26 @@ export interface Coating {
  * Represents a printing or finishing process
  */
 export interface Process {
-  /** Unique process ID - Read-only */
-  id?: string;
-  /** Process name - Required */
-  name: string;
-  /** Process description */
-  description?: string;
-  /** Process notes */
-  notes?: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique process ID - Read-only */
+	id?: string;
+	/** Process name - Required */
+	name: string;
+	/** Process description */
+	description?: string;
+	/** Process notes */
+	notes?: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1117,16 +1215,16 @@ export interface Process {
  * Settings for applying a process to a part or page
  */
 export interface ProcessSetting {
-  /** Process name or reference - Required */
-  process: string;
-  /** Mode for the process */
-  mode?: string;
-  /** Numeric mode value */
-  'mode-value'?: number;
-  /** Array of machine/thing names */
-  things?: string[];
-  /** Array of process type names */
-  'process-types'?: string[];
+	/** Process name or reference - Required */
+	process: string;
+	/** Mode for the process */
+	mode?: string;
+	/** Numeric mode value */
+	"mode-value"?: number;
+	/** Array of machine/thing names */
+	things?: string[];
+	/** Array of process type names */
+	"process-types"?: string[];
 }
 
 /**
@@ -1134,16 +1232,16 @@ export interface ProcessSetting {
  * Resource format for process settings (used in creation APIs)
  */
 export interface ProcessSettingResource {
-  /** Process reference - Required */
-  process: ReferenceProcess;
-  /** Mode reference */
-  mode?: ReferenceMode;
-  /** Mode value */
-  'mode-value'?: number;
-  /** Array of thing references */
-  things?: ReferenceThing[];
-  /** Array of process type references */
-  'process-types'?: ReferenceProcessType[];
+	/** Process reference - Required */
+	process: ReferenceProcess;
+	/** Mode reference */
+	mode?: ReferenceMode;
+	/** Mode value */
+	"mode-value"?: number;
+	/** Array of thing references */
+	things?: ReferenceThing[];
+	/** Array of process type references */
+	"process-types"?: ReferenceProcessType[];
 }
 
 /**
@@ -1151,10 +1249,10 @@ export interface ProcessSettingResource {
  * Used in process settings
  */
 export interface ReferenceProcess {
-  /** Process ID */
-  id?: string;
-  /** Process path */
-  path?: string;
+	/** Process ID */
+	id?: string;
+	/** Process path */
+	path?: string;
 }
 
 /**
@@ -1162,10 +1260,10 @@ export interface ReferenceProcess {
  * Used in process settings
  */
 export interface ReferenceMode {
-  /** Mode ID */
-  id?: string;
-  /** Mode path */
-  path?: string;
+	/** Mode ID */
+	id?: string;
+	/** Mode path */
+	path?: string;
 }
 
 /**
@@ -1173,10 +1271,10 @@ export interface ReferenceMode {
  * Used in process settings
  */
 export interface ReferenceThing {
-  /** Thing (machine) ID */
-  id?: string;
-  /** Thing path */
-  path?: string;
+	/** Thing (machine) ID */
+	id?: string;
+	/** Thing path */
+	path?: string;
 }
 
 /**
@@ -1184,10 +1282,10 @@ export interface ReferenceThing {
  * Used in process settings
  */
 export interface ReferenceProcessType {
-  /** Process type ID */
-  id?: string;
-  /** Process type path */
-  path?: string;
+	/** Process type ID */
+	id?: string;
+	/** Process type path */
+	path?: string;
 }
 
 // ============================================================================
@@ -1198,17 +1296,17 @@ export interface ReferenceProcessType {
  * Rotation Type Enum
  * How rotation is allowed for a component
  */
-export type RotationType = 'None' | 'Orthogonal' | 'Any' | 'Fixed';
+export type RotationType = "None" | "Orthogonal" | "Any" | "Fixed";
 
 /**
  * Rotation
  * Rotation settings for parts and components
  */
 export interface Rotation {
-  /** Rotation type - Required */
-  type: RotationType;
-  /** Fixed angle (when type is Fixed) */
-  angle?: number;
+	/** Rotation type - Required */
+	type: RotationType;
+	/** Fixed angle (when type is Fixed) */
+	angle?: number;
 }
 
 // ============================================================================
@@ -1219,39 +1317,39 @@ export interface Rotation {
  * Die Design Type Enum
  * Type of die cutting equipment
  */
-export type DieDesignType = 'Flatbed' | 'Rotary';
+export type DieDesignType = "Flatbed" | "Rotary";
 
 /**
  * Die Design
  * Represents a die design for cutting/creasing
  */
 export interface DieDesign {
-  /** Unique die design ID - Read-only */
-  id?: string;
-  /** Die design name - Required */
-  name: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Die design description */
-  description?: string;
-  /** Die design notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Die design type */
-  type?: DieDesignType;
-  /** Station number or identifier */
-  station?: string;
-  /** Array of cutting/creasing paths */
-  paths?: Path[];
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique die design ID - Read-only */
+	id?: string;
+	/** Die design name - Required */
+	name: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Die design description */
+	description?: string;
+	/** Die design notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Die design type */
+	type?: DieDesignType;
+	/** Station number or identifier */
+	station?: string;
+	/** Array of cutting/creasing paths */
+	paths?: Path[];
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1259,18 +1357,18 @@ export interface DieDesign {
  * Represents a cutting, creasing, or perforation path
  */
 export interface Path {
-  /** Path ID */
-  id?: string;
-  /** Path name */
-  name?: string;
-  /** Path type (Cut, Crease, Perf, etc.) */
-  type?: string;
-  /** Tool type reference */
-  'tool-type'?: string;
-  /** Path geometry data */
-  data?: string;
-  /** Additional path properties */
-  [key: string]: any;
+	/** Path ID */
+	id?: string;
+	/** Path name */
+	name?: string;
+	/** Path type (Cut, Crease, Perf, etc.) */
+	type?: string;
+	/** Tool type reference */
+	"tool-type"?: string;
+	/** Path geometry data */
+	data?: string;
+	/** Additional path properties */
+	[key: string]: any;
 }
 
 /**
@@ -1278,30 +1376,30 @@ export interface Path {
  * Layout arrangement of a die design on stock
  */
 export interface DieLayout {
-  /** Unique die layout ID - Read-only */
-  id?: string;
-  /** Die layout name - Required */
-  name: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Die layout description */
-  description?: string;
-  /** Die layout notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Die design reference */
-  'die-design'?: string;
-  /** Cavity information */
-  cavity?: Cavity;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique die layout ID - Read-only */
+	id?: string;
+	/** Die layout name - Required */
+	name: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Die layout description */
+	description?: string;
+	/** Die layout notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Die design reference */
+	"die-design"?: string;
+	/** Cavity information */
+	cavity?: Cavity;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1309,16 +1407,16 @@ export interface DieLayout {
  * Represents the cavity area in a die layout
  */
 export interface Cavity {
-  /** Cavity width */
-  width?: ScalarValue;
-  /** Cavity height */
-  height?: ScalarValue;
-  /** Array of cut paths */
-  'cut-paths'?: Path[];
-  /** Array of crease paths */
-  'crease-paths'?: Path[];
-  /** Array of perforation paths */
-  'perforation-paths'?: Path[];
+	/** Cavity width */
+	width?: ScalarValue;
+	/** Cavity height */
+	height?: ScalarValue;
+	/** Array of cut paths */
+	"cut-paths"?: Path[];
+	/** Array of crease paths */
+	"crease-paths"?: Path[];
+	/** Array of perforation paths */
+	"perforation-paths"?: Path[];
 }
 
 // ============================================================================
@@ -1329,62 +1427,57 @@ export interface Cavity {
  * Layout Type Enum
  * Type of layout (sheet-fed or roll-fed)
  */
-export type LayoutType = 'Sheet' | 'Roll';
+export type LayoutType = "Sheet" | "Roll";
 
 /**
  * Sheet Region Type Enum
  * Types of regions on a sheet layout
  */
-export type SheetRegionType = 
-  | 'Sheet' | 'Plate' | 'Component' | 'Group' 
-  | 'StepAndRepeat' | 'Waste' | 'Bleed';
+export type SheetRegionType = "Sheet" | "Plate" | "Component" | "Group" | "StepAndRepeat" | "Waste" | "Bleed";
 
 /**
  * Roll Region Type Enum
  * Types of regions on a roll layout
  */
-export type RollRegionType = 
-  | 'Roll' | 'Segment' | 'Lane' | 'Ribbon' 
-  | 'Component' | 'Blank' | 'Frame' | 'Strip' 
-  | 'LeadIn' | 'LeadOut';
+export type RollRegionType = "Roll" | "Segment" | "Lane" | "Ribbon" | "Component" | "Blank" | "Frame" | "Strip" | "LeadIn" | "LeadOut";
 
 /**
  * Layout
  * Represents an imposition layout (sheet or roll)
  */
 export interface Layout {
-  /** Unique layout ID - Read-only */
-  id?: string;
-  /** Layout name - Required */
-  name: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Layout description */
-  description?: string;
-  /** Layout notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Layout type (Sheet or Roll) */
-  type?: LayoutType;
-  /** Stock reference */
-  stock?: string;
-  /** Array of products in this layout */
-  products?: LayoutProduct[];
-  /** Array of die layouts */
-  'die-layouts'?: string[];
-  /** Array of marks */
-  marks?: string[];
-  /** Array of regions (sheet or roll regions) */
-  regions?: SheetRegion[] | RollRegion[];
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique layout ID - Read-only */
+	id?: string;
+	/** Layout name - Required */
+	name: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Layout description */
+	description?: string;
+	/** Layout notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Layout type (Sheet or Roll) */
+	type?: LayoutType;
+	/** Stock reference */
+	stock?: string;
+	/** Array of products in this layout */
+	products?: LayoutProduct[];
+	/** Array of die layouts */
+	"die-layouts"?: string[];
+	/** Array of marks */
+	marks?: string[];
+	/** Array of regions (sheet or roll regions) */
+	regions?: SheetRegion[] | RollRegion[];
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1392,10 +1485,10 @@ export interface Layout {
  * Product reference within a layout
  */
 export interface LayoutProduct {
-  /** Product name */
-  name?: string;
-  /** Quantity of this product in layout */
-  quantity?: number;
+	/** Product name */
+	name?: string;
+	/** Quantity of this product in layout */
+	quantity?: number;
 }
 
 /**
@@ -1403,24 +1496,24 @@ export interface LayoutProduct {
  * Represents a region on a sheet layout
  */
 export interface SheetRegion {
-  /** Region ID */
-  id?: string;
-  /** Region type - Required */
-  type: SheetRegionType;
-  /** Region name */
-  name?: string;
-  /** X coordinate */
-  x?: number;
-  /** Y coordinate */
-  y?: number;
-  /** Region width */
-  width?: number;
-  /** Region height */
-  height?: number;
-  /** Region rotation in degrees */
-  rotation?: number;
-  /** Content rotation in degrees */
-  'content-rotation'?: number;
+	/** Region ID */
+	id?: string;
+	/** Region type - Required */
+	type: SheetRegionType;
+	/** Region name */
+	name?: string;
+	/** X coordinate */
+	x?: number;
+	/** Y coordinate */
+	y?: number;
+	/** Region width */
+	width?: number;
+	/** Region height */
+	height?: number;
+	/** Region rotation in degrees */
+	rotation?: number;
+	/** Content rotation in degrees */
+	"content-rotation"?: number;
 }
 
 /**
@@ -1428,22 +1521,23 @@ export interface SheetRegion {
  * Represents a region on a roll layout
  */
 export interface RollRegion {
-  /** Region ID */
-  id?: string;
-  /** Region type - Required */
-  type: RollRegionType;
-  /** Region name */
-  name?: string;
-  /** X coordinate (along roll length) */
-  x?: number;
-  /** Y coordinate (across roll width) */
-  y?: number;
-  /** Region width */
-  width?: number;
-  /** Region height */
-  height?: number;
+	/** Region ID */
+	id?: string;
+	/** Region type - Required */
+	type: RollRegionType;
+	/** Region name */
+	name?: string;
+	/** X coordinate (along roll length) */
+	x?: number;
+	/** Y coordinate (across roll width) */
+	y?: number;
+	/** Region width */
+	width?: number;
+	/** Region height */
+	height?: number;
 }
 
+// ------
 // ============================================================================
 // MARK TYPES
 // ============================================================================
@@ -1452,72 +1546,279 @@ export interface RollRegion {
  * Mark Type Enum
  * Types of marks that can be applied
  */
-export type MarkType = 
-  | 'SimpleMark' | 'ShapeMark' | 'BarcodeMark' 
-  | 'CustomMark' | 'CollationMark';
+export type MarkType = "Shape" | "Barcode" | "Collation" | "Custom";
 
 /**
  * Mark Anchor Enum
  * What the mark is anchored/positioned relative to
  */
-export type MarkAnchor = 
-  | 'Plate' | 'PlatePunch' | 'Sheet' | 'ContentMargins' 
-  | 'ImageMargins' | 'Gripper' | 'Group' | 'DieTemplate' 
-  | 'StepAndRepeat' | 'Component' | 'Flat' | 'Signature' 
-  | 'BoundSignature' | 'FoldedSignature' | 'Tile' | 'Page';
+export type MarkAnchor =
+	| "Plate"
+	| "PlatePunch"
+	| "Sheet"
+	| "ContentMargins"
+	| "ImageMargins"
+	| "Gripper"
+	| "Group"
+	| "DieTemplate"
+	| "StepAndRepeat"
+	| "Component"
+	| "Flat"
+	| "Signature"
+	| "BoundSignature"
+	| "FoldedSignature"
+	| "Tile"
+	| "Page";
 
 /**
  * Mark
- * Represents a printer's mark (registration, crop, barcode, etc.)
+ * Base interface for all mark types
+ *
+ * @description Per OpenAPI: mark schema with discriminator on type property
  */
 export interface Mark {
-  /** Unique mark ID - Read-only */
-  id?: string;
-  /** Mark name - Required */
-  name: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Mark description */
-  description?: string;
-  /** Mark notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Mark type */
-  type?: MarkType;
-  /** Mark category (e.g., Registration, ColorBar, Crop) */
-  category?: string;
-  /** Placement settings */
-  placement?: MarkPlacement;
-  /** Appearance settings */
-  appearance?: MarkAppearance;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique mark ID - Read-only */
+	id?: string;
+	/** Mark name - Required */
+	name: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Mark description */
+	description?: string;
+	/** Mark notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Mark type discriminator - Required */
+	type: MarkType;
+	/** Placement settings - Required */
+	placement: MarkPlacement;
+	/** Appearance settings - Required */
+	"mark-appearance": MarkAppearance;
+	/** Conditions for mark application - Required */
+	conditions: PropertyRuleGroup;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
+
+/**
+ * Shape Mark
+ * Mark that renders a geometric shape (line, rectangle, cross, target, etc.)
+ *
+ * @description Per OpenAPI: shape-mark schema
+ */
+export interface ShapeMark extends Mark {
+	/** Type discriminator */
+	type: "Shape";
+	/** Shape type - Required */
+	"shape-type": ShapeType;
+	/** Appearance settings for shape marks */
+	"mark-appearance": ShapeMarkProps;
+}
+
+/**
+ * Shape Type Enum
+ * Types of shapes available for shape marks
+ */
+export type ShapeType =
+	| "Line"
+	| "Rectangle"
+	| "Ellipse"
+	| "Cross"
+	| "CrossHair"
+	| "SquareCross"
+	| "CmykCross"
+	| "SquareCrossFilled"
+	| "Target"
+	| "TargetCmyk"
+	| "HalfTarget"
+	| "Corner1"
+	| "SGArrowLeft"
+	| "SGArrowRight"
+	| "SGParallelGuideLeft"
+	| "SGParallelGuideRight";
+
+/**
+ * Barcode Mark
+ * Mark that renders a barcode
+ *
+ * @description Per OpenAPI: barcode-mark schema
+ */
+export interface BarcodeMark extends Mark {
+	/** Type discriminator */
+	type: "Barcode";
+	/** Barcode type (e.g., QR, Code128, DataMatrix) */
+	"barcode-type"?: string;
+	/** Barcode data/content */
+	data?: string;
+	/** Appearance settings for barcode marks */
+	"mark-appearance": BarcodeMarkProps;
+}
+
+/**
+ * Shape Mark Props
+ * Appearance properties for shape marks
+ *
+ * @description Per OpenAPI: shape-mark-props schema
+ */
+export interface ShapeMarkProps {
+	/** General appearance settings */
+	general?: GeneralProps;
+	/** Size properties */
+	size?: ShapeSizeProps;
+}
+
+/**
+ * Barcode Mark Props
+ * Appearance properties for barcode marks
+ *
+ * @description Per OpenAPI: barcode-mark-props schema
+ */
+export interface BarcodeMarkProps {
+	/** General appearance settings */
+	general?: GeneralProps;
+	/** Size properties */
+	size?: BarcodeSizeProps;
+}
+
+/**
+ * General Props
+ * General appearance properties for marks (stroke, fill, clipping, etc.)
+ *
+ * @description Per OpenAPI: general-props schema
+ * Required properties: clipping, overprint-mode, underprint
+ */
+export interface GeneralProps {
+	/** Layer name */
+	layer?: string;
+	/** Stroke settings */
+	stroke?: StrokeSetting;
+	/** Fill settings */
+	fill?: FillSetting;
+	/** Underprint settings - Required */
+	underprint: Underprint;
+	/** Clipping settings - Required */
+	clipping: Underprint;
+	/** Overprint mode - Required */
+	"overprint-mode": "None" | "Standard" | "Illustrator";
+}
+
+/**
+ * Stroke Setting
+ * Stroke/outline settings for marks
+ *
+ * @description Per OpenAPI: stroke schema
+ * Required property: color
+ */
+export interface StrokeSetting {
+	/** Stroke color - Required */
+	color: MarkColor;
+	/** Stroke width */
+	width?: ScalarValue;
+	/** Cap style for line endings */
+	"cap-style"?: "Butt" | "Round" | "None" | "Square";
+	/** Join style for corners */
+	"join-style"?: "Miter" | "Round" | "Bevel";
+	/** Miter limit for miter joins */
+	"miter-limit"?: number;
+	/** Dash pattern array */
+	"dash-pattern"?: number[];
+}
+
+/**
+ * Fill Setting
+ * Fill settings for marks
+ *
+ * @description Per OpenAPI: fill schema
+ * Required property: color
+ */
+export interface FillSetting {
+	/** Fill color - Required */
+	color: MarkColor;
+}
+
+/**
+ * Shape Size Props
+ * Size properties specific to shape marks
+ *
+ * @description Per OpenAPI: shape-size-props schema
+ */
+export interface ShapeSizeProps extends SizeProps {
+	/** Line width (for line shapes) */
+	"line-width"?: ScalarValue;
+	/** Line length (for line shapes) */
+	"line-length"?: ScalarValue;
+	/** Diameter (for circular shapes) */
+	diameter?: ScalarValue;
+	/** Gap length (for crosshairs, targets) */
+	"gap-length"?: ScalarValue;
+	/** Bleed amount */
+	bleed?: ScalarValue;
+}
+
+/**
+ * Barcode Size Props
+ * Size properties specific to barcode marks
+ *
+ * @description Per OpenAPI: barcode-size-props schema
+ */
+export interface BarcodeSizeProps {
+	/** Barcode width */
+	width?: ScalarValue;
+	/** Barcode height */
+	height?: ScalarValue;
+}
+
+/**
+ * Property Rule Group
+ * Conditional rules for mark application
+ *
+ * @description Per OpenAPI: PropertyRuleGroup schema
+ */
+export interface PropertyRuleGroup {
+	/** Logical operator for combining rules */
+	logic?: "And" | "Or";
+	/** Whether the rule group is empty */
+	empty?: boolean;
+}
+
+/**
+ * Mark Color
+ * Color specification for marks
+ *
+ * @description Per OpenAPI: mark-color schema (discriminated union)
+ */
+export interface MarkColor {
+	/** Color type discriminator */
+	type?: string;
+	/** Color specification (varies by type) */
+	[key: string]: any;
+}
+// ------
 
 /**
  * Mark Placement
  * Controls how and where marks are placed
  */
 export interface MarkPlacement {
-  /** Placement type - Required */
-  type: 'Smart' | 'Manual';
-  /** What the mark is anchored to - Required */
-  anchor: MarkAnchor;
-  /** Placement mode - Required */
-  mode: 'Basic' | 'Advanced';
-  /** Basic placement settings - Required */
-  'basic-placement': BasicPlacement;
-  /** Advanced placement settings - Required */
-  'advanced-placement': AdvancedPlacement;
-  /** Whether to place on both sides */
-  'both-sides'?: boolean;
+	/** Placement type - Required */
+	type: "Smart" | "Manual";
+	/** What the mark is anchored to - Required */
+	anchor: MarkAnchor;
+	/** Placement mode - Required */
+	mode: "Basic" | "Advanced";
+	/** Basic placement settings - Required */
+	"basic-placement": BasicPlacement;
+	/** Advanced placement settings - Required */
+	"advanced-placement": AdvancedPlacement;
+	/** Whether to place on both sides */
+	"both-sides"?: boolean;
 }
 
 /**
@@ -1525,12 +1826,12 @@ export interface MarkPlacement {
  * Simple placement with location and offsets
  */
 export interface BasicPlacement {
-  /** Location code (e.g., TopLeft, Center, etc.) */
-  location?: string;
-  /** Horizontal offset from anchor */
-  'horizontal-offset'?: string;
-  /** Vertical offset from anchor */
-  'vertical-offset'?: string;
+	/** Location code (e.g., TopLeft, Center, etc.) */
+	location?: string;
+	/** Horizontal offset from anchor */
+	"horizontal-offset"?: string;
+	/** Vertical offset from anchor */
+	"vertical-offset"?: string;
 }
 
 /**
@@ -1538,8 +1839,8 @@ export interface BasicPlacement {
  * Complex placement with multiple rules
  */
 export interface AdvancedPlacement {
-  /** Array of placement rules */
-  rules?: PlacementRule[];
+	/** Array of placement rules */
+	rules?: PlacementRule[];
 }
 
 /**
@@ -1547,14 +1848,14 @@ export interface AdvancedPlacement {
  * Individual rule for advanced placement
  */
 export interface PlacementRule {
-  /** Location code */
-  location?: string;
-  /** Horizontal offset */
-  'horizontal-offset'?: string;
-  /** Vertical offset */
-  'vertical-offset'?: string;
-  /** Whether to resize sheet to accommodate mark */
-  'resize-sheet'?: boolean;
+	/** Location code */
+	location?: string;
+	/** Horizontal offset */
+	"horizontal-offset"?: string;
+	/** Vertical offset */
+	"vertical-offset"?: string;
+	/** Whether to resize sheet to accommodate mark */
+	"resize-sheet"?: boolean;
 }
 
 /**
@@ -1562,14 +1863,14 @@ export interface PlacementRule {
  * Visual appearance settings for marks
  */
 export interface MarkAppearance {
-  /** Appearance type */
-  type?: string;
-  /** Size settings */
-  size?: SizeProps;
-  /** Color settings */
-  color?: MarkColor;
-  /** Additional appearance properties */
-  [key: string]: any;
+	/** Appearance type */
+	type?: string;
+	/** Size settings */
+	size?: SizeProps;
+	/** Color settings */
+	color?: MarkColor;
+	/** Additional appearance properties */
+	[key: string]: any;
 }
 
 /**
@@ -1577,23 +1878,10 @@ export interface MarkAppearance {
  * Size properties for marks
  */
 export interface SizeProps {
-  /** Width */
-  width?: ScalarValue;
-  /** Height */
-  height?: ScalarValue;
-}
-
-/**
- * Mark Color
- * Color specification for marks
- */
-export interface MarkColor {
-  /** Color type */
-  type?: string;
-  /** Color values */
-  values?: number[];
-  /** Additional color properties */
-  [key: string]: any;
+	/** Width */
+	width?: ScalarValue;
+	/** Height */
+	height?: ScalarValue;
 }
 
 /**
@@ -1601,10 +1889,10 @@ export interface MarkColor {
  * Reference to a mark asset
  */
 export interface MarkAssetRef {
-  /** Asset ID */
-  id?: string;
-  /** Path to asset */
-  path?: string;
+	/** Asset ID */
+	id?: string;
+	/** Path to asset */
+	path?: string;
 }
 
 // ============================================================================
@@ -1615,53 +1903,60 @@ export interface MarkAssetRef {
  * Thing Type Enum
  * Types of printing and finishing equipment
  */
-export type ThingType = 
-  | 'SheetFedDigitalPress' | 'WebFedDigitalPress' 
-  | 'SheetFedOffsetPress' | 'WebFedOffsetPress' 
-  | 'WebFedFlexoPress' | 'FlatbedWideFormatPress' 
-  | 'RollFedWideFormatPress' | 'GuillotineCutter' 
-  | 'FlatbedDieCutter' | 'RotaryDieCutter' 
-  | 'DigitalCuttingTable' | 'DieMaking' | 'Corrugator';
+export type ThingType =
+	| "SheetFedDigitalPress"
+	| "WebFedDigitalPress"
+	| "SheetFedOffsetPress"
+	| "WebFedOffsetPress"
+	| "WebFedFlexoPress"
+	| "FlatbedWideFormatPress"
+	| "RollFedWideFormatPress"
+	| "GuillotineCutter"
+	| "FlatbedDieCutter"
+	| "RotaryDieCutter"
+	| "DigitalCuttingTable"
+	| "DieMaking"
+	| "Corrugator";
 
 /**
  * Thing
  * Represents a machine or piece of equipment
  */
 export interface Thing {
-  /** Unique thing ID - Read-only */
-  id?: string;
-  /** Thing name - Required */
-  name: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Thing description */
-  description?: string;
-  /** Thing notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Thing type (equipment type) - Required */
-  type: ThingType;
-  /** Vendor/manufacturer name */
-  vendor?: string;
-  /** Model name */
-  model?: string;
-  /** Serial number */
-  'serial-number'?: string;
-  /** Physical location */
-  location?: string;
-  /** Capabilities and specifications */
-  capabilities?: ThingCapabilities;
-  /** Costing information */
-  costing?: ThingCosting;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique thing ID - Read-only */
+	id?: string;
+	/** Thing name - Required */
+	name: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Thing description */
+	description?: string;
+	/** Thing notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Thing type (equipment type) - Required */
+	type: ThingType;
+	/** Vendor/manufacturer name */
+	vendor?: string;
+	/** Model name */
+	model?: string;
+	/** Serial number */
+	"serial-number"?: string;
+	/** Physical location */
+	location?: string;
+	/** Capabilities and specifications */
+	capabilities?: ThingCapabilities;
+	/** Costing information */
+	costing?: ThingCosting;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1669,26 +1964,26 @@ export interface Thing {
  * Technical capabilities and specifications of equipment
  */
 export interface ThingCapabilities {
-  /** Minimum sheet width */
-  'min-sheet-width'?: ScalarValue;
-  /** Maximum sheet width */
-  'max-sheet-width'?: ScalarValue;
-  /** Minimum sheet height */
-  'min-sheet-height'?: ScalarValue;
-  /** Maximum sheet height */
-  'max-sheet-height'?: ScalarValue;
-  /** Minimum stock thickness */
-  'min-stock-thickness'?: ScalarValue;
-  /** Maximum stock thickness */
-  'max-stock-thickness'?: ScalarValue;
-  /** Maximum speed (sheets per hour or similar) */
-  'max-speed'?: number;
-  /** Whether equipment supports perforation */
-  'supports-perfing'?: boolean;
-  /** Whether equipment supports scoring */
-  'supports-scoring'?: boolean;
-  /** Additional capabilities */
-  [key: string]: any;
+	/** Minimum sheet width */
+	"min-sheet-width"?: ScalarValue;
+	/** Maximum sheet width */
+	"max-sheet-width"?: ScalarValue;
+	/** Minimum sheet height */
+	"min-sheet-height"?: ScalarValue;
+	/** Maximum sheet height */
+	"max-sheet-height"?: ScalarValue;
+	/** Minimum stock thickness */
+	"min-stock-thickness"?: ScalarValue;
+	/** Maximum stock thickness */
+	"max-stock-thickness"?: ScalarValue;
+	/** Maximum speed (sheets per hour or similar) */
+	"max-speed"?: number;
+	/** Whether equipment supports perforation */
+	"supports-perfing"?: boolean;
+	/** Whether equipment supports scoring */
+	"supports-scoring"?: boolean;
+	/** Additional capabilities */
+	[key: string]: any;
 }
 
 /**
@@ -1696,18 +1991,18 @@ export interface ThingCapabilities {
  * Cost information for equipment usage
  */
 export interface ThingCosting {
-  /** Currency code */
-  currency?: string;
-  /** Setup time */
-  setup?: TimeValue;
-  /** Running rate (cost per unit time or impression) */
-  rate?: ScalarValue;
-  /** Minimum charge */
-  'minimum-charge'?: ScalarValue;
-  /** Running waste (percentage or count) */
-  'running-waste'?: number;
-  /** Setup waste (count) */
-  'setup-waste'?: number;
+	/** Currency code */
+	currency?: string;
+	/** Setup time */
+	setup?: TimeValue;
+	/** Running rate (cost per unit time or impression) */
+	rate?: ScalarValue;
+	/** Minimum charge */
+	"minimum-charge"?: ScalarValue;
+	/** Running waste (percentage or count) */
+	"running-waste"?: number;
+	/** Setup waste (count) */
+	"setup-waste"?: number;
 }
 
 /**
@@ -1725,12 +2020,12 @@ export type Machine = Thing;
  * CIE L*a*b* color specification
  */
 export interface LabColor {
-  /** Lightness (0-100) */
-  l?: number;
-  /** a* axis (green-red) */
-  a?: number;
-  /** b* axis (blue-yellow) */
-  b?: number;
+	/** Lightness (0-100) */
+	l?: number;
+	/** a* axis (green-red) */
+	a?: number;
+	/** b* axis (blue-yellow) */
+	b?: number;
 }
 
 /**
@@ -1738,14 +2033,14 @@ export interface LabColor {
  * CMYK color specification
  */
 export interface CmykColor {
-  /** Cyan (0-100) */
-  c?: number;
-  /** Magenta (0-100) */
-  m?: number;
-  /** Yellow (0-100) */
-  y?: number;
-  /** Black (0-100) */
-  k?: number;
+	/** Cyan (0-100) */
+	c?: number;
+	/** Magenta (0-100) */
+	m?: number;
+	/** Yellow (0-100) */
+	y?: number;
+	/** Black (0-100) */
+	k?: number;
 }
 
 /**
@@ -1753,12 +2048,12 @@ export interface CmykColor {
  * RGB color specification
  */
 export interface RgbColor {
-  /** Red (0-255) */
-  r?: number;
-  /** Green (0-255) */
-  g?: number;
-  /** Blue (0-255) */
-  b?: number;
+	/** Red (0-255) */
+	r?: number;
+	/** Green (0-255) */
+	g?: number;
+	/** Blue (0-255) */
+	b?: number;
 }
 
 /**
@@ -1766,30 +2061,30 @@ export interface RgbColor {
  * Represents a spot color definition
  */
 export interface SpotColor {
-  /** Unique spot color ID - Read-only */
-  id?: string;
-  /** Spot color name - Required */
-  name: string;
-  /** CIE L*a*b* color values */
-  lab?: LabColor;
-  /** CMYK color values */
-  cmyk?: CmykColor;
-  /** RGB color values */
-  rgb?: RgbColor;
-  /** Spot color description */
-  description?: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique spot color ID - Read-only */
+	id?: string;
+	/** Spot color name - Required */
+	name: string;
+	/** CIE L*a*b* color values */
+	lab?: LabColor;
+	/** CMYK color values */
+	cmyk?: CmykColor;
+	/** RGB color values */
+	rgb?: RgbColor;
+	/** Spot color description */
+	description?: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1797,28 +2092,28 @@ export interface SpotColor {
  * Represents a halftone screen ruling specification
  */
 export interface Screenruling {
-  /** Unique screenruling ID - Read-only */
-  id?: string;
-  /** Screenruling name - Required */
-  name: string;
-  /** Ruling value (e.g., 150, 175, 200) */
-  value?: number;
-  /** Unit (e.g., lpi, lpc) */
-  unit?: string;
-  /** Screenruling description */
-  description?: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique screenruling ID - Read-only */
+	id?: string;
+	/** Screenruling name - Required */
+	name: string;
+	/** Ruling value (e.g., 150, 175, 200) */
+	value?: number;
+	/** Unit (e.g., lpi, lpc) */
+	unit?: string;
+	/** Screenruling description */
+	description?: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 // ============================================================================
@@ -1830,32 +2125,32 @@ export interface Screenruling {
  * Represents a cutting, creasing, or perforation tool
  */
 export interface ToolType {
-  /** Unique tool type ID - Read-only */
-  id?: string;
-  /** Tool type name - Required */
-  name: string;
-  /** Process reference - Required */
-  process: Reference;
-  /** Tool width - Required */
-  width: ScalarValue;
-  /** Array of mappings for this tool - Required */
-  mappings: Mapping[];
-  /** Tool type description */
-  description?: string;
-  /** Tool type notes */
-  notes?: string;
-  /** External system ID */
-  'external-id'?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique tool type ID - Read-only */
+	id?: string;
+	/** Tool type name - Required */
+	name: string;
+	/** Process reference - Required */
+	process: Reference;
+	/** Tool width - Required */
+	width: ScalarValue;
+	/** Array of mappings for this tool - Required */
+	mappings: Mapping[];
+	/** Tool type description */
+	description?: string;
+	/** Tool type notes */
+	notes?: string;
+	/** External system ID */
+	"external-id"?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1864,20 +2159,20 @@ export interface ToolType {
  * Maps artwork attributes (spot colors, layers) to tool types
  */
 export interface Mapping {
-  /** Mapping source - Required */
-  source: 'Spot' | 'Layer';
-  /** Paint type filter */
-  'paint-type'?: 'Filled' | 'Stroked' | 'FilledOrStroked' | 'FilledAndStroked';
-  /** Text matching mode - Required */
-  'text-match': 'Equals' | 'StartsWith' | 'Contains';
-  /** Text to match - Required */
-  text: string;
-  /** Tool offset from path */
-  offset?: ScalarValue;
-  /** Join style for offset paths */
-  'join-style'?: 'None' | 'Miter' | 'Bevel' | 'Round';
-  /** Miter limit for miter joins */
-  'miter-limit'?: ScalarValue;
+	/** Mapping source - Required */
+	source: "Spot" | "Layer";
+	/** Paint type filter */
+	"paint-type"?: "Filled" | "Stroked" | "FilledOrStroked" | "FilledAndStroked";
+	/** Text matching mode - Required */
+	"text-match": "Equals" | "StartsWith" | "Contains";
+	/** Text to match - Required */
+	text: string;
+	/** Tool offset from path */
+	offset?: ScalarValue;
+	/** Join style for offset paths */
+	"join-style"?: "None" | "Miter" | "Bevel" | "Round";
+	/** Miter limit for miter joins */
+	"miter-limit"?: ScalarValue;
 }
 
 // ============================================================================
@@ -1889,10 +2184,10 @@ export interface Mapping {
  * Aggregated position information for signatures across layouts
  */
 export interface SignatureAggregations {
-  /** Signature identifier */
-  signature?: string;
-  /** Array of aggregations */
-  aggregations?: Aggregation[];
+	/** Signature identifier */
+	signature?: string;
+	/** Array of aggregations */
+	aggregations?: Aggregation[];
 }
 
 /**
@@ -1900,12 +2195,12 @@ export interface SignatureAggregations {
  * Aggregated placement information
  */
 export interface Aggregation {
-  /** Aggregation type */
-  type?: string;
-  /** Count of placements */
-  count?: number;
-  /** Array of positions */
-  positions?: Position[];
+	/** Aggregation type */
+	type?: string;
+	/** Count of placements */
+	count?: number;
+	/** Array of positions */
+	positions?: Position[];
 }
 
 /**
@@ -1913,12 +2208,12 @@ export interface Aggregation {
  * Position and rotation information for a placed component
  */
 export interface Position {
-  /** X coordinate */
-  x?: number;
-  /** Y coordinate */
-  y?: number;
-  /** Rotation in degrees */
-  rotation?: number;
+	/** X coordinate */
+	x?: number;
+	/** Y coordinate */
+	y?: number;
+	/** Rotation in degrees */
+	rotation?: number;
 }
 
 // ============================================================================
@@ -1931,30 +2226,30 @@ export interface Position {
  * Used for imposition settings, planning algorithms, etc.
  */
 export interface Profile {
-  /** Unique profile ID - Read-only */
-  id?: string;
-  /** Profile name - Required */
-  name: string;
-  /** Profile description */
-  description?: string;
-  /** Profile notes */
-  notes?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
-  /** Version - Read-only */
-  version?: string;
-  /** Profile type */
-  type?: string;
-  /** Profile settings (type-specific) */
-  settings?: any;
-  /** External system ID */
-  'external-id'?: string;
-  /** File path */
-  path?: string;
-  /** Custom properties */
-  properties?: PropertyObject[];
+	/** Unique profile ID - Read-only */
+	id?: string;
+	/** Profile name - Required */
+	name: string;
+	/** Profile description */
+	description?: string;
+	/** Profile notes */
+	notes?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
+	/** Version - Read-only */
+	version?: string;
+	/** Profile type */
+	type?: string;
+	/** Profile settings (type-specific) */
+	settings?: any;
+	/** External system ID */
+	"external-id"?: string;
+	/** File path */
+	path?: string;
+	/** Custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1963,20 +2258,20 @@ export interface Profile {
  * Used for import/export presets, product presets, etc.
  */
 export interface PresetEntity {
-  /** Unique preset ID - Read-only */
-  id?: string;
-  /** Preset name */
-  name?: string;
-  /** Preset type */
-  type?: string;
-  /** Preset category */
-  category?: string;
-  /** Preset description */
-  description?: string;
-  /** Creation timestamp - Read-only */
-  'created-on'?: string;
-  /** Last modification timestamp - Read-only */
-  'modified-on'?: string;
+	/** Unique preset ID - Read-only */
+	id?: string;
+	/** Preset name */
+	name?: string;
+	/** Preset type */
+	type?: string;
+	/** Preset category */
+	category?: string;
+	/** Preset description */
+	description?: string;
+	/** Creation timestamp - Read-only */
+	"created-on"?: string;
+	/** Last modification timestamp - Read-only */
+	"modified-on"?: string;
 }
 
 // ============================================================================
@@ -1988,8 +2283,8 @@ export interface PresetEntity {
  * Resource for setting custom properties
  */
 export interface PropsResource {
-  /** Array of custom properties */
-  properties?: PropertyObject[];
+	/** Array of custom properties */
+	properties?: PropertyObject[];
 }
 
 /**
@@ -1997,12 +2292,12 @@ export interface PropsResource {
  * Stroke/line specification
  */
 export interface Stroke {
-  /** Stroke width */
-  width?: ScalarValue;
-  /** Stroke color */
-  color?: string;
-  /** Stroke style */
-  style?: string;
+	/** Stroke width */
+	width?: ScalarValue;
+	/** Stroke color */
+	color?: string;
+	/** Stroke style */
+	style?: string;
 }
 
 /**
@@ -2010,10 +2305,10 @@ export interface Stroke {
  * Underprint settings
  */
 export interface Underprint {
-  /** Underprint type - Required */
-  type: 'None' | 'Annulus' | 'Full';
-  /** Underprint amount */
-  amount?: ScalarValue;
+	/** Underprint type - Required */
+	type: "None" | "Annulus" | "Full";
+	/** Underprint amount */
+	amount?: ScalarValue;
 }
 
 /**
@@ -2021,10 +2316,10 @@ export interface Underprint {
  * N-up repeat settings for signatures
  */
 export interface NUpEntity {
-  /** Number of repeats (1-50) - Required */
-  number: number;
-  /** Gap between repeats */
-  gap?: string;
+	/** Number of repeats (1-50) - Required */
+	number: number;
+	/** Gap between repeats */
+	gap?: string;
 }
 
 /**
@@ -2032,8 +2327,8 @@ export interface NUpEntity {
  * Layout placement counts for components
  */
 export interface LayoutsInfo {
-  /** Layout index */
-  index?: number;
-  /** Number placed in layout */
-  placed?: number;
+	/** Layout index */
+	index?: number;
+	/** Number placed in layout */
+	placed?: number;
 }

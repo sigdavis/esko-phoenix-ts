@@ -228,6 +228,12 @@ export type {
 	// Property requests
 	PropertiesResource,
 	PathResource,
+	PlanResource,
+	SaveTemplateResource,
+	SaveDieDesignResource,
+	SaveDieLayoutResource,
+	ProcessLayoutResource,
+	ExpandBleedResource,
 } from "./requests";
 
 // ============================================================================

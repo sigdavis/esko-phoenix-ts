@@ -819,21 +819,6 @@ export interface ImportDieLayoutResource {
 }
 
 /**
- * Import Product Resource
- * Used to import products from file
- */
-export interface ImportProductResource {
-	/** Full path of file name - Required */
-	path: string;
-	/** Name of preset to use */
-	preset?: string;
-	/** Base folder for relative paths */
-	"base-folder"?: string;
-	/** ID of action resource (Hot Folders only) */
-	idref?: number;
-}
-
-/**
  * Import Product CSV Resource
  * Used to import products from CSV file
  */
@@ -844,19 +829,6 @@ export interface ImportProductCsvResource {
 	preset?: string;
 	/** Base folder for relative paths */
 	"base-folder"?: string;
-	/** ID of action resource (Hot Folders only) */
-	idref?: number;
-}
-
-/**
- * Import Stock Resource
- * Used to import stock from file
- */
-export interface ImportStockResource {
-	/** Full path of file name - Required */
-	path: string;
-	/** Name of preset to use */
-	preset?: string;
 	/** ID of action resource (Hot Folders only) */
 	idref?: number;
 }

@@ -209,7 +209,6 @@ export type {
 	ImportProductResource,
 	ImportProductCsvResource,
 	ImportDieLayoutResource,
-	ImportStockResource,
 	ImportAssetResource,
 	ExportResource,
 	ExportCoverSheetResource,
